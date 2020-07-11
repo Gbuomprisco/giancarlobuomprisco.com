@@ -1,8 +1,20 @@
 @tailwind base;
 
 a {
-  @apply text-blue-700 underline font-bold;
+  @apply text-blue-700 font-bold;
 }
 
 @tailwind components;
 @tailwind utilities;
+
+ul {
+  list-style: circle;
+  @apply leading-loose;
+}
+
+.avatar {
+  border-radius: 100%;
+  width: 8rem;
+  object-fit: cover;
+  height: 8rem;
+}

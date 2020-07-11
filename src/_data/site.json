@@ -1,8 +1,8 @@
 {
-  "site_name": "Hello",
-  "title": "Hello personal blog",
-  "description": "Blog description",
-  "url": "https://example.com",
+  "site_name": "giancarlobuomprisco.com",
+  "title": "Giancarlo Buomprisco",
+  "description": "Giancarlo's personal website",
+  "url": "https://giancarlobuomprisco.com",
   "locale": "en",
-  "author": "Anonymous"
+  "author": "Giancarlo Buomprisco"
 }
