@@ -1,6 +1,6 @@
 ---
-title: I made a website
-description: I finally made a personal website
+title: I made a website (again)
+description: I finally made a personal website (again)
 date: 2020-07-11
 ---
 

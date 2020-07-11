@@ -18,3 +18,7 @@ html ul {
   object-fit: cover;
   height: 8rem;
 }
+
+html .container {
+  max-width: 750px;
+}
