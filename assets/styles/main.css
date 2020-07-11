@@ -602,9 +602,9 @@ a {
   width: 100%;
 }
 
-@media (min-width: 750px) {
+@media (min-width: 800px) {
   .container {
-    max-width: 750px;
+    max-width: 800px;
   }
 }
 
@@ -7555,7 +7555,7 @@ a {
 }
 
 .max-w-screen-xl {
-  max-width: 750px;
+  max-width: 800px;
 }
 
 .min-h-0 {
@@ -17851,9 +17851,10 @@ a {
   transition-delay: 1000ms;
 }
 
-ul {
+html ul {
   list-style: circle;
   line-height: 2;
+  padding-left: 2.5rem;
 }
 
 .avatar {
@@ -17864,7 +17865,7 @@ ul {
   height: 8rem;
 }
 
-@media (min-width: 750px) {
+@media (min-width: 800px) {
   .xl\:space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -24812,7 +24813,7 @@ ul {
   }
 
   .xl\:max-w-screen-xl {
-    max-width: 750px;
+    max-width: 800px;
   }
 
   .xl\:min-h-0 {
@@ -35706,9 +35707,9 @@ video {
   width: 100%;
 }
 
-@media (min-width: 750px) {
+@media (min-width: 800px) {
   .container {
-    max-width: 750px;
+    max-width: 800px;
   }
 }
 
@@ -42659,7 +42660,7 @@ video {
 }
 
 .max-w-screen-xl {
-  max-width: 750px;
+  max-width: 800px;
 }
 
 .min-h-0 {
@@ -53005,7 +53006,7 @@ video {
      object-fit: cover;
 }
 
-@media (min-width: 750px) {
+@media (min-width: 800px) {
   .xl\:space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -59953,7 +59954,7 @@ video {
   }
 
   .xl\:max-w-screen-xl {
-    max-width: 750px;
+    max-width: 800px;
   }
 
   .xl\:min-h-0 {
