@@ -2,7 +2,7 @@ module.exports = {
   purge: ['./src/**/*.ejs'],
   theme: {
     screens: {
-      xl: '750px',
+      xl: '800px',
     },
     fontFamily: {
       sans: ['Martel', 'serif'],

@@ -16,7 +16,8 @@
     "format:js": "prettier '**/*.js' --write && eslint '**/*.js' --fix",
     "format:json": "prettier '**/*.json' --write",
     "format": "run-s format:*",
-    "lint": "eslint --ext .js ."
+    "lint": "eslint --ext .js .",
+    "deploy": "gh-pages -d _site"
   },
   "license": "ISC",
   "devDependencies": {
@@ -32,6 +33,7 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.21.2",
     "file-loader": "^6.0.0",
+    "gh-pages": "^3.1.0",
     "glob": "^7.1.6",
     "html-minifier": "^4.0.0",
     "html-webpack-plugin": "^4.3.0",

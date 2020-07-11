@@ -1,7 +1,7 @@
 ---
 pagination:
   data: collections.posts
-  size: 5
+  size: 50
   alias: list
   reverse: true
 permalink: '<% if (pagination.pageNumber > 0) { %><%= `page${pagination.pageNumber + 1}/index.html` %><% } else { %>index.html<% } %>'
@@ -20,7 +20,7 @@ eleventyComputed:
 
       <div>
         <h1 class="font-bold text-5xl">
-          Hey, I'm Giancarlo.
+          Hey, I'm Giancarlo
         </h1>
 
         <h2 class="text-xl text-grey-800">
@@ -34,7 +34,7 @@ eleventyComputed:
     </div>
   </div>
 
-  <div class="mt-6">
+  <div class="mt-12">
     <h4 class="font-bold text-lg">
       About Me
     </h4>
@@ -67,7 +67,7 @@ eleventyComputed:
     </ul>
   </div>
 
-  <div class="mt-5">
+  <div class="mt-6">
     <h4 class="font-bold text-lg">
       Blog
     </h4>

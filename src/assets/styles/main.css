@@ -7,9 +7,9 @@ a {
 @tailwind components;
 @tailwind utilities;
 
-ul {
+html ul {
   list-style: circle;
-  @apply leading-loose;
+  @apply leading-loose pl-10;
 }
 
 .avatar {
