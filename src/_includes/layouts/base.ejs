@@ -49,8 +49,12 @@
     <% } %> <%- include('webpack.ejs') %>
   </head>
   <body>
-    <%- content %>
-    <link href="https://fonts.googleapis.com/css2?family=Martel:wght@400;700;800&display=swap" rel="stylesheet">
+    <%- content %> <% if (process.env.NODE_ENV === 'production') { %> <%- include('ga.ejs') %> <% }
+    %>
 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Martel:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
   </body>
 </html>
