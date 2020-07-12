@@ -49,7 +49,7 @@
     <% } %> <%- include('webpack.ejs') %>
   </head>
   <body>
-    <%- content %> <% if (process.env.NODE_ENV === 'production') { %> <%- include('ga.ejs') %> <% }
+    <%- content %> <% if (project.environment === 'production') { %> <%- include('ga.ejs') %> <% }
     %>
 
     <link
