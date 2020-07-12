@@ -1,7 +1,7 @@
 {
-  "name": "my-blog",
+  "name": "giancarlobuomprisco.com",
   "version": "1.0.0",
-  "description": "My blog",
+  "description": "Giancarlo Buomprisco's website",
   "scripts": {
     "build-dev:webpack": "webpack",
     "watch:webpack": "webpack --watch",
