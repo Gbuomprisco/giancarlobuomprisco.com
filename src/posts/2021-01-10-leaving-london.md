@@ -1,6 +1,6 @@
 ---
 title: Goodbye, London
-description: I am leaving London, and where I am going go next
+description: I am leaving London, and where I am going to go next
 date: 2021-01-10
 ---
 
