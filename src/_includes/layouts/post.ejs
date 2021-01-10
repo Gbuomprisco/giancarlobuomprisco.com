@@ -4,28 +4,35 @@ layout: layouts/base.ejs
 
 <div class="container mx-auto">
     <div class="mt-5 text-sm">
-        <a href="/" >Back to home</a>
+        <a href="/">Back to home</a>
     </div>
 
     <div class="mt-16">
         <article class="post">
             <header>
-                <h1 class="font-bold text-center text-4xl"><%= title %></h1>
+                <h1 class="font-bold text-center text-6xl"><%= title; %></h1>
+
+                <p class="text-center">
+                    <span class="text-secondary text-sm">
+                        <%= description; %>
+                    </span>
+                </p>
+
                 <div class="user-image mb-2 flex items-center justify-center">
                     <a href="https://twitter.com/@gc_psk" class="flex items-center">
-                        <img src="/assets/images/giancarlo.jpeg" />
+                        <img src="/assets/images/giancarlo.jpeg"/>
                         <span class="ml-2 text-gray-600 text-sm">@gc_psk</span>
                     </a>
 
                     <span class="text-gray-600 text-400 ml-1">
-            /  <%= this.dateFns.format(new Date(date), 'LLLL d, yyyy') %>
+            /  <%= this.dateFns.format(new Date(date), 'LLLL d, yyyy'); %>
           </span>
                     </a>
                 </div>
             </header>
 
             <section class="mt-16 pb-3">
-                <%- content %>
+                <%- content; %>
             </section>
         </article>
     </div>

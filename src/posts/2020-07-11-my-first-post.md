@@ -4,7 +4,7 @@ description: I finally made a personal website (again)
 date: 2020-07-11
 ---
 
-It took years, but I've finally made a website. 
+It took years, but I've finally made  a website. 
 
 
 Actually, this must have been the eleventh website I made, but nonetheless it seems a like a new start.  I'm making the time to post here often and I swear it won't be about just code.
