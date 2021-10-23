@@ -1,58 +1,92 @@
-import Container from '../components/container'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
-import Intro from '../components/intro'
-import Layout from '../components/layout'
-import { getAllPosts } from '../lib/api'
-import Head from 'next/head'
-import { CMS_NAME } from '../lib/constants'
-import Post from '../types/post'
+import Container from "../components/container";
+import MoreStories from "../components/more-stories";
+import Intro from "../components/intro";
+import Layout from "../components/layout";
+import MainHeader from "../components/main-header";
+
+import { getAllPosts } from "../lib/api";
+import Head from "next/head";
+import Post from "../types/post";
+import { TITLE } from "../lib/constants";
 
 type Props = {
-  allPosts: Post[]
-}
+  allPosts: Post[];
+};
 
 const Index = ({ allPosts }: Props) => {
-  const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(1)
   return (
     <>
       <Layout>
         <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
+          <title>{TITLE}</title>
         </Head>
+
         <Container>
+          <MainHeader />
+
           <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+
+          <div>
+            <p className="my-5">
+              <p>Yes, this is still fairly empty.</p>
+              <p>In the meantime, you can connect with me on Social Media:</p>
+            </p>
+
+            <ul className="flex-col space-y-1 list-decimal ml-5">
+              <li>
+                Follow me on{" "}
+                <a
+                  className="underline"
+                  target="_blank"
+                  href="https://twitter.com/gc_psk"
+                >
+                  Twitter
+                </a>
+              </li>
+
+              <li>
+                Connect on{" "}
+                <a
+                  className="underline"
+                  target="_blank"
+                  href="https://www.linkedin.com/in/giancarlobuomprisco/"
+                >
+                  Linkedin
+                </a>
+              </li>
+
+              <li>
+                Fork my code on{" "}
+                <a
+                  className="underline"
+                  target="_blank"
+                  href="https://github.com/gbuomprisco"
+                >
+                  Github
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {allPosts.length > 0 && <MoreStories posts={allPosts} />}
         </Container>
       </Layout>
     </>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;
 
 export const getStaticProps = async () => {
   const allPosts = getAllPosts([
-    'title',
-    'date',
-    'slug',
-    'author',
-    'coverImage',
-    'excerpt',
-  ])
+    "title",
+    "date",
+    "slug",
+    "coverImage",
+    "excerpt",
+  ]);
 
   return {
     props: { allPosts },
-  }
-}
+  };
+};
