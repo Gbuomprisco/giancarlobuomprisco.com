@@ -1,9 +1,14 @@
 import Container from "./container";
+import MainHeader from "./main-header";
+import SectionSeparator from "./section-separator";
 
 const Footer = () => {
   return (
-    <footer className="">
-      <Container></Container>
+    <footer>
+      <Container>
+        <SectionSeparator />
+        <MainHeader />
+      </Container>
     </footer>
   );
 };

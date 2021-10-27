@@ -1,18 +1,60 @@
-.markdown {
-  @apply text-lg leading-relaxed;
-}
-
-.markdown p,
-.markdown ul,
-.markdown ol,
-.markdown blockquote {
-  @apply my-6;
-}
-
 .markdown h2 {
-  @apply text-3xl mt-12 mb-4 leading-snug;
+  @apply font-semibold text-4xl pb-3 mt-8 font-sans;
 }
 
 .markdown h3 {
-  @apply text-2xl mt-8 mb-4 leading-snug;
+  @apply font-semibold text-3xl mt-3 pb-2 font-sans;
+}
+
+.markdown h4 {
+  @apply font-semibold text-2xl mt-2 pb-1 font-sans;
+}
+
+.markdown p {
+  @apply leading-8 text-xl font-normal mt-2 mb-6 font-serif;
+
+  color: var(--color);
+}
+
+.markdown pre {
+  margin: 2rem 0;
+}
+
+.markdown ul {
+  list-style: circle;
+
+  @apply pl-10 pb-3 mb-3;
+}
+
+.markdown li {
+  @apply leading-8 text-lg my-2 font-serif;
+
+  color: var(--color);
+}
+
+.markdown li > p {
+  @apply mb-3;
+}
+
+.markdown pre:not([class]) {
+  background: #efefef;
+  padding: 1rem;
+  margin: 2rem 0;
+  overflow: auto;
+  border-radius: 0.3em;
+}
+
+.markdown p > code,
+.markdown li > code {
+  background: #efefef;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.markdown article section a {
+  @apply underline;
+}
+
+.markdown hr {
+  @apply border-accent-2 mt-8 mb-6;
 }

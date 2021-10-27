@@ -1,6 +1,8 @@
-export const HOME_OG_IMAGE_URL =
-  "https://og-image.vercel.app/Next.js%20Blog%20Starter%20Example.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg";
-
 export const DESCRIPTION = `Giancarlo Buomprisco's Website`;
 export const TITLE = `Giancarlo Buomprisco`;
+export const AUTHOR = `Giancarlo Buomprisco`;
+
 export const THEME_COLOR = `#000`;
+export const SITE_URL = `https://giancarlobuomprisco.com`;
+export const SITE_NAME = "giancarlobuomprisco.com";
+export const TWITTER_HANDLE = `@gc_psk`;

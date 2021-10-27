@@ -1,12 +1,18 @@
 module.exports = {
   purge: ["./components/**/*.tsx", "./pages/**/*.tsx"],
   mode: "jit",
+  corePlugins: {
+    container: false,
+  },
   theme: {
     fontFamily: {
-      serif: ["Martel"],
+      serif: ["Noto Serif"],
       sans: ["-apple-system", "BlinkMacSystemFont", "Inter"],
     },
     extend: {
+      screens: {
+        xl: "1280px",
+      },
       colors: {
         "accent-1": "#FAFAFA",
         "accent-2": "#EAEAEA",
@@ -20,19 +26,24 @@ module.exports = {
       letterSpacing: {
         tighter: "-.04em",
       },
-      lineHeight: {
-        tight: 1.2,
-      },
-      fontSize: {
-        "5xl": "2.5rem",
-        "6xl": "2.75rem",
-        "7xl": "4.5rem",
-        "8xl": "6.25rem",
-      },
       boxShadow: {
         small: "0 5px 10px rgba(0, 0, 0, 0.12)",
         medium: "0 8px 30px rgba(0, 0, 0, 0.12)",
       },
     },
   },
+  plugins: [customContainerPlugin],
 };
+
+function customContainerPlugin({ addComponents }) {
+  addComponents({
+    ".container": {
+      "@screen lg": {
+        maxWidth: "1024px",
+      },
+      "@screen xl": {
+        maxWidth: "1166px",
+      },
+    },
+  });
+}

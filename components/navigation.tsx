@@ -6,7 +6,7 @@ const Navigation = () => {
 
   const links = {
     About: {
-      label: "About",
+      label: "About Me",
       path: "/about",
     },
     Contact: {
@@ -33,7 +33,7 @@ const Navigation = () => {
   };
 
   return (
-    <ul className="flex space-x-8">
+    <ul className="flex space-x-8 px-4">
       <Item link={links.About} />
       {false && <Item link={links.Contact} />}
     </ul>

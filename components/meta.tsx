@@ -7,39 +7,51 @@ const Meta = () => {
       <link
         rel="apple-touch-icon"
         sizes="180x180"
-        href="/favicon/apple-touch-icon.png"
+        href="/favicon/favicon.png"
       />
 
       <link
         rel="icon"
         type="image/png"
         sizes="32x32"
-        href="/favicon/favicon-32x32.png"
+        href="/favicon/favicon.png"
       />
 
       <link
         rel="icon"
         type="image/png"
         sizes="16x16"
-        href="/favicon/favicon-16x16.png"
+        href="/favicon/favicon.png"
+      />
+
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600&display=swap"
+      />
+
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       />
 
       <link rel="manifest" href="/favicon/site.webmanifest" />
-
-      <link
-        rel="mask-icon"
-        href="/favicon/safari-pinned-tab.svg"
-        color="#000000"
-      />
+      <link rel="mask-icon" href="/favicon/favicon.png" color="#000000" />
 
       <link rel="shortcut icon" href="/favicon/favicon.ico" />
+      <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+
       <meta name="msapplication-TileColor" content={constants.THEME_COLOR} />
       <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
       <meta name="theme-color" content={constants.THEME_COLOR} />
-      <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
 
+      <meta name="author" content={constants.AUTHOR} />
+      <meta property="og:title" content={constants.TITLE} />
       <meta name="description" content={constants.DESCRIPTION} />
-      <meta property="og:image" content={constants.HOME_OG_IMAGE_URL} />
+      <meta property="og:description" content={constants.DESCRIPTION} />
+      <meta property="og:site_name" content={constants.SITE_NAME} />
+      <meta property="twitter:title" content={constants.SITE_NAME} />
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:creator" content={constants.TWITTER_HANDLE} />
     </Head>
   );
 };

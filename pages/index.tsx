@@ -1,5 +1,5 @@
 import Container from "../components/container";
-import MoreStories from "../components/more-stories";
+import PostsList from "../components/posts-list";
 import Intro from "../components/intro";
 import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
@@ -24,51 +24,13 @@ const Index = ({ allPosts }: Props) => {
         <Container>
           <MainHeader />
 
-          <Intro />
-
           <div>
-            <p className="my-5">
-              <p>Yes, this is still fairly empty.</p>
-              <p>In the meantime, you can connect with me on Social Media:</p>
-            </p>
-
-            <ul className="flex-col space-y-1 list-decimal ml-5">
-              <li>
-                Follow me on{" "}
-                <a
-                  className="underline"
-                  target="_blank"
-                  href="https://twitter.com/gc_psk"
-                >
-                  Twitter
-                </a>
-              </li>
-
-              <li>
-                Connect on{" "}
-                <a
-                  className="underline"
-                  target="_blank"
-                  href="https://www.linkedin.com/in/giancarlobuomprisco/"
-                >
-                  Linkedin
-                </a>
-              </li>
-
-              <li>
-                Fork my code on{" "}
-                <a
-                  className="underline"
-                  target="_blank"
-                  href="https://github.com/gbuomprisco"
-                >
-                  Github
-                </a>
-              </li>
-            </ul>
+            <Intro />
           </div>
 
-          {allPosts.length > 0 && <MoreStories posts={allPosts} />}
+          <div className="flex-col space-y-12 mt-8 md:mt-16">
+            <PostsList posts={allPosts} />
+          </div>
         </Container>
       </Layout>
     </>
@@ -84,6 +46,7 @@ export const getStaticProps = async () => {
     "slug",
     "coverImage",
     "excerpt",
+    "collection",
   ]);
 
   return {

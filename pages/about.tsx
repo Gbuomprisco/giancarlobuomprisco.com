@@ -20,34 +20,20 @@ const About = () => {
             </h1>
 
             <div className="flex-col space-y-8 pb-12">
-              <div className="flex flex-col items-center justify-center">
-                <p>
-                  <img
-                    className="rounded"
-                    style={{ width: "120px", height: "120px" }}
-                    src="/assets/giancarlo.jpeg"
-                    alt="Gincarlo"
-                  />
-                </p>
-
-                <p className="text-xs text-gray-800 py-3">
-                  Me, in the Taipei 101, in 2020
-                </p>
-              </div>
-
               <div>
-                <h3 className="font-semibold text-3xl">In a Nutshell</h3>
+                <h3 className="font-semibold text-3xl">TDLR;</h3>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
-                    I am a Software Engineer, in love with programming and
-                    making stuff with code
+                    My name is Giancarlo, and work as a Software Engineer,
+                    specialized in writing client-side apps with Typescript,
+                    Angular, Firebase, Stencil, and sometimes React.
                   </p>
 
                   <p>
-                    Originally from Italy, I spent the largest part of the past
-                    decade in London (UK), where I worked for many companies
-                    (especially in the financial sector).
+                    I'm originally from Italy, but spent the largest part of the
+                    past decade in London (UK), where I worked for various
+                    companies, especially in the financial sector.
                   </p>
 
                   <p>
@@ -62,8 +48,8 @@ const About = () => {
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
-                    After a short-stint at Tradeweb at the end of the year, I
-                    decided to take a break from full-time consulting.
+                    After finalizing my project at Tradeweb at the end of the
+                    year, I decided to take a break from full-time consulting.
                   </p>
 
                   <p>
@@ -73,13 +59,16 @@ const About = () => {
                   </p>
 
                   <p>
-                    In this timeframe I also worked on{" "}
-                    <a target="_blank" href="https://formtoro.com">
+                    Shortly after I started working on{" "}
+                    <a
+                      className="underline"
+                      target="_blank"
+                      href="https://formtoro.com"
+                    >
                       Formtoro
                     </a>
-                    , a Marketing application for collecting data and measuring
-                    the quality of an eCommerce's advertisements thanks to
-                    zero-party data.
+                    , a marketing platform for collecting data and measuring the
+                    quality of eCommerce ads thanks to zero-party data.
                   </p>
                 </p>
               </div>
@@ -229,9 +218,9 @@ const About = () => {
 
                   <p>
                     Despite being in an office full of awesome poeple, the
-                    experience didn't last long for me, as I was enver really
+                    experience didn't last long for me, as I was never really
                     welcome to the offshore company that took complete ownership
-                    of the code.
+                    of the project. Pity.
                   </p>
                 </p>
               </div>

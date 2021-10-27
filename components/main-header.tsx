@@ -3,7 +3,7 @@ import Navigation from "./navigation";
 
 const Header = () => {
   return (
-    <div className="flex-col md:flex-row flex md:justify-between mt-16 mb-16 md:mb-12">
+    <div className="flex-row flex justify-between my-8 md:my-12">
       <h2 className="font-normal tracking-tight md:tracking-tighter leading-tight">
         <Link href="/">
           <a className="hover:underline">

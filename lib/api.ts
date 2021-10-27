@@ -1,47 +1,99 @@
-import fs from 'fs'
-import { join } from 'path'
-import matter from 'gray-matter'
+import fs from "fs";
+import { join } from "path";
+import matter from "gray-matter";
 
-const postsDirectory = join(process.cwd(), '_posts')
+const MD = `md`;
+const MDX = `mdx`;
+
+const postsDirectory = join(process.cwd(), "_posts");
 
 export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory)
+  return fs.readdirSync(postsDirectory);
+}
+
+function getPostPath(slug: string, fallbackExtension = MD) {
+  const regExp = /\.(mdx|md)$/;
+  const result = slug.match(regExp);
+  const realSlug = slug.replace(regExp, "");
+  const extension = (result && result[0]) ?? `.${fallbackExtension}`;
+  const postPath = `${realSlug}${extension}`;
+  const fullPath = join(postsDirectory, postPath);
+
+  return {
+    fullPath,
+    realSlug,
+  };
 }
 
 export function getPostBySlug(slug: string, fields: string[] = []) {
-  const realSlug = slug.replace(/\.md$/, '')
-  const fullPath = join(postsDirectory, `${realSlug}.md`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
-  const { data, content } = matter(fileContents)
+  let postPathData = getPostPath(slug, MDX);
+  const { fullPath, realSlug } = postPathData;
+
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
+  const readingTime = getReadingTimeInMinutes(content);
 
   type Items = {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 
-  const items: Items = {}
+  const items: Items = {};
 
   // Ensure only the minimal needed data is exposed
   fields.forEach((field) => {
-    if (field === 'slug') {
-      items[field] = realSlug
-    }
-    if (field === 'content') {
-      items[field] = content
+    if (field === "slug") {
+      items[field] = realSlug;
     }
 
-    if (typeof data[field] !== 'undefined') {
-      items[field] = data[field]
+    if (field === "content") {
+      items[field] = content;
     }
-  })
 
-  return items
+    items.readingTime = `${readingTime} min read`;
+
+    if (typeof data[field] !== "undefined") {
+      items[field] = data[field];
+    }
+  });
+
+  return items;
 }
 
 export function getAllPosts(fields: string[] = []) {
-  const slugs = getPostSlugs()
-  const posts = slugs
+  const slugs = getPostSlugs();
+
+  return slugs
     .map((slug) => getPostBySlug(slug, fields))
-    // sort posts by date in descending order
-    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1))
-  return posts
+    .sort((item, nextItem) => {
+      return item.date > nextItem.date ? -1 : 1;
+    });
+}
+
+export function getAllCollections() {
+  const postsWithCollection = getAllPosts(["collection"]).map(
+    (item) => item.collection
+  );
+
+  return Array.from(new Set(postsWithCollection));
+}
+
+export function getPostsByCollection(
+  collection: string,
+  fields: string[] = [
+    "title",
+    "date",
+    "slug",
+    "ogImage",
+    "coverImage",
+    "collection",
+    "excerpt",
+  ]
+) {
+  return getAllPosts(fields).filter((item) => item.collection === collection);
+}
+
+function getReadingTimeInMinutes(content: string, wpm = 225) {
+  const words = content.trim().split(/\s+/).length;
+
+  return Math.ceil(words / wpm);
 }

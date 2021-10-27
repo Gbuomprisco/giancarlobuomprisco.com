@@ -2,16 +2,40 @@ import Navigation from "./navigation";
 
 const Intro = () => {
   return (
-    <section className="flex-col md:flex-row flex md:justify-between mt-16 mb-16 md:mb-12">
-      <div>
-        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
-          Ciao. <br />
-          Giancarlo here.
-        </h1>
+    <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12 items-center">
+      <div className="flex flex-col space-y-4 md:w-6/12">
+        <div className="flex-col space-y-4">
+          <h2 className="text-3xl md:text-5xl font-semibold tracking-tighter leading-tight md:pr-8">
+            Ciao, this is Giancarlo —
+          </h2>
+        </div>
 
-        <h3 className="text-xl md:text-2xl text-gray-800 font-light">
-          I am a Software consultant, technical writer, and maker
-        </h3>
+        <div className="flex-col space-y-6">
+          <h2 className="text-2xl">
+            I am a programmer, startup founder, teacher, sometimes weightlifter
+          </h2>
+
+          <p>
+            On this site I write about coding, what I am working on, and my life
+            in general
+          </p>
+
+          <p>
+            Building digital products is my biggest passion. Another of my areas
+            of interests is Serverless for Front-end Developers, and helping
+            everyone to write full-stack applications from scratch
+          </p>
+        </div>
+      </div>
+
+      <div className="mx-auto hidden sm:flex">
+        <img
+          loading="lazy"
+          className="rounded-full object-cover"
+          style={{ width: "250px", height: "250px" }}
+          src="/assets/giancarlo.jpeg"
+          alt="Giancarlo"
+        />
       </div>
     </section>
   );
