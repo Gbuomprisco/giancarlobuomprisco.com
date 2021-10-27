@@ -12,8 +12,8 @@ sections:
   new_doc_ext: mdx
   templates:
   - blog-post
-upload_dir: public/assets/images
-public_path: "/assets"
+upload_dir: public/assets/images/posts
+public_path: "/assets/images/posts"
 front_matter_path: ''
 use_front_matter_path: false
 file_template: ":filename:"
