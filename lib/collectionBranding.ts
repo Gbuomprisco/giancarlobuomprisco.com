@@ -6,19 +6,19 @@ interface Branding {
 const brandings: Record<string, Branding> = {
   typescript: {
     colorPrimary: "#358ef1",
-    colorPrimaryLight: "#358ef1ba",
+    colorPrimaryLight: "#358ef175",
   },
   rxjs: {
     colorPrimary: "#d81b60",
-    colorPrimaryLight: "#d81b60c2",
+    colorPrimaryLight: "#d81b6085",
   },
   angular: {
     colorPrimary: "#dd0031",
-    colorPrimaryLight: "#dd0031b0",
+    colorPrimaryLight: "#dd00316e",
   },
   emoji: {
     colorPrimary: "#ffb300",
-    colorPrimaryLight: "#ffb30091",
+    colorPrimaryLight: "#ffb30075",
   },
 };
 

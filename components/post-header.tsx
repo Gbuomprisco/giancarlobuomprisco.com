@@ -2,6 +2,7 @@ import DateFormatter from "./date-formatter";
 import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import CollectionName from "./collection-name";
+import DraftBadge from "./draft-badge";
 
 type Props = {
   title: string;
@@ -9,6 +10,7 @@ type Props = {
   date: string;
   collection: string;
   readingTime: string;
+  draft: boolean;
 };
 
 const PostHeader = ({
@@ -17,6 +19,7 @@ const PostHeader = ({
   date,
   collection,
   readingTime,
+  draft,
 }: Props) => {
   return (
     <>
@@ -28,12 +31,14 @@ const PostHeader = ({
 
       <div className="max-w-2xl mx-auto mb-6">
         <div className="flex flex-row space-x-2 items-center justify-center">
+          {draft && <DraftBadge>Draft</DraftBadge>}
+
           <div className="text-sm text-center text-gray-600">
             <DateFormatter dateString={date} />
           </div>
 
-          <span className="text-gray-500">·</span>
-          <span className="text-gray-500 text-sm">{readingTime}</span>
+          <span className="text-gray-600">·</span>
+          <span className="text-gray-600 text-sm">{readingTime}</span>
         </div>
       </div>
 

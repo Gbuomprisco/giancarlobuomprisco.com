@@ -6,3 +6,4 @@ export const THEME_COLOR = `#000`;
 export const SITE_URL = `https://giancarlobuomprisco.com`;
 export const SITE_NAME = "giancarlobuomprisco.com";
 export const TWITTER_HANDLE = `@gc_psk`;
+export const IS_PRODUCTION = process.env.NODE_ENV === "production";

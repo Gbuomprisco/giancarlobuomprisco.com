@@ -1,13 +1,13 @@
 .markdown h2 {
-  @apply font-semibold text-4xl pb-3 mt-8 font-sans;
+  @apply font-bold text-4xl pb-2 mt-10 font-sans;
 }
 
 .markdown h3 {
-  @apply font-semibold text-3xl mt-3 pb-2 font-sans;
+  @apply font-semibold text-3xl mt-8 pb-2 font-sans;
 }
 
 .markdown h4 {
-  @apply font-semibold text-2xl mt-2 pb-1 font-sans;
+  @apply font-semibold text-2xl mt-4 pb-1 font-sans;
 }
 
 .markdown p {
@@ -17,7 +17,8 @@
 }
 
 .markdown pre {
-  margin: 2rem 0;
+  font-size: 0.95rem;
+  @apply my-4;
 }
 
 .markdown ul {
@@ -27,7 +28,7 @@
 }
 
 .markdown li {
-  @apply leading-8 text-lg my-2 font-serif;
+  @apply leading-8 text-xl my-2 font-serif;
 
   color: var(--color);
 }
@@ -47,7 +48,7 @@
 .markdown p > code,
 .markdown li > code {
   background: #efefef;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.45rem;
   border-radius: 4px;
 }
 

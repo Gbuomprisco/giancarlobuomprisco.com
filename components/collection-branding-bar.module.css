@@ -3,6 +3,6 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 8px;
+    height: 10px;
     background-image: linear-gradient(to bottom right, var(--from), var(--to, rgba(244, 114, 182, 0)));
 }

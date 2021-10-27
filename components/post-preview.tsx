@@ -41,13 +41,13 @@ const PostPreview = ({
       </h3>
 
       <div className="text-xs mb-2 flex flex-row space-x-2 items-center">
-        <div className="text-gray-500">
+        <div className="text-gray-600">
           <DateFormatter dateString={date} />
         </div>
 
-        <span className="text-gray-500">·</span>
-        <span className="text-gray-500">{readingTime}</span>
-        <span className="text-gray-500">·</span>
+        <span className="text-gray-600">·</span>
+        <span className="text-gray-600">{readingTime}</span>
+        <span className="text-gray-600">·</span>
 
         <div className="text-xs">
           <CollectionName name={collection} />

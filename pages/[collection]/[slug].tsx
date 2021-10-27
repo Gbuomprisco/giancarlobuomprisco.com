@@ -67,6 +67,7 @@ const Post = ({ post, morePosts, preview }: Props) => {
                 coverImage={post.coverImage}
                 date={post.date}
                 readingTime={post.readingTime}
+                draft={!post.live}
               />
 
               <PostBody content={post.content} />
