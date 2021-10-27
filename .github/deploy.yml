@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -20,8 +20,5 @@ jobs:
       - name: install
         run: npm i
 
-      - name: build
-        run: npm run build
-
       - name: deploy
-        run: npm run deploy
+        run: npm run release
