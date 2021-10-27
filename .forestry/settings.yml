@@ -8,7 +8,7 @@ sections:
   path: _posts
   label: Posts
   create: all
-  match: "**/*"
+  match: "**/*.mdx"
   new_doc_ext: mdx
   templates:
   - blog-post
