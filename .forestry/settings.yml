@@ -12,7 +12,7 @@ sections:
   new_doc_ext: mdx
   templates:
   - blog-post
-upload_dir: public/assets
+upload_dir: public/assets/images
 public_path: "/assets"
 front_matter_path: ''
 use_front_matter_path: false
