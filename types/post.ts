@@ -14,6 +14,7 @@ type PostType = {
   };
 
   content: string;
+  series?: string;
 };
 
 export default PostType;

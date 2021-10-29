@@ -11,11 +11,13 @@ import PostsList from "../../components/posts-list";
 import CollectionBrandingBar from "../../components/collection-branding-bar";
 import SectionSeparator from "../../components/section-separator";
 import ConvertkitPostSignup from "../../components/convertkit-post-signup";
+import SeriesList from "../../components/series-list";
 
 import {
   getPostBySlug,
   getAllPosts,
   getPostsByCollection,
+  getPostsBySeries,
 } from "../../lib/api";
 
 import PostTitle from "../../components/post-title";
@@ -26,15 +28,20 @@ import CollectionName from "../../components/collection-name";
 type Props = {
   post: PostType;
   morePosts: PostType[];
+  series: PostType[];
   preview?: boolean;
 };
 
-const Post = ({ post, morePosts, preview }: Props) => {
+const Post = ({ post, morePosts, preview, series }: Props) => {
   const router = useRouter();
 
   if (!router.isFallback && (!post?.slug || !post.collection)) {
     return <ErrorPage statusCode={404} />;
   }
+
+  const indexInSeries = post.series
+    ? series.findIndex((item) => item.slug === post.slug)
+    : -1;
 
   return (
     <Layout preview={preview}>
@@ -47,7 +54,7 @@ const Post = ({ post, morePosts, preview }: Props) => {
           <PostTitle>Loading…</PostTitle>
         ) : (
           <>
-            <article className="mb-32">
+            <article className="mb-16">
               <Head>
                 <title>{post.title}</title>
 
@@ -61,17 +68,18 @@ const Post = ({ post, morePosts, preview }: Props) => {
                 />
               </Head>
 
-              <PostHeader
-                title={post.title}
-                collection={post.collection}
-                coverImage={post.coverImage}
-                date={post.date}
-                readingTime={post.readingTime}
-                draft={!post.live}
-              />
+              <PostHeader post={post} />
+
+              <div className="mb-12 max-w-2xl mx-auto">
+                <SeriesList posts={series} series={post.series} />
+              </div>
 
               <PostBody content={post.content} />
             </article>
+
+            <div className="max-w-2xl mx-auto">
+              <SeriesList posts={series} series={post.series} />
+            </div>
 
             <div className="w-full md:w-8/12 mx-auto">
               <ConvertkitPostSignup />
@@ -117,11 +125,14 @@ export async function getStaticProps({ params }: Params) {
     "ogImage",
     "coverImage",
     "collection",
-  ]);
+    "series",
+  ]) as PostType;
 
   const morePosts = getPostsByCollection(collection)
     .filter((item) => item.slug !== slug)
     .slice(0, maxReadMorePosts);
+
+  const series = post.series ? getPostsBySeries(post.series) : [];
 
   const content = await markdownToHtml(post.content || "");
 
@@ -131,6 +142,7 @@ export async function getStaticProps({ params }: Params) {
         ...post,
         content,
       },
+      series,
       morePosts,
     },
   };

@@ -1,19 +1,34 @@
 import fs from "fs";
 import { join } from "path";
-import matter from "gray-matter";
+import matter, { GrayMatterFile } from "gray-matter";
 import { IS_PRODUCTION } from "./constants";
 import Post from "../types/post";
+import PostType from "../types/post";
 
 type PostFields = Array<keyof Post>;
 
 const MD = `md`;
 const MDX = `mdx`;
 
+const DEFAULT_FIELDS: PostFields = [
+  "title",
+  "date",
+  "slug",
+  "ogImage",
+  "coverImage",
+  "collection",
+  "excerpt",
+  "series",
+];
+
 const postsDirectory = join(process.cwd(), "_posts");
 
 export function getPostSlugs() {
   return fs.readdirSync(postsDirectory);
 }
+
+const allPosts = getPostSlugs();
+const postCache = new Map<string, GrayMatterFile<string>>();
 
 function getPostPath(slug: string, fallbackExtension = MD) {
   const regExp = /\.(mdx|md)$/;
@@ -29,15 +44,32 @@ function getPostPath(slug: string, fallbackExtension = MD) {
   };
 }
 
+function readPost(fullPath: string) {
+  if (postCache.has(fullPath)) {
+    return postCache.get(fullPath);
+  }
+
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const file = matter(fileContents);
+
+  postCache.set(fullPath, file);
+
+  return file;
+}
+
 export function getPostBySlug(
   slug: string,
   fields: PostFields = []
-): Partial<Post> {
-  let postPathData = getPostPath(slug, MDX);
-
+): Partial<Post> | undefined {
+  const postPathData = getPostPath(slug, MDX);
   const { fullPath, realSlug } = postPathData;
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
+  const file = readPost(fullPath);
+
+  if (!file) {
+    return;
+  }
+
+  const { data, content } = file;
   const readingTime = getReadingTimeInMinutes(content);
 
   const items: Partial<Post> = {};
@@ -62,12 +94,17 @@ export function getPostBySlug(
   return items;
 }
 
-export function getAllPosts(fields: PostFields = []) {
-  const slugs = getPostSlugs();
-
-  return slugs
+export function getAllPosts(
+  fields: PostFields = [],
+  filterFn: (post: Partial<Post>) => boolean = () => true
+) {
+  const posts = allPosts
     .map((slug) => getPostBySlug(slug, fields))
+    .filter(Boolean) as PostType[];
+
+  return posts
     .filter(filterByPublishedPostsOnly)
+    .filter(filterFn)
     .sort((item, nextItem) => {
       if (!item.date || !nextItem.date) {
         return 1;
@@ -87,17 +124,20 @@ export function getAllCollections() {
 
 export function getPostsByCollection(
   collection: string,
-  fields: PostFields = [
-    "title",
-    "date",
-    "slug",
-    "ogImage",
-    "coverImage",
-    "collection",
-    "excerpt",
-  ]
+  fields: PostFields = DEFAULT_FIELDS
 ) {
-  return getAllPosts(fields).filter((item) => item.collection === collection);
+  return getAllPosts(fields, (item) => {
+    return item.collection === collection;
+  });
+}
+
+export function getPostsBySeries(
+  series: string,
+  fields: PostFields = DEFAULT_FIELDS
+) {
+  return getAllPosts(fields, (item) => {
+    return Boolean(item.series && item.series === series);
+  }).reverse();
 }
 
 function getReadingTimeInMinutes(content: string, wpm = 225) {

@@ -11,16 +11,7 @@ const PostsList = ({ posts }: Props) => {
     <section>
       <GridList>
         {posts.map((post) => (
-          <PostPreview
-            key={post.slug}
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            slug={post.slug}
-            excerpt={post.excerpt}
-            collection={post.collection}
-            readingTime={post.readingTime}
-          />
+          <PostPreview key={post.slug} post={post} />
         ))}
       </GridList>
     </section>

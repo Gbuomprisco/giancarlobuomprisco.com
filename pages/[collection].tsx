@@ -26,7 +26,7 @@ const CollectionPosts = ({ posts, collection, preview }: Props) => {
 
         <div className="flex justify-center">
           <PostTitle>
-            <CollectionName logoSize="5rem" name={collection} />
+            <CollectionName logoSize="90px" name={collection} />
           </PostTitle>
         </div>
 

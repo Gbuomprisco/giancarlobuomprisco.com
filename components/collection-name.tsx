@@ -1,5 +1,8 @@
 import cn from "classnames";
 import Link from "next/link";
+import Image from "next/image";
+
+import { getBrandingByCollection } from "../lib/collectionBranding";
 
 function CollectionName({
   name,
@@ -11,7 +14,7 @@ function CollectionName({
   const size = logoSize ?? `16px`;
 
   return (
-    <Link href="/[collection]" as={`/${name}`}>
+    <Link href="/[collection]" as={`/${name}`} passHref>
       <div
         className={cn(
           "text-center flex flex-row space-x-1 items-center cursor-pointer",
@@ -34,11 +37,10 @@ function CollectionImage({ name, size }: { name: string; size: string }) {
   }
 
   return (
-    <img
-      style={{
-        width: size,
-        height: size,
-      }}
+    <Image
+      width={size}
+      height={size}
+      loading="lazy"
       src={getCollectionImageLink(name)}
       alt={name}
     />
@@ -56,10 +58,9 @@ function getCollectionClass(name: string) {
 }
 
 function getCollectionImageLink(name: string) {
-  const base = `/assets/images/collections/`;
-  const png = ".png";
+  const branding = getBrandingByCollection(name);
 
-  return [base, name, png].join("");
+  return branding.logo as string;
 }
 
 function getEmojiByCollection(name: string) {

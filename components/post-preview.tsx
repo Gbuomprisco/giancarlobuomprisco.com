@@ -3,40 +3,42 @@ import Link from "next/link";
 import DateFormatter from "./date-formatter";
 import CoverImage from "./cover-image";
 import CollectionName from "./collection-name";
+import PostType from "../types/post";
 
 type Props = {
-  title: string;
-  coverImage: string;
-  date: string;
-  excerpt: string;
-  slug: string;
-  collection: string;
-  readingTime: string;
+  post: PostType;
 };
 
-const PostPreview = ({
-  title,
-  coverImage,
-  date,
-  excerpt,
-  slug,
-  collection,
-  readingTime,
-}: Props) => {
+const PostPreview = ({ post }: Props) => {
+  const {
+    series,
+    title,
+    slug,
+    coverImage,
+    collection,
+    date,
+    readingTime,
+    excerpt,
+  } = post;
+
+  const postTitle = series ? `${series}: ${title}` : title;
+
   return (
     <div>
       <div className="mb-3">
         <CoverImage
           slug={slug}
-          title={title}
+          title={postTitle}
           src={coverImage}
           collection={collection}
+          width="300px"
+          height="150px"
         />
       </div>
 
       <h3 className="text-2xl font-bold mb-2 leading-snug">
         <Link as={`/${collection}/${slug}`} href="/[collection]/[slug]">
-          <a className="hover:underline">{title}</a>
+          <a className="hover:underline">{postTitle}</a>
         </Link>
       </h3>
 

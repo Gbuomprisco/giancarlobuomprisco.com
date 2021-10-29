@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 function GoogleAnalyticsScript() {
   const env = process.env.NODE_ENV;
 
@@ -16,12 +18,15 @@ function GoogleAnalyticsScript() {
 
   return (
     <>
-      <script
+      <Script
         async
         src="https://www.googletagmanager.com/gtag/js?id=UA-172483071-1"
-      ></script>
+      ></Script>
 
-      <script dangerouslySetInnerHTML={{ __html: script }} />
+      <Script
+        id="gtmDataLayer"
+        dangerouslySetInnerHTML={{ __html: script }}
+      ></Script>
     </>
   );
 }
