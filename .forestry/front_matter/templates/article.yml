@@ -1,0 +1,28 @@
+---
+label: Article
+hide_body: false
+fields:
+- type: datetime
+  name: date
+  label: date
+- type: text
+  name: title
+  label: title
+- type: file
+  name: coverImage
+  label: coverImage
+- type: textarea
+  name: excerpt
+  label: excerpt
+- type: boolean
+  name: live
+  label: live
+- type: list
+  name: tags
+  label: tags
+- type: text
+  name: collection
+  label: collection
+- type: text
+  name: series
+  label: series
