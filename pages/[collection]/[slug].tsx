@@ -7,28 +7,28 @@ import PostBody from "../../components/post-body";
 import MainHeader from "../../components/main-header";
 import PostHeader from "../../components/post-header";
 import Layout from "../../components/layout";
-import PostsList from "../../components/posts-list";
+import ArticlesList from "../../components/articles-list";
 import CollectionBrandingBar from "../../components/collection-branding-bar";
 import SectionSeparator from "../../components/section-separator";
 import ConvertkitPostSignup from "../../components/convertkit-post-signup";
 import SeriesList from "../../components/series-list";
 
 import {
-  getPostBySlug,
-  getAllPosts,
+  getArticleBySlug,
+  getAllArticles,
   getPostsByCollection,
   getPostsBySeries,
 } from "../../lib/api";
 
 import PostTitle from "../../components/post-title";
 import markdownToHtml from "../../lib/markdownToHtml";
-import PostType from "../../types/post";
+import Article from "../../types/article";
 import CollectionName from "../../components/collection-name";
 
 type Props = {
-  post: PostType;
-  morePosts: PostType[];
-  series: PostType[];
+  post: Article;
+  morePosts: Article[];
+  series: Article[];
   preview?: boolean;
 };
 
@@ -38,10 +38,6 @@ const Post = ({ post, morePosts, preview, series }: Props) => {
   if (!router.isFallback && (!post?.slug || !post.collection)) {
     return <ErrorPage statusCode={404} />;
   }
-
-  const indexInSeries = post.series
-    ? series.findIndex((item) => item.slug === post.slug)
-    : -1;
 
   return (
     <Layout preview={preview}>
@@ -94,7 +90,7 @@ const Post = ({ post, morePosts, preview, series }: Props) => {
                   <CollectionName logoSize="28px" name={post.collection} />
                 </h3>
 
-                <PostsList posts={morePosts} />
+                <ArticlesList posts={morePosts} />
               </div>
             )}
           </>
@@ -117,7 +113,7 @@ export async function getStaticProps({ params }: Params) {
   const { slug, collection } = params;
   const maxReadMorePosts = 6;
 
-  const post = getPostBySlug(slug, [
+  const post = getArticleBySlug(slug, [
     "title",
     "date",
     "slug",
@@ -126,14 +122,13 @@ export async function getStaticProps({ params }: Params) {
     "coverImage",
     "collection",
     "series",
-  ]) as PostType;
+  ]) as Article;
 
   const morePosts = getPostsByCollection(collection)
     .filter((item) => item.slug !== slug)
     .slice(0, maxReadMorePosts);
 
   const series = post.series ? getPostsBySeries(post.series) : [];
-
   const content = await markdownToHtml(post.content || "");
 
   return {
@@ -149,7 +144,7 @@ export async function getStaticProps({ params }: Params) {
 }
 
 export async function getStaticPaths() {
-  const posts = getAllPosts(["slug", "collection"]);
+  const posts = getAllArticles(["slug", "series", "collection"]);
 
   return {
     paths: posts.map(({ slug, collection }) => {

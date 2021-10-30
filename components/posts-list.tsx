@@ -1,20 +1,17 @@
 import PostPreview from "./post-preview";
-import Post from "../types/post";
-import GridList from "./grid-list";
+import Post from "../types/blog-post";
 
 type Props = {
   posts: Post[];
 };
 
-const PostsList = ({ posts }: Props) => {
+const PostsList: React.FC<Props> = ({ posts }) => {
   return (
-    <section>
-      <GridList>
-        {posts.map((post) => (
-          <PostPreview key={post.slug} post={post} />
-        ))}
-      </GridList>
-    </section>
+    <>
+      {posts.map((post) => (
+        <PostPreview key={post.slug} post={post} />
+      ))}
+    </>
   );
 };
 

@@ -3,10 +3,10 @@ import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import CollectionName from "./collection-name";
 import DraftBadge from "./draft-badge";
-import PostType from "../types/post";
+import Article from "../types/article";
 import SeriesTitle from "./series-title";
 
-const PostHeader = ({ post }: { post: PostType }) => {
+const PostHeader = ({ post }: { post: Article }) => {
   const { title, coverImage, date, collection, readingTime, live, series } =
     post;
 
@@ -35,8 +35,8 @@ const PostHeader = ({ post }: { post: PostType }) => {
       <div className="mb-8 md:mb-16 sm:mx-0">
         <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
           <CoverImage
-            width={"200px"}
-            height={"120px"}
+            width="100%"
+            height="auto"
             title={title}
             src={coverImage}
           />

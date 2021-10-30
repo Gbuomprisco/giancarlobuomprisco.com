@@ -1,21 +1,44 @@
 import Link from "next/link";
 
 import DateFormatter from "./date-formatter";
+import CoverImage from "./cover-image";
 import CollectionName from "./collection-name";
-import Post from "../types/blog-post";
+import Article from "../types/article";
 
 type Props = {
-  post: Post;
+  post: Article;
 };
 
-const PostPreview = ({ post }: Props) => {
-  const { title, slug, collection, date, readingTime } = post;
+const ArticlePreview = ({ post }: Props) => {
+  const {
+    series,
+    title,
+    slug,
+    coverImage,
+    collection,
+    date,
+    readingTime,
+    excerpt,
+  } = post;
+
+  const postTitle = series ? `${series}: ${title}` : title;
 
   return (
     <div>
+      <div className="mb-3">
+        <CoverImage
+          width="100%"
+          height="auto"
+          slug={slug}
+          title={postTitle}
+          src={coverImage}
+          collection={collection}
+        />
+      </div>
+
       <h3 className="text-2xl font-bold mb-2 leading-snug">
         <Link as={`/${collection}/${slug}`} href="/[collection]/[slug]">
-          <a className="hover:underline">{title}</a>
+          <a className="hover:underline">{postTitle}</a>
         </Link>
       </h3>
 
@@ -32,8 +55,10 @@ const PostPreview = ({ post }: Props) => {
           <CollectionName name={collection} />
         </div>
       </div>
+
+      <p className="leading-relaxed mb-4 text-sm">{excerpt}</p>
     </div>
   );
 };
 
-export default PostPreview;
+export default ArticlePreview;

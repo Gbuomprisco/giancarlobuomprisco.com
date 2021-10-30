@@ -31,13 +31,13 @@ const About = () => {
                   </p>
 
                   <p>
-                    I'm originally from Italy, but spent the largest part of the
-                    past decade in London (UK), where I worked for various
-                    companies, especially in the financial sector.
+                    I&apos;m originally from Italy, but spent the largest part
+                    of the past decade in London (UK), where I worked for
+                    various companies, especially in the financial sector.
                   </p>
 
                   <p>
-                    Due to Covid and other personal reasons, I've recently
+                    Due to Covid and other personal reasons, I&apos;ve recently
                     returned to Italy, temporarily.
                   </p>
                 </p>
@@ -61,6 +61,7 @@ const About = () => {
                   <p>
                     Shortly after I started working on{" "}
                     <a
+                      rel="noreferrer"
                       className="underline"
                       target="_blank"
                       href="https://formtoro.com"
@@ -116,7 +117,7 @@ const About = () => {
                   </p>
 
                   <p>
-                    I was hired to grow and lead the London's front-end
+                    I was hired to grow and lead the London&apos;s front-end
                     engineering team, focused on Angular.
                   </p>
 
@@ -143,7 +144,7 @@ const About = () => {
                     continue affecting other forms as a result!
                   </p>
 
-                  <p>It wasn't easy, but we did it!</p>
+                  <p>It wasn&apos;t easy, but we did it!</p>
                 </p>
               </div>
 
@@ -187,9 +188,9 @@ const About = () => {
 
                   <p>
                     It never caught on, but these were fundamental years in my
-                    growth - at a time when London's tech-sector was probably at
-                    its peak before the Brexit meltdown happened. A wonderful
-                    time to be there.
+                    growth - at a time when London&apos;s tech-sector was
+                    probably at its peak before the Brexit meltdown happened. A
+                    wonderful time to be there.
                   </p>
                 </p>
               </div>
@@ -199,15 +200,15 @@ const About = () => {
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
-                    After my graduation I went to work for King's College
-                    London, in the DIgital Humanities Department, on a project
-                    named DigiPal. Funded by the EU, it provided paleographers
-                    with computer-based tools to enhance their studies.
+                    After my graduation I went to work for King&apos;s College
+                    London, in the Digital Humanities Department. Funded by the
+                    EU, the project I worked on provided paleographers with
+                    computer-based tools to enhance their studies.
                   </p>
 
                   <p>
                     It was my first experience being a professional developer,
-                    in a wonderful, friendly environment.
+                    in a cheerful, skilled and very friendly environment.
                   </p>
 
                   <p>
@@ -218,9 +219,9 @@ const About = () => {
 
                   <p>
                     Despite being in an office full of awesome poeple, the
-                    experience didn't last long for me, as I was never really
-                    welcome to the offshore company that took complete ownership
-                    of the project. Pity.
+                    experience didn&apos;t last long for me, as I was never
+                    really welcome to the offshore company that took complete
+                    ownership of the project. Pity.
                   </p>
                 </p>
               </div>

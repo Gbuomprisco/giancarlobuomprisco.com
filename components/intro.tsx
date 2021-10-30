@@ -1,5 +1,3 @@
-import Navigation from "./navigation";
-
 const Intro = () => {
   return (
     <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12 items-center">
@@ -16,8 +14,8 @@ const Intro = () => {
           </h2>
 
           <p>
-            On this site I write about coding, what I am working on, and my life
-            in general
+            On this site I write about coding, the projects I am working on, and
+            my life in general
           </p>
 
           <p>
@@ -30,9 +28,8 @@ const Intro = () => {
 
       <div className="mx-auto hidden sm:flex">
         <img
-          loading="lazy"
-          className="rounded-full object-cover"
           style={{ width: "250px", height: "250px" }}
+          className="rounded-full object-cover"
           src="/assets/giancarlo.jpeg"
           alt="Giancarlo"
         />

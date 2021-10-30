@@ -1,6 +1,5 @@
 import cn from "classnames";
 import Link from "next/link";
-import Image from "next/image";
 
 import { getBrandingByCollection } from "../lib/collectionBranding";
 
@@ -36,11 +35,15 @@ function CollectionImage({ name, size }: { name: string; size: string }) {
     return <span style={{ fontSize: size }}>{getEmojiByCollection(name)}</span>;
   }
 
+  const style: Record<string, string> = {
+    width: size,
+    height: size,
+  };
+
   return (
-    <Image
-      width={size}
-      height={size}
+    <img
       loading="lazy"
+      style={style}
       src={getCollectionImageLink(name)}
       alt={name}
     />

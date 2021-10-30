@@ -1,17 +1,17 @@
 import Container from "../components/container";
 import MainHeader from "../components/main-header";
-import PostsList from "../components/posts-list";
+import ArticlesList from "../components/articles-list";
 import Layout from "../components/layout";
 import CollectionBrandingBar from "../components/collection-branding-bar";
 import ConvertkitPostSignup from "../components/convertkit-post-signup";
 
 import { getAllCollections, getPostsByCollection } from "../lib/api";
-import PostType from "../types/post";
+import Article from "../types/article";
 import CollectionName from "../components/collection-name";
 import PostTitle from "../components/post-title";
 
 type Props = {
-  posts: PostType[];
+  posts: Article[];
   collection: string;
   preview?: boolean;
 };
@@ -31,7 +31,7 @@ const CollectionPosts = ({ posts, collection, preview }: Props) => {
         </div>
 
         <div className="mt-8 md:mt-12">
-          <PostsList posts={posts} />
+          <ArticlesList posts={posts} />
         </div>
 
         <div className="w-full md:w-8/12 mx-auto">

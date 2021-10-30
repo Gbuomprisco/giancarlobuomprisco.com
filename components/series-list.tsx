@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import PostType from "../types/post";
+import Article from "../types/article";
 import DateFormatter from "./date-formatter";
 import { getBrandingByCollection } from "../lib/collectionBranding";
 
 const SeriesList: React.FC<{
   series: string | undefined;
-  posts: PostType[];
+  posts: Article[];
 }> = ({ series, posts }) => {
   const router = useRouter();
 
