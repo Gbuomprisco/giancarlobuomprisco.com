@@ -39,13 +39,15 @@ const Navigation = () => {
     return (
       <li
         className={
-          "active:text-black " +
+          "active:text-black text-lg lg:text-base " +
           (isActive(link.path)
             ? "font-bold"
             : "text-gray-800 hover:text-gray-900 font-medium hover:underline")
         }
       >
-        <Link href={link.path}>{link.label}</Link>
+        <Link href={link.path} passHref>
+          <a className="block">{link.label}</a>
+        </Link>
       </li>
     );
   };
@@ -80,7 +82,7 @@ const Navigation = () => {
       </div>
 
       <ul
-        className="lg:space-x-8 px-4 hidden flex-col lg:flex lg:flex-row nav"
+        className="lg:space-x-8 px-4 hidden flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row nav"
         ref={nav}
       >
         <li className="flex flex-row justify-between mb-6 lg:hidden">

@@ -39,6 +39,9 @@ const Post = ({ post, morePosts, preview, series }: Props) => {
     return <ErrorPage statusCode={404} />;
   }
 
+  const title = post.series ? `${post.series}: ${post.title}` : post.title;
+  const ogImage = post.ogImage?.url || post.coverImage;
+
   return (
     <Layout preview={preview}>
       <CollectionBrandingBar collection={post.collection} />
@@ -52,16 +55,16 @@ const Post = ({ post, morePosts, preview, series }: Props) => {
           <>
             <article className="mb-16">
               <Head>
-                <title>{post.title}</title>
+                <title>{title}</title>
 
-                <meta property="twitter:title" content={post.title} />
-                <meta property="og:description" content={post.excerpt} />
+                <meta property="twitter:title" content={title} />
                 <meta property="article:published_time" content={post.date} />
 
-                <meta
-                  property="og:image"
-                  content={post.ogImage?.url || post.coverImage}
-                />
+                {post.excerpt && (
+                  <meta property="og:description" content={post.excerpt} />
+                )}
+
+                {ogImage && <meta property="og:image" content={ogImage} />}
               </Head>
 
               <PostHeader post={post} />
