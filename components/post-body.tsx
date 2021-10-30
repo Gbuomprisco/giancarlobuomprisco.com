@@ -1,6 +1,6 @@
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 import markdownStyles from "./markdown-styles.module.css";
-import MDXComponents from "../components/mdx-components";
+import MDXRenderer from "./mdx-renderer";
 
 type Props = {
   content: MDXRemoteSerializeResult;
@@ -11,7 +11,7 @@ const PostBody = ({ content }: Props) => {
 
   return (
     <div className={`max-w-2xl mx-auto leading-loose ${styles}`}>
-      <MDXRemote {...content} components={MDXComponents}></MDXRemote>
+      <MDXRenderer content={content} />
     </div>
   );
 };

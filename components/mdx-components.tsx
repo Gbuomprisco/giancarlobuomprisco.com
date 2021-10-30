@@ -1,4 +1,6 @@
 import { SITE_URL } from "../lib/constants";
+import ArticlesList from "./articles-list";
+import PostsList from "./posts-list";
 
 const LazyImage: React.FC<Record<string, string>> = (
   props: Record<string, string>
@@ -27,6 +29,8 @@ const ExternalLink: React.FC<{ href: string }> = ({ href, children }) => {
 const MDXComponents = {
   img: LazyImage,
   a: ExternalLink,
+  ArticlesList,
+  PostsList,
 };
 
 export default MDXComponents;

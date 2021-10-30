@@ -42,6 +42,7 @@ function CollectionImage({ name, size }: { name: string; size: string }) {
 
   return (
     <img
+      className="object-contain"
       loading="lazy"
       style={style}
       src={getCollectionImageLink(name)}

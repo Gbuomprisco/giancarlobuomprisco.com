@@ -2,12 +2,15 @@ import fs from "fs";
 import { join } from "path";
 import matter, { GrayMatterFile } from "gray-matter";
 import { IS_PRODUCTION } from "./constants";
+
 import Article from "../types/article";
 import BasePost from "../types/base-post";
 import BlogPost from "../types/blog-post";
+import Hub from "../types/hub";
 
 type ArticleFields = Array<keyof Article>;
 type BlogPostFields = Array<keyof BlogPost>;
+type HubsFields = Array<keyof Hub>;
 
 const MDX = `mdx`;
 
@@ -20,20 +23,36 @@ const DEFAULT_ARTICLE_FIELDS: ArticleFields = [
   "collection",
   "excerpt",
   "series",
+  "live",
+  "readingTime",
+  "tags",
 ];
 
 const DEFAULT_POST_FIELDS: BlogPostFields = [
   "title",
   "date",
   "slug",
+  "readingTime",
   "collection",
+  "live",
+];
+
+const DEFAULT_HUB_FIELDS: HubsFields = [
+  "name",
+  "live",
+  "slug",
+  "collection",
+  "content",
+  "tags",
 ];
 
 const ARTICLES_DIRECTORY_NAME = "_articles";
 const POSTS_DIRECTORY_NAME = "_posts";
+const HUBS_DIRECTORY_NAME = "_hubs";
 
 const articlesDirectory = join(process.cwd(), ARTICLES_DIRECTORY_NAME);
 const postsDirectory = join(process.cwd(), POSTS_DIRECTORY_NAME);
+const hubsDirectory = join(process.cwd(), HUBS_DIRECTORY_NAME);
 
 export function getArticleSlugs() {
   return fs.readdirSync(articlesDirectory);
@@ -43,8 +62,13 @@ export function getPostsSlugs() {
   return fs.readdirSync(postsDirectory);
 }
 
+export function getHubsSlugs() {
+  return fs.readdirSync(hubsDirectory);
+}
+
 const allArticles = getArticleSlugs();
 const allPosts = getPostsSlugs();
+const allHubs = getHubsSlugs();
 
 const postCache = new Map<string, GrayMatterFile<string>>();
 
@@ -60,6 +84,13 @@ export function getBlogPostBySlug(
   fields: BlogPostFields = DEFAULT_POST_FIELDS
 ): Partial<BlogPost> | undefined {
   return getPostFieldsBySlug(slug, postsDirectory, fields);
+}
+
+export function getHubBySlug(
+  slug: string,
+  fields = DEFAULT_HUB_FIELDS
+): Partial<Hub> | undefined {
+  return getPostFieldsBySlug(slug, hubsDirectory, fields);
 }
 
 export function getAllCollections() {
@@ -133,7 +164,7 @@ export function slugify(value: string) {
     .join("-");
 }
 
-function getPostFieldsBySlug<PostType extends BasePost>(
+function getPostFieldsBySlug<PostType>(
   slug: string,
   directory: string,
   fields: Array<keyof PostType> = []
@@ -167,8 +198,10 @@ function getPostFieldsBySlug<PostType extends BasePost>(
       continue;
     }
 
-    items.readingTime = `${readingTime} min read`;
-    items.live = data.live;
+    if (field === "readingTime") {
+      items.readingTime = `${readingTime} min read`;
+      continue;
+    }
 
     if (typeof data[field] !== "undefined") {
       items[field] = data[field];
@@ -189,6 +222,24 @@ export function getAllArticles(
   return _getAllPosts(posts, filterFn);
 }
 
+export function queryAll(collection: string, tags: string[]) {
+  const articles = getAllArticles(DEFAULT_ARTICLE_FIELDS, (article) => {
+    return (
+      article.collection === collection &&
+      tags?.some((tag) => article.tags?.includes(tag))
+    );
+  });
+
+  const posts = getAllPosts(DEFAULT_POST_FIELDS, (post) => {
+    return (
+      post.collection === collection &&
+      tags?.some((tag) => post?.tags?.includes(tag))
+    );
+  });
+
+  return { articles, posts };
+}
+
 export function getAllPosts(
   fields: BlogPostFields = DEFAULT_POST_FIELDS,
   filterFn: (post: Partial<BlogPost>) => boolean = () => true
@@ -198,6 +249,17 @@ export function getAllPosts(
     .filter(Boolean) as BlogPost[];
 
   return _getAllPosts(posts, filterFn);
+}
+
+export function getAllHubs(
+  fields: HubsFields = DEFAULT_HUB_FIELDS,
+  filterFn: (post: Partial<Hub>) => boolean = () => true
+): Hub[] {
+  const hubs = allHubs
+    .map((slug) => getHubBySlug(slug, fields))
+    .filter(Boolean) as Hub[];
+
+  return hubs.filter(filterByPublishedPostsOnly).filter(filterFn);
 }
 
 function _getAllPosts<Type extends BasePost>(
