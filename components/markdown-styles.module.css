@@ -17,8 +17,7 @@
 }
 
 .markdown pre {
-  font-size: 0.95rem;
-  @apply my-4;
+  @apply my-4 shadow-lg;
 }
 
 .markdown ul {
@@ -50,6 +49,7 @@
   background: #efefef;
   padding: 0.25rem 0.45rem;
   border-radius: 4px;
+  font-size: 1rem;
 }
 
 .markdown article section a {
@@ -58,4 +58,25 @@
 
 .markdown hr {
   @apply border-accent-2 mt-8 mb-6;
+}
+
+.markdown a {
+  border-bottom: 2px solid var(--accent);
+  transition: all 0.15s;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+.markdown a:hover {
+  color: var(--accent);
+}
+
+.markdown ::selection {
+  background: var(--accent-light);
+  font-weight: bold;
+}
+
+.markdown ::-moz-selection {
+  background: var(--accent-light); 
+  font-weight: bold;
 }

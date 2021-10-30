@@ -1,10 +1,10 @@
 ---
-date: 2021-10-30T12:25:07+02:00
+date: '2021-10-30T00:00:00.322Z'
 collection: typescript
 tags:
 - typescript
 title: Streamline your code with Typescript assertions
-live: false
+live: true
 
 ---
 Typescript assertions allow us to write defensive code without sacrificing legibility or code organization, such as wrapping code blocks into conditions, etc.
@@ -31,6 +31,8 @@ function getElementValue(selector: string): string {
 }
 ```
 
+But, as you can see below, the compilers shows some errors:
+
 ![](/assets/screenshot-2021-10-30-at-12-47-23.png)
 
 As you can see, the compiler is telling us that there's a mistake: of course, this will only work if we wrap the code block within a condition, such as an `if` statement.
@@ -43,14 +45,15 @@ This is particularly useful when a function is in the wrong state, or when valid
 
 Assume you have a function that takes in input one or more parameters, we can assert the type of one of these by using the following syntax:
 
-    function apiKeyExists(
-      apiKey: string | undefined
-    ): asserts apiKey is string {
-      if (!apiKey) {
-        throw new Error(`API key was not found`);
-      }
-    }
-
+```typescript
+function apiKeyExists(
+  apiKey: string | undefined
+): asserts apiKey is string {
+  if (!apiKey) {
+    throw new Error(`API key was not found`);
+  }
+}
+```
 If you omit the `asserts` keyword, it becomes a type guard.
 
 Let's change the previous code by using an assertion, and handle the error using a `try/catch` statement.

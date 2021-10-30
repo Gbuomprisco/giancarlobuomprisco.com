@@ -98,6 +98,7 @@ const Navigation = () => {
           </div>
         </li>
 
+        <Item link={links.Blog} />
         <Item link={links.Articles} />
         <Item link={links.About} />
         <Item link={links.Contact} />

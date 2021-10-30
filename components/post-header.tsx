@@ -4,11 +4,14 @@ import PostTitle from "./post-title";
 import CollectionName from "./collection-name";
 import DraftBadge from "./draft-badge";
 import Article from "../types/article";
+import BlogPost from "../types/blog-post";
 import SeriesTitle from "./series-title";
 
-const PostHeader = ({ post }: { post: Article }) => {
-  const { title, coverImage, date, collection, readingTime, live, series } =
-    post;
+const PostHeader = ({ post }: { post: Article | BlogPost }) => {
+  const { title, date, collection, readingTime, live } = post;
+
+  const series = "series" in post && post.series;
+  const coverImage = "coverImage" in post ? post.coverImage : "";
 
   return (
     <>
@@ -32,16 +35,18 @@ const PostHeader = ({ post }: { post: Article }) => {
         </div>
       </div>
 
-      <div className="mb-8 md:mb-16 sm:mx-0">
-        <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
-          <CoverImage
-            width="100%"
-            height="auto"
-            title={title}
-            src={coverImage}
-          />
+      {coverImage && (
+        <div className="mb-8 md:mb-16 sm:mx-0">
+          <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
+            <CoverImage
+              width="100%"
+              height="auto"
+              title={title}
+              src={coverImage}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

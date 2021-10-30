@@ -2,7 +2,6 @@ import fs from "fs";
 import { join } from "path";
 import matter, { GrayMatterFile } from "gray-matter";
 import { IS_PRODUCTION } from "./constants";
-import Post from "../types/article";
 import Article from "../types/article";
 import BasePost from "../types/base-post";
 import BlogPost from "../types/blog-post";
@@ -52,7 +51,7 @@ const postCache = new Map<string, GrayMatterFile<string>>();
 export function getArticleBySlug(
   slug: string,
   fields: ArticleFields = DEFAULT_ARTICLE_FIELDS
-): Partial<Post> | undefined {
+): Partial<Article> | undefined {
   return getPostFieldsBySlug(slug, articlesDirectory, fields);
 }
 
@@ -71,13 +70,18 @@ export function getAllCollections() {
   return Array.from(new Set(postsWithCollection));
 }
 
-export function getPostsByCollection(
+export function getArticlesByCollection(
   collection: string,
   fields: ArticleFields = DEFAULT_ARTICLE_FIELDS
 ) {
-  return getAllArticles(fields, (item) => {
-    return item.collection === collection;
-  });
+  return getAllArticles(fields, (item) => item.collection === collection);
+}
+
+export function getPostsByCollection(
+  collection: string,
+  fields: BlogPostFields = DEFAULT_POST_FIELDS
+) {
+  return getAllPosts(fields, (item) => item.collection === collection);
 }
 
 export function getPostsBySeries(
@@ -104,7 +108,7 @@ function getReadingTimeInMinutes(content: string, wpm = 225) {
   return Math.ceil(words / wpm);
 }
 
-function filterByPublishedPostsOnly(post: Partial<Post>) {
+function filterByPublishedPostsOnly(post: Partial<Article>) {
   if (!IS_PRODUCTION || !("live" in post)) {
     return true;
   }
@@ -136,7 +140,7 @@ function getPostFieldsBySlug<PostType extends BasePost>(
 ): Partial<PostType> | undefined {
   const postPathData = getPostPath(slug, directory);
   const { fullPath, realSlug } = postPathData;
-  const file = readPost(fullPath);
+  const file = readPost(fullPath, directory);
 
   if (!file) {
     return;
@@ -150,10 +154,17 @@ function getPostFieldsBySlug<PostType extends BasePost>(
   for (const field of fields as string[]) {
     if (field === "slug") {
       items[field] = realSlug;
+      continue;
     }
 
     if (field === "content") {
       items[field] = content;
+      continue;
+    }
+
+    if (field === "date") {
+      items[field] = new Date(data.date).toISOString();
+      continue;
     }
 
     items.readingTime = `${readingTime} min read`;
@@ -219,15 +230,21 @@ function getPostPath(slug: string, directory: string) {
   };
 }
 
-function readPost(fullPath: string) {
-  if (postCache.has(fullPath)) {
-    return postCache.get(fullPath);
+function readPost(fullPath: string, directory: string) {
+  const key = `${directory}:${fullPath}`;
+
+  if (postCache.has(key)) {
+    return postCache.get(key);
   }
 
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const file = matter(fileContents);
+  try {
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const file = matter(fileContents);
 
-  postCache.set(fullPath, file);
+    postCache.set(key, file);
 
-  return file;
+    return file;
+  } catch (e) {
+    return;
+  }
 }

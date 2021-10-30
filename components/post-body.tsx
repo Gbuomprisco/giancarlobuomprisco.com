@@ -1,26 +1,17 @@
-import { MDXProvider } from "@mdx-js/react";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import markdownStyles from "./markdown-styles.module.css";
+import MDXComponents from "../components/mdx-components";
 
 type Props = {
-  content: string;
-};
-
-const LazyImage: React.FC<Record<string, string>> = (
-  props: Record<string, string>
-) => <img src={props.src} alt={props.alt} loading="lazy" {...props} />;
-
-const components = {
-  img: LazyImage,
+  content: MDXRemoteSerializeResult;
 };
 
 const PostBody = ({ content }: Props) => {
   const styles = markdownStyles["markdown"];
 
   return (
-    <div className="max-w-2xl mx-auto leading-loose">
-      <MDXProvider components={components}>
-        <div className={styles} dangerouslySetInnerHTML={{ __html: content }} />
-      </MDXProvider>
+    <div className={`max-w-2xl mx-auto leading-loose ${styles}`}>
+      <MDXRemote {...content} components={MDXComponents}></MDXRemote>
     </div>
   );
 };

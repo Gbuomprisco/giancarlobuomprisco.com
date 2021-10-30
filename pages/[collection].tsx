@@ -5,7 +5,7 @@ import Layout from "../components/layout";
 import CollectionBrandingBar from "../components/collection-branding-bar";
 import ConvertkitPostSignup from "../components/convertkit-post-signup";
 
-import { getAllCollections, getPostsByCollection } from "../lib/api";
+import { getAllCollections, getArticlesByCollection } from "../lib/api";
 import Article from "../types/article";
 import CollectionName from "../components/collection-name";
 import PostTitle from "../components/post-title";
@@ -53,7 +53,7 @@ type Params = {
 
 export async function getStaticProps({ params }: Params) {
   const collection = params.collection;
-  const posts = getPostsByCollection(collection);
+  const posts = getArticlesByCollection(collection);
 
   return {
     props: {

@@ -1,109 +1,77 @@
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
-import Head from "next/head";
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 
-import Container from "../../components/container";
-import PostBody from "../../components/post-body";
-import MainHeader from "../../components/main-header";
-import PostHeader from "../../components/post-header";
-import Layout from "../../components/layout";
-import ArticlesList from "../../components/articles-list";
-import CollectionBrandingBar from "../../components/collection-branding-bar";
-import SectionSeparator from "../../components/section-separator";
-import ConvertkitPostSignup from "../../components/convertkit-post-signup";
-import SeriesList from "../../components/series-list";
+import Article from "../../components/article";
+import Post from "../../components/post";
 
 import {
   getArticleBySlug,
   getAllArticles,
+  getArticlesByCollection,
   getPostsByCollection,
   getPostsBySeries,
+  getAllPosts,
 } from "../../lib/api";
 
-import PostTitle from "../../components/post-title";
 import markdownToHtml from "../../lib/markdownToHtml";
-import Article from "../../types/article";
-import CollectionName from "../../components/collection-name";
+import ArticleType from "../../types/article";
+import PostType from "../../types/blog-post";
+
+import { getBlogPostBySlug } from "../../lib/api";
+import BlogPost from "../../types/blog-post";
+
+enum Types {
+  BlogPost,
+  Article,
+}
 
 type Props = {
-  post: Article;
-  morePosts: Article[];
-  series: Article[];
-  preview?: boolean;
+  type: Types;
+  post: ArticleType | PostType;
+  moreArticles: ArticleType[];
+  morePosts: PostType[];
+  series: ArticleType[];
+  content: MDXRemoteSerializeResult;
 };
 
-const Post = ({ post, morePosts, preview, series }: Props) => {
+const PostPage = ({
+  post,
+  type,
+  morePosts,
+  moreArticles,
+  series,
+  content,
+}: Props) => {
   const router = useRouter();
 
   if (!router.isFallback && (!post?.slug || !post.collection)) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const title = post.series ? `${post.series}: ${post.title}` : post.title;
-  const ogImage = post.ogImage?.url || post.coverImage;
+  if (type === Types.Article) {
+    return (
+      <Article
+        post={post as ArticleType}
+        morePosts={moreArticles}
+        series={series}
+        content={content}
+        isFallback={router.isFallback}
+      />
+    );
+  }
 
   return (
-    <Layout preview={preview}>
-      <CollectionBrandingBar collection={post.collection} />
-
-      <Container>
-        <MainHeader />
-
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article className="mb-16">
-              <Head>
-                <title>{title}</title>
-
-                <meta property="twitter:title" content={title} />
-                <meta property="article:published_time" content={post.date} />
-
-                {post.excerpt && (
-                  <meta property="og:description" content={post.excerpt} />
-                )}
-
-                {ogImage && <meta property="og:image" content={ogImage} />}
-              </Head>
-
-              <PostHeader post={post} />
-
-              <div className="mb-12 max-w-2xl mx-auto">
-                <SeriesList posts={series} series={post.series} />
-              </div>
-
-              <PostBody content={post.content} />
-            </article>
-
-            <div className="max-w-2xl mx-auto">
-              <SeriesList posts={series} series={post.series} />
-            </div>
-
-            <div className="w-full md:w-8/12 mx-auto">
-              <ConvertkitPostSignup />
-            </div>
-
-            {Boolean(morePosts.length) && (
-              <div>
-                <SectionSeparator />
-
-                <h3 className="text-2xl md:text-3xl text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center">
-                  <span>More Posts for</span>{" "}
-                  <CollectionName logoSize="28px" name={post.collection} />
-                </h3>
-
-                <ArticlesList posts={morePosts} />
-              </div>
-            )}
-          </>
-        )}
-      </Container>
-    </Layout>
+    <Post
+      post={post as PostType}
+      morePosts={morePosts}
+      content={content}
+      isFallback={router.isFallback}
+    />
   );
 };
 
-export default Post;
+export default PostPage;
 
 type Params = {
   params: {
@@ -116,48 +84,81 @@ export async function getStaticProps({ params }: Params) {
   const { slug, collection } = params;
   const maxReadMorePosts = 6;
 
-  const post = getArticleBySlug(slug, [
-    "title",
-    "date",
-    "slug",
-    "content",
-    "ogImage",
-    "coverImage",
-    "collection",
-    "series",
-  ]) as Article;
+  const { post, type } = getPostItemBySlug(slug);
+
+  const moreArticles = getArticlesByCollection(collection)
+    .filter((item) => item.slug !== slug)
+    .slice(0, maxReadMorePosts);
 
   const morePosts = getPostsByCollection(collection)
     .filter((item) => item.slug !== slug)
     .slice(0, maxReadMorePosts);
 
-  const series = post.series ? getPostsBySeries(post.series) : [];
+  const seriesName =
+    "series" in post ? (post as ArticleType).series : undefined;
+
+  const series = seriesName ? getPostsBySeries(seriesName) : [];
   const content = await markdownToHtml(post.content || "");
 
   return {
     props: {
-      post: {
-        ...post,
-        content,
-      },
+      post,
+      content,
       series,
       morePosts,
+      moreArticles,
+      type,
     },
   };
 }
 
 export async function getStaticPaths() {
-  const posts = getAllArticles(["slug", "series", "collection"]);
+  const articles = getAllArticles(["slug", "collection"]);
+  const posts = getAllPosts(["slug", "collection"]);
+
+  const paths = [...articles, ...posts].map(({ collection, slug }) => {
+    return {
+      params: {
+        collection,
+        slug,
+      },
+    };
+  });
 
   return {
-    paths: posts.map(({ slug, collection }) => {
-      return {
-        params: {
-          collection,
-          slug,
-        },
-      };
-    }),
+    paths,
     fallback: false,
+  };
+}
+
+function getPostItemBySlug(slug: string) {
+  const article = getArticleBySlug(slug, [
+    "title",
+    "date",
+    "slug",
+    "ogImage",
+    "coverImage",
+    "collection",
+    "excerpt",
+    "series",
+    "content",
+  ]);
+
+  if (article) {
+    return {
+      post: article as ArticleType,
+      type: Types.Article,
+    };
+  }
+
+  return {
+    post: getBlogPostBySlug(slug, [
+      "title",
+      "date",
+      "slug",
+      "collection",
+      "content",
+    ]) as BlogPost,
+    type: Types.BlogPost,
   };
 }
