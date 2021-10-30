@@ -41,3 +41,5 @@ fields:
 - name: live
   type: boolean
   label: Published
+pages:
+- _posts/streamline-your-code-with-typescript-assertions.mdx

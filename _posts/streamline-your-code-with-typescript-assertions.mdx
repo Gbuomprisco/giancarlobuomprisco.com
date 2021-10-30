@@ -1,0 +1,87 @@
+---
+date: 2021-10-30T12:25:07+02:00
+collection: typescript
+tags:
+- typescript
+title: Streamline your code with Typescript assertions
+live: false
+
+---
+Typescript assertions allow us to write defensive code without sacrificing legibility or code organization, such as wrapping code blocks into conditions, etc.
+
+Typescript developers often resort to type guards for telling the compiler the correct types, but this has a downside: the right type will be inferred only within the condition.
+
+Let's use a type guard to check if an HTMLElement query is not null:
+
+```typescript
+function assertElementExists(
+  element: HTMLElement | null
+): element is HTMLElement {
+  if (!element) {
+    throw new Error(`Element was not found`);
+  }
+}
+
+function getElementValue(selector: string): string {
+  const element = document.querySelector<HTMLInputElement>(selector);
+
+  assertElementExists(element);
+
+  return element.value;
+}
+```
+
+![](/assets/screenshot-2021-10-30-at-12-47-23.png)
+
+As you can see, the compiler is telling us that there's a mistake: of course, this will only work if we wrap the code block within a condition, such as an `if` statement.
+
+If we no longer want to proceed with the execution of a code block, we can use Typescript type assertions to throw an error and produce the side-effect. 
+
+This is particularly useful when a function is in the wrong state, or when validating input/output.
+
+## How to write a Typescript type assertion?
+
+Assume you have a function that takes in input one or more parameters, we can assert the type of one of these by using the following syntax:
+
+    function apiKeyExists(
+      apiKey: string | undefined
+    ): asserts apiKey is string {
+      if (!apiKey) {
+        throw new Error(`API key was not found`);
+      }
+    }
+
+If you omit the `asserts` keyword, it becomes a type guard.
+
+Let's change the previous code by using an assertion, and handle the error using a `try/catch` statement.
+
+```typescript
+function assertElementExists(
+  element: HTMLElement | null
+): asserts element is HTMLElement {
+  if (!element) {
+    throw new Error(`Element was not found`);
+  }
+}
+
+function getElementValue(selector: string): string {
+  const element = document.querySelector<HTMLInputElement>(selector);
+
+  assertElementExists(element);
+
+  return element.value;
+}
+
+try {
+  const value = getElementValue("#text");
+  const result = document.querySelector<HTMLElement>("#textResult");
+
+  assertElementExists(result);
+
+  result.innerHTML = value;
+} catch (e) {
+  console.log(e);
+}
+```
+
+[Check out the demo on CodeSandbox](https://codesandbox.io/s/ts-type-assertions-vn4t6?file=/src/index.ts "Demo")
