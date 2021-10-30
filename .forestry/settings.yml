@@ -11,7 +11,7 @@ sections:
   match: "**/*.mdx"
   new_doc_ext: mdx
   templates:
-  - blog-post
+  - article
 - type: directory
   path: _posts
   label: Posts
