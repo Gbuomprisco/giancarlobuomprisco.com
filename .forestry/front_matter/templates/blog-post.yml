@@ -1,5 +1,5 @@
 ---
-label: Blog Post
+label: Article
 hide_body: false
 fields:
 - name: title
@@ -16,6 +16,20 @@ fields:
     schema:
       format: markdown
   label: Excerpt
+- name: date
+  type: datetime
+  description: ''
+  config:
+    required: true
+    date_format: 
+    time_format: 
+    display_utc: false
+  label: Date
+- name: coverImage
+  type: file
+  config:
+    maxSize: 64
+  label: Image
 - name: collection
   type: select
   default: []
@@ -32,20 +46,12 @@ fields:
       file: 
       path: 
   label: Collection
-- name: date
-  type: datetime
-  description: ''
+- name: series
+  type: text
   config:
-    required: true
-    date_format: 
-    time_format: 
-    display_utc: false
-  label: Date
-- name: coverImage
-  type: file
-  config:
-    maxSize: 64
-  label: Image
+    required: false
+  label: Series
+  description: The series this article belongs to
 - name: live
   type: boolean
   label: Published
