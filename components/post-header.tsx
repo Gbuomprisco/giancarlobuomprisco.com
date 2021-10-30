@@ -6,6 +6,7 @@ import DraftBadge from "./draft-badge";
 import Article from "../types/article";
 import BlogPost from "../types/blog-post";
 import SeriesTitle from "./series-title";
+import Author from "./author";
 
 const PostHeader = ({ post }: { post: Article | BlogPost }) => {
   const { title, date, collection, readingTime, live } = post;
@@ -25,6 +26,9 @@ const PostHeader = ({ post }: { post: Article | BlogPost }) => {
       <div className="max-w-2xl mx-auto mb-6">
         <div className="flex flex-row space-x-2 items-center justify-center">
           {!live && <DraftBadge>Draft</DraftBadge>}
+          <Author />
+
+          <span className="text-gray-600">·</span>
 
           <div className="text-sm text-center text-gray-600">
             <DateFormatter dateString={date} />

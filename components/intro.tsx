@@ -28,9 +28,8 @@ const Intro = () => {
 
       <div className="mx-auto hidden sm:flex">
         <img
-          style={{ width: "250px", height: "250px" }}
-          className="rounded-full object-cover"
-          src="/assets/giancarlo.jpeg"
+          style={{ width: "200px", height: "200px" }}
+          src="/assets/giancarlo-2.png"
           alt="Giancarlo"
         />
       </div>

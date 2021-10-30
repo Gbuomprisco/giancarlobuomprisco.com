@@ -31,15 +31,13 @@ function getElementValue(selector: string): string {
 }
 ```
 
-But, as you can see below, the compilers shows some errors:
-
-![](/assets/screenshot-2021-10-30-at-12-47-23.png)
-
 As you can see, the compiler is telling us that there's a mistake: of course, this will only work if we wrap the code block within a condition, such as an `if` statement.
 
-If we no longer want to proceed with the execution of a code block, we can use Typescript type assertions to throw an error and produce the side-effect. 
+![Typescript Assertions](/assets/images/posts/typescript-assertions.png)
 
-This is particularly useful when a function is in the wrong state, or when validating input/output.
+If we no longer want to proceed with the execution of a code block, we can use Typescript type assertions to throw an error and produce the side-effect. That means that if the assertion was positive, we can assume that the type is correct. 
+
+This is particularly useful when a function is in the wrong state, or when validating input/output, which is something fairly common in server-side code (more than on the client-side).
 
 ## How to write a Typescript type assertion?
 
@@ -54,6 +52,7 @@ function apiKeyExists(
   }
 }
 ```
+
 If you omit the `asserts` keyword, it becomes a type guard.
 
 Let's change the previous code by using an assertion, and handle the error using a `try/catch` statement.
@@ -86,5 +85,15 @@ try {
   console.log(e);
 }
 ```
+
+And now it works! 
+
+Assertions allow us to write code that does not need to be wrapped into conditions for checking a type, or casted in any way. 
+
+It doesn't mean we should use this instead of type guards in every situation.
+
+Assertions shine when the execution should not continue: for example, when the input/output is invalid, or some critical requirement was not met within a code block.
+
+It's also important to notice that we're throwing an error: the consumer has the responsibility to catch and handle it.
 
 [Check out the demo on CodeSandbox](https://codesandbox.io/s/ts-type-assertions-vn4t6?file=/src/index.ts "Demo")
