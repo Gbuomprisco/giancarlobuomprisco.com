@@ -7,24 +7,26 @@ fields:
   config:
     required: true
   label: Title
-- name: excerpt
-  type: textarea
-  default: ''
+- name: date
+  type: datetime
+  label: Date
+  description: ''
   config:
     required: true
-    wysiwyg: false
-    schema:
-      format: markdown
-  label: Excerpt
+    date_format: 
+    time_format: 
+    display_utc: false
+  default: now
 - name: collection
   type: select
   default: []
   config:
-    required: true
+    required: false
     options:
     - angular
-    - typescript
+    - firebase
     - rxjs
+    - typescript
     - thoughts
     source:
       type: simple
@@ -32,24 +34,10 @@ fields:
       file: 
       path: 
   label: Collection
-- name: date
-  type: datetime
-  description: ''
-  config:
-    required: true
-    date_format: 
-    time_format: 
-    display_utc: false
-  label: Date
-- name: coverImage
-  type: file
-  config:
-    maxSize: 64
-  label: Image
-- name: live
-  type: boolean
-  label: Published
 - name: tags
   type: tag_list
   default: []
   label: Tags
+- name: live
+  type: boolean
+  label: Published

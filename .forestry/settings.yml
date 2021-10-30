@@ -5,10 +5,18 @@ admin_path: ''
 webhook_url: 
 sections:
 - type: directory
+  path: _articles
+  label: Articles
+  create: all
+  match: "**/*.mdx"
+  new_doc_ext: mdx
+  templates:
+  - article
+- type: directory
   path: _posts
   label: Posts
   create: all
-  match: "**/*.mdx"
+  match: "**/*"
   new_doc_ext: mdx
   templates:
   - blog-post
