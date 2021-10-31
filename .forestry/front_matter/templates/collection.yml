@@ -1,4 +1,34 @@
 ---
 label: Collection
 hide_body: false
-fields: []
+fields:
+- name: name
+  type: text
+  config:
+    required: true
+  label: Name
+- name: emoji
+  type: text
+  config:
+    required: false
+  label: emoji
+- name: logo
+  type: file
+  config:
+    maxSize: 64
+  label: logo
+- name: primaryColor
+  type: text
+  config:
+    required: true
+  label: Primary Color
+- name: primaryColorLight
+  type: text
+  config:
+    required: true
+  label: Primary Color Light
+- name: contrastColor
+  type: text
+  config:
+    required: false
+  label: Contrast Color
