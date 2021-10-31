@@ -49,3 +49,8 @@ fields:
       file: 
       path: 
   label: Collection
+- name: canonical
+  type: text
+  config:
+    required: false
+  label: Canonical
