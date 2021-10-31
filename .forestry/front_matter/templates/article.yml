@@ -44,8 +44,8 @@ fields:
     - rxjs
     - thoughts
     source:
-      type: simple
-      section: 
+      type: pages
+      section: collection
       file: 
       path: 
   label: Collection
