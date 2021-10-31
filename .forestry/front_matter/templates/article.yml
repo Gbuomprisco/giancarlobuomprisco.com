@@ -46,7 +46,7 @@ fields:
     source:
       type: pages
       section: collection
-      file: 
+      file: _articles/five-common-mistakes-with-rxjs.mdx
       path: 
   label: Collection
 - name: canonical
