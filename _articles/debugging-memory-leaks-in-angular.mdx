@@ -1,0 +1,327 @@
+---
+date: '2019-10-29'
+title: "Debugging Memory Leaks in Angular"
+coverImage: "https://cdn-images-1.medium.com/max/10624/0*Vu4ib4QAqreImyMW"
+excerpt: "The situations where memory leaks are most likely to happen, and how you can deal with them using Chrome DevTools"
+collection: angular
+live: true
+canonical: https://blog.bitsrc.io/debugging-memory-leaks-in-angular-4bc7b3eab569
+tags:
+  - angular
+  - performance
+---
+
+This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io) blog
+
+## Introduction to Memory Leaks
+
+Building large applications entails writing lots of code, complex pages, long lists, and hundreds (if not more) of components. If you’ve worked at least once in a non-trivial web application, you may have found yourself battling a memory leak for hours and hours.
+
+In this article, I want to introduce you to a number of situations where memory leaks are most likely to happen, and how you can deal with them thanks to the powerful *Chrome DevTools*.
+
+**Preface**: Angular is a framework that does a really great job at memory management: in fact, you almost never have to do something specific to avoid memory leaks! 
+Nonetheless, I’ve found myself in a number of scenarios that led to mistakes resulting in memory leaks and, as a consequence, a crippled user-experience for my company’s clients.
+
+Not good.
+
+### What’s a Memory Leak?
+
+In layman’s terms, a memory leak occurs when an application fails to get rid of unused resources.
+
+If the memory of an application is using more and more memory without being populated with new resources (images, text, objects, etc.), then the application is likely affected by this sort of performance degradation.
+
+**Tip: **Use [**Bit](https://bit.dev/)** ([Github](https://github.com/teambit/bit)) to easily share and reuse Angular components across your projects, suggest updates, sync changes and build faster as a team.
+
+Don’t waste time rewriting mediocre code — build awesome reusable Angular components, test them in isolation using [Bit](https://bit.dev) and share them on [bit.dev](https://bit.dev).
+
+![Components with Bit: Easily share across projects as a team](https://cdn-images-1.medium.com/max/2000/1*ODhvAjHjB8zPErBYhOFePQ.gif)
+
+### Why Memory Leaks are tricky
+
+The trickiest aspect of memory leaks is that they are pretty hard bugs to spot. Unlike CPU usage issues, where you can see the UI lagging, memory leaks (especially for smaller apps) are **much a more subtle sort of problem**.
+
+If not also in charge of QA, the way most developers work is to focus on the context of their task, and very rarely they have to switch page dozens of times, create and re-create large lists, or in general perform long-lived actions that are naturally where memory leaks become apparent.
+
+In fact, your applications may have dozens of memory leaks who have not yet been discovered!
+
+Nowadays, users reload pages less and less often. As someone who works in the financial sector, I should know: traders hate reloading! The computers in offices are rarely restarted and so are browser pages.
+
+This is why **keeping performance optimal for long-lived sessions is essential**: if an application is leaking memory, the user will at some point realize that it is slower, sluggish, and will likely pause very frequently.
+
+And we don’t want our users to get frustrated. Right!?
+
+## Debugging Process
+
+In this section, we will explore some real-world scenarios in Angular applications where it’s most likely to encounter potential mistakes that lead to memory leaks.
+
+The irony about this article is that I planned on purposefully add mistakes in my code (using my guinea pig project [Cryptofolio](https://github.com/Gbuomprisco/cryptofolio)) to produce a memory leak.
+
+![Cryptofolio shows live crypto prices](https://cdn-images-1.medium.com/max/6712/1*dvMLBySign-rcQHfjl22nA.gif)
+
+As it turns out, it wasn’t needed! A leak was already there. All I did in order to reproduce it was to initialize the app with 101 pricers — back and forth a couple of times between pages, et voilá — the memory went nuts!
+
+**Notice**: the application I am using is very small, and as a result, the mistakes won’t cause the app to crash, and more importantly, the objects retained in memory won’t be immediately easy to find in the Heap Snapshots.
+
+### Monitoring Memory with the Performance Monitor tool
+
+The application I built allows me to display prices in two separates views: list and dashboard; these two are two different pages, so the components contained in each of them are supposed to be destroyed and collected when you navigate to another page.
+
+The first thing to do is to open the Chrome Dev Tools, open the panel on the right and click on *More Tools* > *Performance Monitor. *The memory of our application is displayed in the blue graph.
+
+As you can see in the image below, whenever I switch page, the memory jumps up almost 20mb!
+
+![Js heap size increasing when switching page](https://cdn-images-1.medium.com/max/2564/1*5AqFfFGibplrZT3H3FDTIw.gif)
+
+I keep switching back and forth, and this is the result below:
+
+![Performance Monitor](https://cdn-images-1.medium.com/max/6694/1*EqGwTm1ieNl0nik6YvzpLw.png)
+
+🔥154MB and 99% CPU? Clearly, something’s wrong🔥
+
+### Starting the debugging process: Memory Snapshots
+
+The first thing I do when debugging is to record memory snapshots in two stages:
+
+* at initial load, as soon as the app becomes stable and all the elements have been loaded
+
+* a second time once the initial data is replaced by other data. It’s quite important to make sure your app is not actually adding additional resources, unless of course if that is a bug. For example, you could be switching page or forcing some elements to show/hide
+
+The above will allow me to compare them with the Dev Tools’ Memory Snapshots.
+
+**Tip**: Make sure you also tick “Event Listeners”: it will help understand if the number of event listeners is piling up.
+
+In order to take a Memory Snapshot, open the Dev Tools->Memory, select “Heap Snapshot” and then click on the button “Take Snapshot”. The profiles are listed on the left-hand side and you can compare them with each other to visualize which objects have been retained in memory.
+
+### Exploring the Snapshot 🧭
+
+As you can see in the image below, I proceeded by taking 2 heap snapshots, listed on the left.
+
+When the initial snapshot is taken, the tools will show you the summary of the current snapshot, but you can compare two snapshots by choosing “Comparison” from the dropdown above the objects.
+
+The list displayed by the snapshot can look pretty alien, low-level and unfamiliar if you have been a Web Developer all your life like me, but don’t let that scare you off. The most important thing is to be patient and understand the clues that will lead you to the memory leak.
+
+As soon as I took the snapshot, I started scrolling through the items looking for clues and familiar pieces of code, and one item immediately caught my attention: *MapSubscriber*.
+
+That’s kind of familiar, isn’t it? As you can see in the comparison table on the right-hand side, the *Delta* suggests that there have been more items added than removed.
+
+![Heap Snapshot](https://cdn-images-1.medium.com/max/6694/1*bfF0fhPeC1PX8QINgTGzOw.png)
+
+By clicking on an item in the top panel will immediately redirect the panel below to its “retainers”, or the Object Retaining Tree.
+
+I started digging down the Map destination object until we get to project, which is the function we pass to a map *operator* and that leads to a line in one of the project’s files, asser-pricer.component.ts.
+
+Let’s take a look at the context around that line: it is a simple selection from the store that returns me a price and maps it to a String.
+
+Also, I used shareReplay(1) to multicast the price observable to the get trend value (e.g. if it went up or down since the previous emission).
+
+```typescript
+this.price$ = this.pricesFacade
+    .getPriceForAsset(this.asset)
+    .pipe(
+    filter<string>(Boolean),
+    map(price => {
+        return parseFloat(price).toFixed(2);
+    }),
+    shareReplay(1)
+    );
+```
+
+### Rx Subscriptions 🦊
+
+Let’s reflect for a moment about the line we just landed on: the issue is clearly an unsubscribed observable that is retaining the components in the memory.
+
+It doesn’t matter how many times we’ve been told to clean up our Rx subscriptions: in my experience, this is by far **the most common cause of memory leaks** in Angular applications.
+
+Many developers will probably be thinking: is an open subscription **really** going to cause havoc in a real-world application?
+
+**Yes, it can**.
+
+Especially for large applications, if the leak happens within a repeated component (lists, tables, infinite scrolling components, etc.), even only one open subscription can cause your application to retain in memory the components until the subscription gets cleaned up.
+
+You would expect the components to be cleaned up when destroyed, for example:
+
+* when the user navigates to another page
+
+* when the user replaces/filters the elements with a different selection
+
+While unsubscribing is a fairly simple concept to understand, and unsubscribing itself (especially is using the async pipe) is easy, there are situations when the full knowledge of the operators we’re using is essential, as it happened in my case.
+
+### ShareReplay, what are you? 🤔
+
+Let’s get back to the issue.
+
+We found out a possible responsible candidate for our memory leak. The first thing I do is to debug shareReplay to understand why the subscription is not being unsubscribed, which lead me to its source code:
+
+![ShareReplay’s source code](https://cdn-images-1.medium.com/max/2266/1*_fdLmFspJ3wLY7j_feJIjQ.png)
+
+The long condition around the unsubscription was pretty suspect — why? It turns out, despite me reading articles and documentation plenty of times about this, I missed a pretty important detail about this operator.
+
+In fact, if we don’t specify the property refCount: true, the subscription will never be unsubscribed. To fully understand why I refer you to this [Angular In Depth article: What’s Changed with ShareReplay](https://blog.angularindepth.com/rxjs-whats-changed-with-sharereplay-65c098843e95).
+
+In order to fix this, I made the following change:
+
+```typescript
+this.price$ = this.pricesFacade.getPriceForAsset(this.asset).pipe(
+    filter<string>(Boolean),
+    map(price => {
+        return parseFloat(price).toFixed(2);
+    }),
+    shareReplay({
+        bufferSize: 1,
+        refCount: true
+    })
+);
+```
+And now the memory leak from my application is gone!
+
+But let’s see some other common scenarios — some of which appear even in some extremely popular libraries for Angular.
+
+### Event Listeners
+
+Another common cause of memory leaks is DOM events that are never unregistered. Some folks may think that using Angular’s Renderer may take care of it, but that is only the cause if the events are defined in the template, just as with the async pipe.
+
+Let’s see a quick and common example of a component that registers a scroll listener on the body, without never unregistering the event:
+
+```typescript
+@Component({//...})
+export class ScrollComponent {
+    constructor(private renderer: Renderer2) {}
+
+    ngOnInit() {
+    this.renderer.listen(document.body, 'scroll', () => {
+        this.updatePosition();
+    });
+    }
+
+    updatePosition() { /* implementation */ }
+}
+```
+
+This does, indeed, create a memory leak every time we instantiate ScrollComponent — so let’s fix it:
+
+```typescript
+@Component({...})
+export class ScrollComponent {
+    private listeners = [];
+
+    constructor(private renderer: Renderer2) {}
+
+    ngOnInit() {
+        const listener = this.renderer.listen(
+        document.body, 
+        'scroll', 
+        () => {
+            this.updatePosition();
+        });
+
+        this.listeners.push(listener);
+    }
+
+    ngOnDestroy() {
+        this.listeners.forEach(listener => listener());
+    }
+
+    updatePosition() { /* implementation */ }
+}
+```
+
+Unregistering all the events prevents the component ScrollComponent to be retained in memory and will be cleaned up once destroyed, along with its children.
+
+### Websocket Connections
+
+Very similarly, WebSocket connections must always be closed when unused. Imagine we have a component PricerComponent that subscribes to a WebSocket and displays incoming cryptocurrency prices.
+
+```typescript
+@Component({
+    selector: 'pricer',
+    template: `
+        <span>{{ id | titlecase }}:</span>
+        <span>{{ ( price$ | async) || 'loading...' }}</span>
+    `
+})
+export class PricerComponent  {
+    @Input() id: string;
+
+    public price$ = new Subject();
+    private static Endpoint = 'wss://ws.coincap.io/prices/';
+    private webSocket: WebSocket;
+    
+    ngOnInit() {
+        this.webSocket = new WebSocket(
+            this.getEndpoint(this.id)
+        );
+
+        this.webSocket.onmessage = (msg) => {
+            const data = JSON.parse(msg.data);
+            this.price$.next(data[this.id]);
+        };
+    }
+
+    private getEndpoint(id: string) {
+        return PricerComponent.Endpoint + '?assets=' + id;
+    }
+}
+```
+
+Let’s explain the snippet:
+
+* we receive an ID as input and we subscribe to it via WebSocket every time the component is initialized
+
+* when is the WebSocket connection cleared? Never! Once again, we’re missing the good gold ngOnDestroy hook to take care of it when the component gets destroyed
+
+* This creates multiple issues: not only we’re creating multiple WebSocket connections, but we’re also retaining PricerComponent in memory every time it gets re-initialized
+
+Let’s take a snapshot and analyze it!
+
+![Heap Snapshot WebSocket example](https://cdn-images-1.medium.com/max/5030/1*NDLA9UIZD3J1KOADfME6mg.png)
+
+As per the image above, I start by comparing the initial load (with 1 pricer) with another snapshot taken after a small session.
+
+The Delta reveals me where additional memory has been allocated, so I start digging in the (closure) tree searching for clues back to my code.
+
+After scrolling a little bit, I stumble on this closure, which takes me back exactly to the callback passed to webSocket.onmessage!
+
+![](https://cdn-images-1.medium.com/max/4160/1*Sh-HgR0QZBmp8wlXsxQ6YQ.png)
+
+Debugging this case was admittedly pretty easy, but in some cases, it can be pretty daunting. There is a way we can help facilitate the debugging process by **naming functions** so that they will appear in the Memory Snapshot.
+
+For example, I could have written:
+
+```typescript
+const onPriceReceived = (msg: MessageEvent) => {
+    const data = JSON.parse(msg.data);
+    this.price$.next(data[id]);
+};
+
+this.webSocket.onmessage = onPriceReceived;
+```
+
+This bug is easily solved by adding the following method:
+
+```typescript
+ngOnDestroy() {
+    this.webSocket.close();
+}
+```
+
+You can see the full example at [this Stackblitz link](https://stackblitz.com/edit/angular-hubedk).
+
+## Takeaways ⭐
+
+* Memory Leaks are quite hard to find and debug — my suggestion is to keep the Performance Monitor open from time to time and see if the memory is stable
+
+* Angular does a great job at managing memory; with that said, we need to watch out for open subscriptions (Observables, Subjects, NgRx Store Selections), DOM events, WebSocket connections, etc.
+
+* Learn how to use well the Chrome Dev Tools! It is essential for debugging performance and memory leaks. Even if it is intimidating to see so much low-level terminology, try to read and learn as much as possible about it
+
+* Name closures! It helps with debuggability and, in my opinion, makes code more readable
+
+### Resources
+
+* [Memory problems](https://developers.google.com/web/tools/chrome-devtools/memory-problems) (Chrome Dev Tools)
+
+* [Record Heap Snapshot](https://developers.google.com/web/tools/chrome-devtools/memory-problems/heap-snapshots)
+
+* [What’s Changed with ShareReplay](https://blog.angularindepth.com/rxjs-whats-changed-with-sharereplay-65c098843e95)
+
+* [Debugging Javascript Like a Pro](https://blog.bitsrc.io/debugging-javascript-like-a-pro-a2e0f6c53c2e)

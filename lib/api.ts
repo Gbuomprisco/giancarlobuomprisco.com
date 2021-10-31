@@ -180,7 +180,10 @@ function getPostFieldsBySlug<PostType>(
   const { data, content } = file;
   const readingTime = getReadingTimeInMinutes(content);
 
-  const items: Record<string, string> = {};
+  const items: Record<string, string> = {
+    live: data.live,
+    readingTime: `${readingTime} min read`,
+  };
 
   for (const field of fields as string[]) {
     if (field === "slug") {
@@ -195,11 +198,6 @@ function getPostFieldsBySlug<PostType>(
 
     if (field === "date") {
       items[field] = new Date(data.date).toISOString();
-      continue;
-    }
-
-    if (field === "readingTime") {
-      items.readingTime = `${readingTime} min read`;
       continue;
     }
 

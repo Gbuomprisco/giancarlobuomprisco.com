@@ -25,7 +25,8 @@ const PostHeader = ({ post }: { post: Article | BlogPost }) => {
 
       <div className="max-w-2xl mx-auto mb-6">
         <div className="flex flex-row space-x-2 items-center justify-center">
-          {!live && <DraftBadge>Draft</DraftBadge>}
+          {live ? null : <DraftBadge>Draft</DraftBadge>}
+
           <Author />
 
           <span className="text-gray-600">·</span>

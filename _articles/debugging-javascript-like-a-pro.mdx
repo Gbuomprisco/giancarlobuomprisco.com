@@ -1,0 +1,233 @@
+---
+date: '2019-09-16'
+title: "Debugging Javascript Like a Pro"
+coverImage: "https://cdn-images-1.medium.com/max/12000/0*7UocdWX7aZYDkNtP"
+excerpt: "Discover the best debugging tools Chrome has to offer"
+collection: "javascript"
+live: true
+canonical: https://blog.bitsrc.io/debugging-javascript-like-a-pro-a2e0f6c53c2e
+tags:
+  - javascript
+  - debugging
+---
+
+This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io) blog
+
+Are you one of those who are console logging your way to a solution when your code is not behaving the way you expect? If yes, read on.
+
+This article aims to explain to you the most useful tools and techniques provided by the Chrome Dev Tools to debug your Javascript code **better and faster than ever before**.
+
+By the end of this article, you’ll be able to debug your code better and faster than ever before.
+
+This is a summary of what we’re going to go through:
+
+* setting breakpoints to debug code at a specific line
+
+* navigating the call stack
+
+* pausing/resuming the script execution
+
+* setting watch expressions
+
+* productivity tips and tricks for the Dev Tools
+
+
+### Debugging Runtime Code
+
+If the cause you’re debugging your code is due to a bug or unexpected behavior, you’re likely interested in the “Sources” tab in the Dev Tools, which is the section we’re going to explore in depth through a set of various scenarios.
+
+![](https://cdn-images-1.medium.com/max/2886/1*o-K2FM8avaFY0MDonke7eQ.png)
+
+## Breakpoints
+
+If you are reading this article, you probably are used to debugging a particular line by logging to the console a certain value. But I want you to introduce to a more powerful way that goes way deeper in the code than simply logging: **breakpoints**.
+
+Setting breakpoints is normally the first step of the debugging process. The built-in development tools in most browsers allow you to stop the execution of your code at a particular line of code and at a particular statement on every line of code running on the page being debugged, but for the purpose of this article, we will be specifically using the Chrome Dev Tools.
+
+### What are Breakpoints for?
+
+Normally, you may want to stop the execution of the code so that you can interactively inspect the particular context that we’re interested in.
+
+Once the code has stopped at the breakpoint, we can start the debugging process by getting access to the scope, navigating the call stack, and even change the code at runtime.
+
+### How to set Breakpoints?
+
+In order to explain how to set breakpoints, we will debug an Angular codebase of one of the side projects I use for education purposes, although the technology used doesn’t really matter.
+
+* The first thing you may want to do is to open the dev tools and go to the “Sources” tab
+
+* Then, we need to open the file we want to debug
+**Tip: **on Mac, ⌘ + O will open the files selector where you can find the file needed on the fly. On Windows, use CTRL+O
+
+* Once the file has been opened, we can finally set up a breakpoint by clicking on the line of code we want to stop on.
+
+![Setting a Breakpoint](https://cdn-images-1.medium.com/max/4316/1*HZnwrJpcjJQuBQuamXriIg.gif)
+
+As you can see in the image above, we can go deeper than setting a breakpoint on a line of code, and we can also set it to the statements on the same line of code.
+
+We set 3 breakpoints:
+
+* the first on the line of code that stops the execution at definition time
+
+* the second will stop before the priceReceived function executes
+
+* the third one will stop right after priceReceived gets called, so we can also inspect the return value of the arrow function
+
+When the arrow function gets called, the execution stops and the right-hand panel Scope gets populated with information regarding the current context, and gives us access to all the scope so we can inspect the values we’re interested in.
+
+In this case, you can see how we can see the value of the variable price.
+
+![Analyzing the current scope](https://cdn-images-1.medium.com/max/4324/1*j56_-6hTF4z6pXWVC9TwnQ.png)
+
+In the image below, our third breakpoint gets hit once the function priceReceived has been executed.
+
+As you can see in the right-hand panel, Return value will show us what the anonymous function returns
+
+![Analyzing the Return Value of an anonymous function](https://cdn-images-1.medium.com/max/4334/1*skx3u3zsEm3-VF338jG2Xw.png)
+
+### Temporarily pausing Breakpoints
+
+**Scenario**: you set a bunch of breakpoints all over the codebase.
+
+As you may have experienced, it’s very common to refresh the page multiple times while debugging.
+
+The code you’re currently debugging may have various breakpoints and sometimes, these can even be called hundreds of times! Yeah, it can be frustrating and time-consuming.
+
+In such cases, I recommend to temporarily pause the execution of all breakpoints, and you can do this by toggling the icon you can see in the image below:
+
+![Deactivating all Breakpoints](https://cdn-images-1.medium.com/max/3188/1*cnRKMhzmOptgjm0v6ey8-Q.gif)
+
+### Stopping Execution on Errors
+
+**Scenario**: you get an unexpected error, but you don’t want to set a breakpoint as you’re unsure when exactly the error is going to be thrown.
+
+You can stop the execution as soon as an error is thrown, so you can inspect the scope and understand what went wrong.
+
+![Pausing on Exceptions](https://cdn-images-1.medium.com/max/4780/1*6B4Uvz3g4sZpqlnUWDEBpw.gif)
+
+### Conditional Breakpoints
+
+Conditional Breakpoints, as the name suggests, allow us to only trigger certain breakpoints if a condition is truthy.
+
+For instance, in the example shown above, the user can input in the text area non-numerical values. JS is very forgiving and will just display NaN instead of throwing an error.
+
+**Scenario**: you have more complex code than the one above, and can’t figure out when the result is NaN .
+
+Of course, you could set a breakpoint, but it’s not easy to reproduce the error and you end up spending half an hour stepping through the execution of your code. This is a scenario where you could use a conditional breakpoint and break the execution only when the value inspected is NaN .
+
+See the image below:
+
+![Conditional Breakpoint](https://cdn-images-1.medium.com/max/4504/1*e-pc-wpZexL8tknq9wunLg.gif)
+
+* We right-click on the line of code we want to add the breakpoint to
+
+* Click on “Add conditional breakpoint…”
+
+* Add a valid JS expression. Of course, you have access to the scope when the expression gets called, which means we can reference the params x and y
+
+* When the expression is truthy, the breakpoint will be triggered!
+
+### Stepping through your code
+
+In order to fully take advantage of the Dev Tools, it’s worth spending a little bit of time and learn how the Dev Tools helps us to quickly step through the code without setting breakpoints at each line.
+
+* **Step
+**The simplest navigator in the Dev Tools, allows you to step through your code line by line, based on execution order. 
+It’s important to notice that **Step **has been recently introduced due to a change to **Step Into next function call**. When debugging asynchronous code, *Step* will move to the next line chronologically
+
+![Step](https://cdn-images-1.medium.com/max/4504/1*lnLSkTfTPgoZnH09TzPOJQ.gif)
+
+* **Step over next function call**
+This navigator allows you to step line-by-line, yet without stepping into function calls. That is, function calls will be stepped over and unless a breakpoint has been set within them, the debugger will not stop within statements in that function
+
+![Step over next function call](https://cdn-images-1.medium.com/max/4504/1*o8BEBvXjLJ2I5pATcWUWkw.gif)
+
+If you pay attention to the image above, multiplyBy and renderToDOM were executed but the debugger did not step into them like the previous navigator did (**Step**).
+
+* **Step into next function call**
+Since Chrome 68, this navigator has changed its behavior. This is similar to *Step *which we have seen previously. The difference is that when stepping into asynchronous code, it will stop in the async code and not on the code that, chronologically, will run.
+
+![Step Into Next function call](https://cdn-images-1.medium.com/max/4504/1*hQVAtoo06qMSQDlUCd-1DQ.gif)
+
+Watch the image above: chronologically, line 32 should have been run, but it didn’t. The debugger waited and moved to line 29 after 2 seconds
+
+* **Step out of function call
+** Say you’re not interested in the execution of a certain function, this navigator allows you to step out of a function and will stop at the next line following the function call
+
+![Step Out of function call](https://cdn-images-1.medium.com/max/4508/1*bLRfIxnKbcz6-tikZi06Vw.gif)
+
+What happened in the image above?
+
+* We stopped at the breakpoint at line 36
+
+* We stepped out of the function renderToDOM
+
+* The debugger moved directly to line 29 and skipped the rest of the function renderToDOM
+
+### Global Variables and Eager Evaluation
+
+Sometimes it can be useful to store in the global scope some values such as a component’s class, huge arrays or complex objects.
+
+Adding these values to the global scope while debugging can be a huge time-saver when you want to, for instance, call a method on that component with different parameters.
+
+![Setting a Global Variable from the current scope](https://cdn-images-1.medium.com/max/3964/1*datD6XsMhv__QA0eF2HjeA.gif)
+
+In the image above, I save the array [previous, current] as a global variable. The Dev Tools automatically assign a name to the variable, which is temp{n} with n based on the number of previously saved variables.
+
+As you can see in the image above, the variable gets named temp2 and I can use it in the console as it is now defined globally!
+
+Thanks to **Eager Evaluation, **a feature ****released in Chrome 68, the Dev Tools allows the evaluation of statements in the console as you write them and also displays the signature of the method.
+
+If you pay attention to the image above, when I map the saved variable to an array of strings, the result is immediately visible without me having to press Enter.
+
+## Navigating the Call Stack
+
+Navigating the call stack is one of the most useful tools that the Dev Tools provide: not only can you jump back and forth in the call stack, but you can also inspect the scope at each step.
+
+Assume we have a dead simple page and a script that takes in input a number and will render on the page the number multiplied by 10. We will call two functions: one to multiply, and one to render the result to the DOM.
+
+![Navigating through the Call Stack](https://cdn-images-1.medium.com/max/4328/1*SfNyMZRGB83s0lTWgEsk0A.gif)
+
+As you can see in the image above, we are able to navigate through the call stack just by clicking on the name of the function in the pane “Call Stack”.
+
+As you may have also noticed, every time we jump from a call to another, the scope is retained and we can analyze it at each step!
+
+### Blackbox scripts to flatten the stack
+
+Blackboxing scripts will help declutter the call stack by excluding from the stack certain scripts or scripts that match a certain pattern.
+
+For instance, if I am solely interested in debugging the userland code, which is probably 99% of the times, I will add a pattern to black box all the scripts under the folder node_modules .
+
+In order to black box a script, you have two ways:
+
+* right-click on a script in your Sources panel and click on “Blackbox Script”
+
+* go to the Chrome Settings page, then go to *Blackboxing *and click on *Add Pattern… *and enter the pattern you want to black box, which is useful when you want to exclude a large number of scripts
+
+![Blackboxing the node_modules folder](https://cdn-images-1.medium.com/max/3454/1*WgmPn7FqR0xFzdB9kPg1_Q.png)
+
+## Watch Expressions
+
+Watching expressions enable you to define some Javascript expressions that the Dev Tools will keep track of and execute, and will display the current result. This is a particularly interesting tool as you can virtually write anything you want, as long as it is a valid Javascript expression.
+
+For example, you can write an expression and expect the result of this expression to always be true so that when the expression will be false , you know something is wrong in the current state.
+
+There’s a catch:
+
+* while we’re debugging using breakpoints, the watch expressions will be evaluated live and won’t need to be refreshed
+
+* if the code is executing, you will need to manually click the refresh button
+
+![](https://cdn-images-1.medium.com/max/3344/1*vmDDbDAGSlmXnCP4zGg7GA.png)
+
+## Final Words
+
+The Dev Tools are an incredible resource for debugging complex code. Sometimes you may dig deeper than console logging, and the tools above will allow for an in-depth debugging experience. These tools require a little practice before you’ll be fully comfortable using them, so don’t be put down if you’re feeling unfamiliar with all the options available.
+
+### Resources
+
+Here are some resources to fully understand all the available options the Dev Tools provide:
+
+* [Get Started with Debugging JavaScript in Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools/javascript/)
+
+* [Console Overview](https://developers.google.com/web/tools/chrome-devtools/console/)

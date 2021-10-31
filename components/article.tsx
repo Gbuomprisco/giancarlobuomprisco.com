@@ -55,6 +55,10 @@ const Article: React.FC<{
                   <meta property="og:description" content={post.excerpt} />
                 )}
 
+                {post.canonical && (
+                  <link rel="canonical" href={post.canonical} />
+                )}
+
                 {ogImage && <meta property="og:image" content={ogImage} />}
               </Head>
 
@@ -71,7 +75,7 @@ const Article: React.FC<{
               <SeriesList posts={series} series={post.series} />
             </div>
 
-            <div className="w-full md:w-8/12 mx-auto">
+            <div className="w-full md:w-8/12 mx-auto my-4">
               <ConvertkitPostSignup />
             </div>
 

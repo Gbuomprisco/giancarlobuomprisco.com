@@ -9,6 +9,7 @@ interface Article extends BasePost {
   };
 
   series?: string;
+  canonical?: string;
 }
 
 export default Article;

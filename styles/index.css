@@ -12,6 +12,8 @@
 @tailwind utilities;
 /* Stop purging. */
 
+@import url('prism-material-themes/themes/material-darker.css');
+
 html {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;

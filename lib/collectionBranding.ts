@@ -16,17 +16,27 @@ const brandings: Record<string, Branding> = {
   rxjs: {
     colorPrimary: "#d81b60",
     colorPrimaryLight: "#d81b6085",
-    logo: makeLogoPath(`rxjs.png`),
+    logo: makeLogoPath(`rxjs.webp`),
   },
   angular: {
     colorPrimary: "#e23236",
     colorPrimaryLight: "#dd00316e",
-    logo: makeLogoPath(`angular.png`),
+    logo: makeLogoPath(`angular.webp`),
   },
   firebase: {
     colorPrimary: "#ffcb2c",
     colorPrimaryLight: "#ffcb2c8f",
     logo: makeLogoPath(`firebase.webp`),
+  },
+  stencil: {
+    colorPrimary: "#16161d",
+    colorPrimaryLight: "#0000009e",
+    logo: makeLogoPath(`stencil.svg`),
+  },
+  javascript: {
+    colorPrimary: "#f7e017",
+    colorPrimaryLight: "#f7e0178c",
+    logo: makeLogoPath(`javascript.webp`),
   },
   emoji: {
     colorPrimary: "#ffb300",

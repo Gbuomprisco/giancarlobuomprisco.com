@@ -1,21 +1,19 @@
+import { TWITTER_URL, TWITTER_HANDLE, PROFILE_IMAGE } from "../lib/constants";
+
 const Author = () => {
   return (
     <div className="flex flex-row space-x-3 items-center">
-      <a
-        target="_blank"
-        rel="noreferrer noopened"
-        href="https://twitter.com/gc_psk"
-      >
-        <img width="45px" height="45px" src="/assets/giancarlo-2.png" />
+      <a target="_blank" rel="noreferrer noopened" href={TWITTER_URL}>
+        <img width="45px" height="45px" src={PROFILE_IMAGE} />
       </a>
 
       <a
         className="text-xs text-gray-600"
         target="_blank"
         rel="noreferrer noopened"
-        href="https://twitter.com/gc_psk"
+        href={TWITTER_URL}
       >
-        @gc_psk
+        {TWITTER_HANDLE}
       </a>
     </div>
   );

@@ -1,0 +1,440 @@
+---
+date: '2019-11-19'
+title: "Quantum Angular: Maximizing Performance by Removing Zone"
+coverImage: "https://cdn-images-1.medium.com/max/5746/0*EfvtinXlbA0f1Uf6"
+excerpt: "Experiment: Removing Zone from Angular with minimal effort, to boost runtime performance"
+collection: angular
+live: true
+canonical: https://blog.bitsrc.io/quantum-angular-maximizing-performance-by-removing-zone-e0eefe85b8d8
+tags:
+  - angular
+  - performance
+---
+
+As Angular developers, we owe Zone a great deal: it’s also thanks to this library that we can use Angular almost magically; in fact, most times we simply need to change a property and **it just works**, Angular re-renders our components, and the view is always up to date. Pretty cool.
+
+In this article, I want to explore some ways in which the new Angular Ivy compiler (being released in version 9) will be able to make apps **work without Zone** much simpler than it was in the past.
+
+As a result, I was able to increase the performance of an application under heavy load by a huge amount by adding as little overhead as possible using Typescript’s decorators.
+
+**Notice**: the approaches explained in this article are only possible thanks to **Angular Ivy and AOT enabled by default**. This article is educational only and doesn’t aim to advertise the code described.
+
+## The case for using Angular without Zone
+
+Wait a moment, though: is it worth disabling *Zone* as it allows us to effortlessly re-render our templates? Yes, it is incredibly useful, but as always, **magic comes at a cost**.
+
+If your application needs a special performance target, disabling *Zone* can help deliver better performance for your application: an example of a case-scenario where performance can actually be game-changing is high-frequency updates, which is an issue I had while working on a real-time trading application, where a WebSocket was continuously sending messages to the client.
+
+## Removing Zone from Angular
+
+Running Angular without Zone is pretty simple. The first step is to comment out or remove the import statement in the file polyfills.ts:
+
+![](https://cdn-images-1.medium.com/max/2070/1*aO5CRXz99wZiAUDTN7XDCw.png)
+
+The second step is to Bootstrap the root module with the following options:
+
+```typescript
+platformBrowserDynamic()
+    .bootstrapModule(AppModule, {
+    ngZone: 'noop'
+    })
+    .catch(err => console.error(err));
+```
+
+## Angular Ivy: Manually Detecting Changes with ɵdetectChanges and ɵmarkDirty
+
+Before we can start building our Typescript decorator, we need to see how Ivy allows us to bypass Zone and DI and trigger a change detection on a component by marking it dirty.
+
+We can now use two more functions exported from @angular/core: **ɵdetectChanges** and **ɵmarkDirty**. These two functions are still to be used privately and are not stable, hence they are prefixed with the character ɵ.
+
+Let’s see an example of how they can be used.
+
+### ɵmarkDirty
+
+This function will mark a component dirty (e.g. need re-rendering) and will schedule a change detection at some point in the future unless it is already marked dirty.
+
+```typescript
+import { ɵmarkDirty as markDirty } from '@angular/core';
+
+@Component({...})
+class MyComponent {
+    setTitle(title: string) {
+        this.title = title;
+        markDirty(this);
+    }
+}
+```
+
+### ɵdetectChanges
+
+For efficiency reasons, the internal documentation discourages the use of **ɵdetectChanges** and recommends using **ɵmarkDirty** instead. This function will synchronously trigger a change detection on the components and subcomponents.
+
+```typescript
+import { ɵdetectChanges as detectChanges } from '@angular/core';
+
+@Component({...})
+class MyComponent {
+    setTitle(title: string) {
+        this.title = title;
+        detectChanges(this);
+    }
+}
+```
+
+## Automatically detecting changes with a Typescript Decorator
+
+While the functions provided by Angular increase the Developer Experience by allowing us to bypass the DI, we may still be unhappy about the fact we need to import and manually call these functions in order to trigger a change detection.
+
+In order to make automatic change detection easier, we can write a Typescript decorator that can do it for us. Of course, we have some limitations, as we will see, but in my case, it did the job.
+
+### Introducing the @observed decorator
+
+In order to detect changes with minimal effort, we will build a decorator that can be applied in three ways:
+
+* to synchronous methods
+
+* to an Observable
+
+* to an Object
+
+Let’s see two quick examples. In the image below, we apply the **@observed** decorator to the **state** object and to the **changeName** method.
+
+![](https://cdn-images-1.medium.com/max/2872/1*HSndRaDsuxnCcAksBuL8VA.jpeg)
+
+* to check changes on the **state** object we use a Proxy underneath to intercept changes to the object and trigger a change detection
+
+* we override the **changeTitle** method it with a function that first calls the method, and then it triggers a change detection
+
+Below, we have an example with a **BehaviorSubject**:
+
+![](https://cdn-images-1.medium.com/max/2872/1*XQ9kGVTnR0KHm4l43c3fDQ.jpeg)
+
+For Observables, it gets a little bit more complicated: we need to subscribe to the observable and mark the component dirty in the subscription, but we also need to clean it up. To do that, we override **ngOnInit** and **ngOnDestroy** to subscribe and then clean the subscriptions.
+
+### Let’s build it!
+
+Below is the signature of the **observed** decorator:
+```typescript
+export function observed() {
+  return function(
+    target: object,
+    propertyKey: string,
+    descriptor?: PropertyDescriptor
+  ) {}
+}
+```
+
+As you can see above, **descriptor** is optional as we want the decorator to be applied to both methods and properties. If the parameter is defined, then it means the decorator is being applied to a method:
+
+* we store the original method’s value
+
+* we override the method: we call the original function, and then we call **markDirty(*this*)** in order to trigger a change detection
+* 
+```typescript
+if (descriptor) {
+  const original = descriptor.value; // store original
+  descriptor.value = function(...args: any[]) {
+    original.apply(this, args); // call original
+    markDirty(this);
+  };
+} else {
+  // check property
+}
+```
+
+Moving on, we now need to check what type of property we’re dealing with: an Observable or an object. We now introduce another private API provided by Angular, which I am surely not supposed to be using (sorry!):
+
+* the property **ɵcmp** gives us access to the post-definition properties processed by Angular, which we can use to override the methods **onInit** and **onDestroy of the component**
+
+```typescript
+const getCmp = type => (type).ɵcmp;
+const cmp = getCmp(target.constructor);
+const onInit = cmp.onInit || noop;
+const onDestroy = cmp.onDestroy || noop;
+```
+
+In order to mark the property as “to be observed”, we use **ReflectMetadata** and set its value to true so that we know we need to observe the property when the component is initialized:
+
+```typescript
+Reflect.set(target, propertyKey, true);
+```
+
+It’s time to override the **onInit** hook and check the properties when it is instantiated:
+
+```typescript
+cmp.onInit = function() {
+  checkComponentProperties(this);
+  onInit.call(this);
+};
+```
+
+Let’s define the function **checkComponentProperties** which will go through the component’s properties, filter them by checking the value we set previously with **Reflect.set**:
+```typescript
+const checkComponentProperties = (ctx) => {
+  const props = Object.getOwnPropertyNames(ctx);
+
+  props.map((prop) => {
+    return Reflect.get(target, prop);
+  }).filter(Boolean).forEach(() => {
+    checkProperty.call(ctx, propertyKey);
+  });
+};
+```
+
+The function **checkProperty **will be responsible for decorating the individual properties. First, we want to check if the property is an Observable or an object. If it is an Observable, then we subscribe to it, and we add the subscription to a list of subscriptions that we store privately on the component.
+
+```typescript
+const checkProperty = function(name: string) {
+  const ctx = this;
+
+  if (ctx[name] instanceof Observable) {
+    const subscriptions = getSubscriptions(ctx);
+    subscriptions.add(ctx[name].subscribe(() => {
+      markDirty(ctx);
+    }));
+  } else {
+    // check object
+  }
+};
+```
+
+If instead, the property is an object, we convert it to a Proxy, and we call markDirty in its handler function.
+
+```typescript
+const handler = {
+  set(obj, prop, value) {
+    obj[prop] = value;
+    ɵmarkDirty(ctx);
+    return true;
+  }
+};
+
+ctx[name] = new Proxy(ctx, handler);
+```
+
+Finally, we want to clean up the subscriptions when the component is destroyed:
+
+```typescript
+cmp.onDestroy = function() {
+  const ctx = this;
+  if (ctx[subscriptionsSymbol]) {
+    ctx[subscriptionsSymbol].unsubscribe();
+  }
+  onDestroy.call(ctx);
+};
+```
+
+This decorator is not exhaustive and **will not cover all cases** needed by large applications (ex. template function calls that return Observables, but I’m working on that…).
+
+Though, it was enough to convert my small application. The full source code can be found at the end of this article.
+
+## Performance Results and Considerations
+
+Now that we learned a little bit about the internals of Ivy and how to build a decorator that makes use of its API, it’s time to test it on a real application.
+
+I used my guinea-pig project [Cryptofolio](https://github.com/gbuomprisco/cryptofolio) in order to test the performance changes brought by adding and removing Zone.
+
+I applied the decorator to all the template references needed, and I removed Zone. For example, see the below component:
+
+* the two variables used in the template are the price (number) and trend (up, stale, down), and I decorated both of them with @observed
+
+```typescript
+@Component({...})
+export class AssetPricerComponent {
+  @observed() price$: Observable<string>;
+  @observed() trend$: Observable<Trend>;
+  
+  // ...
+}
+```
+
+### Bundle Size
+
+First of all, let’s check by how much the size of the bundle will be reduced by removing Zone.js. In the image below, we can see the build result with Zone:
+
+![Build With Zone](https://cdn-images-1.medium.com/max/2986/1*ZrYc8YBXvr5nuZKYL5ZRvQ.png)
+
+Anf the below was taken without Zone:
+
+![Build Without Zone](https://cdn-images-1.medium.com/max/2896/1*iGNl5sL_H1A6sC-bxoP5zA.png)
+
+Taking into account the ES2015 bundle, it’s clear that Zone takes almost 35kB of space, while the bundle without Zone is only 130 bytes.
+
+### Initial Load
+
+I took some audits with Lighthouse, with no throttling: I wouldn’t take the below results *too* seriously: in fact, the results varied quite a bit while I was trying to average the results.
+
+It’s possible though that the difference in bundle size is why the version without Zone has a slightly better score. The audit below was taken with Zone:
+
+![Audit with Zone](https://cdn-images-1.medium.com/max/3166/1*6eg8z2O3e6j4eSDohjQhIw.png)
+
+The below, instead, was taken without Zone:
+
+![Audit without Zone](https://cdn-images-1.medium.com/max/3238/1*gHPNceylTa37lX95g74fiA.png)
+
+### Runtime Performance 🚀
+
+And now we get to the fun part: runtime performance under load. We want to check how the CPU behaves when rendering hundreds of prices updated multiple times per second.
+
+In order to put the application under load, I created about 100 pricers emitting mock data, with each price **changing every 250ms**. Every price will show up green if it increased, or red if it decreased. This can put my MacBook Pro under a fair amount of load.
+>  Working in the financial sector on a number of high-frequency streaming applications, this is a scenario I came across multiple times.
+
+I used the Chrome Dev Tools to analyzed the CPU usage of each version. Let’s start with Angular with Zone:
+
+![](https://cdn-images-1.medium.com/max/6684/1*OHPJ7-Xjfb2Z2k_aO92leQ.gif)
+
+The below is taken without Zone:
+
+![Runtime Performance WIthout Zone](https://cdn-images-1.medium.com/max/6684/1*wnaSQ_ishYAJfxoXF5pCVA.gif)
+
+Let’s analyze the above, and take a look ar the CPU usage graph (the yellow one):
+
+* As you can see, in the zone version the CPU usage is constantly between 70% and 100%! Keep a tab under this load for enough time, and it will surely crash
+
+* In the second one, instead, the usage is stable at between 30% and 40%. Sweet!
+
+**Notice:** The results above are taken with the DevTools open, which decreases performance
+
+### Increasing the load
+
+I went on and tried to update 4 more prices every second for each pricer:
+
+* The non-Zone version was still able to manage the load without a problem with 50% CPU usage
+
+* I was able to bring the CPU close to the same load as the Zone version only by **updating a price every 10ms** (x 100 pricers)
+
+## Benchmarking with Angular Benchpress
+
+The above is not the most scientific benchmark there is nor it aims to be, so I’d suggest you to [check out this benchmark](https://krausest.github.io/js-framework-benchmark/current.html) and uncheck all the frameworks but Angular and Zoneless Angular.
+
+I took some inspiration from it, and [I created a project](https://github.com/Gbuomprisco/zoneless-angular) that executes some heavy operations which I benchmarked it with [Angular Benchpress](https://github.com/angular/angular/tree/master/packages/benchpress).
+
+Let’s see the component tested:
+
+```typescript
+@Component({...})
+export class AppComponent {
+  public data = [];
+
+  @observed()
+  run(length: number) {
+    this.clear();
+    this.buildData(length);
+  }
+
+  @observed()
+  append(length: number) {
+    this.buildData(length);
+  }
+
+  @observed()
+  removeAll() {
+    this.clear();
+  }
+
+  @observed()
+  remove(item) {
+    for (let i = 0, l = this.data.length; i < l; i++) {
+      if (this.data[i].id === item.id) {
+        this.data.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  trackById(item) {
+    return item.id;
+  }
+
+  private clear() {
+    this.data = [];
+  }
+
+  private buildData(length: number) {
+    const start = this.data.length;
+    const end = start + length;
+
+    for (let n = start; n <= end; n++) {
+      this.data.push({
+        id: n,
+        label: Math.random()
+      });
+    }
+  }
+}
+```
+
+I then run a small benchmarking suite with Protractor and Benchpress: it executes the operations for a specified number of times.
+
+![Benchpress in Action](https://cdn-images-1.medium.com/max/4780/1*MSpwgSWb4kMmF_DQ1fSqXw.gif)
+
+### Results
+
+Here’s a sample of the output returned by this tool:
+
+![Benchpress Output](https://cdn-images-1.medium.com/max/3646/1*iTx3gtXSHdtQMtTpvPOAaA.png)
+
+And here’s an explanation of the metrics returned by the output:
+
+```
+- gcAmount: gc amount in kbytes
+- gcTime: gc time in ms
+- majorGcTime: time of major gcs in ms
+- pureScriptTime: script execution time in ms, without gc nor render
+- renderTime: render time in ms
+- scriptTime: script execution time in ms, including gc and render
+```
+
+**Notice**: The graphs below will only show the rendering time. The complete outputs can be found at [the following link](https://github.com/Gbuomprisco/zoneless-angular).
+
+### Test: Create 1000 Rows
+
+The first test creates 1000 rows:
+
+![](https://cdn-images-1.medium.com/max/2400/1*M_Xf_UFY44GlSPYQVrYFqQ.png)
+
+### Test: Create 10000 Rows
+
+As the load gets heavier, we can see a bigger difference:
+
+![](https://cdn-images-1.medium.com/max/2400/1*4MNMFldeEsqoLpVXxdZ9dA.png)
+
+### Test: Append 1000 Rows
+
+This test appends 1000 rows to a list of 10000:
+
+![](https://cdn-images-1.medium.com/max/2400/1*nf9Y3LciXdGC5doeTdxaJg.png)
+
+### Test: Remove 10000 Rows
+
+This test creates 10000 rows and removes them:
+
+![](https://cdn-images-1.medium.com/max/2400/1*00zTob3NtHKEZuT-Upnh2g.png)
+
+## Final Words
+
+While I do hope you enjoyed the article, I also hope I didn’t just convince you to run to the office and remove Zone from your project: this strategy **should be the very last thing** you may want to do if you plan on increasing the performance of an Angular application.
+
+Techniques such as OnPush change detection, *trackBy*, detaching components, running outside of Zone, and blacklisting Zone events (among many others) should always be preferred. The tradeoffs are significant and it’s a tax you may not want pay.
+
+In fact, developing without Zone may still be quite daunting, unless you have complete control over the project (e.g. you own the dependencies and have the freedom and time to manage the overhead).
+
+If all else fails, and you think Zone may actually be a bottleneck, then it may be a good idea to try and give Angular a further boost by manually detecting changes.
+
+I hope this article gave you a good idea of what may be coming to Angular, what Ivy makes possible to do, and how you can work around Zone to achieve maximum speed for your applications.
+
+### [Source Code](https://gist.github.com/Gbuomprisco/e6b3f762b0be6f3ce296af49253cc4e3)
+
+The source code for the Typescript decorator can be found at its [Github Project](https://github.com/Gbuomprisco/ngx-toolkit/blob/master/projects/observed-property/src/lib/index.ts) page:
+{% gist https://gist.github.com/Gbuomprisco/e6b3f762b0be6f3ce296af49253cc4e3.js %}
+### Resources
+
+* [Frontend Frameworks Benchmark](https://krausest.github.io/js-framework-benchmark/current.html)
+
+* [Zoneless Benchmark Project](https://github.com/Gbuomprisco/zoneless-angular) (zone branch contains the code with Zone)
+
+* [RFC: Component: Proposal for a new package `component`](https://github.com/ngrx/platform/issues/2052)
+
+* [Building with Ivy: rethinking reactive Angular](https://www.youtube.com/watch?v=rz-rcaGXhGk)
+
+If you need any clarifications, or if you think something is unclear or wrong, do please leave a comment!

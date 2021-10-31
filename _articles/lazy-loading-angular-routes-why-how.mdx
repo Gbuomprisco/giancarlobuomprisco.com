@@ -1,0 +1,313 @@
+---
+date: '2020-05-07T00:00:00.322Z'
+title: Lazy-Loading Auxiliary Routes with Angular — Why and How
+coverImage: "https://miro.medium.com/max/1400/1*7pMwQXna1YiDRRiIO5ofXA.jpeg"
+excerpt: "Auxiliary Routes can be helpful for both technical and UX reasons: learn why and how to use them with Angular"
+collection: angular
+live: true
+canonical: https://blog.bitsrc.io/lazy-loading-auxiliary-routes-with-angular-why-and-how-9ceb2ddc6cae
+tags:
+  - angular
+  - performance
+---
+
+This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io) blog
+
+Auxiliary Routes are independent, secondary routes that can be added to a page along with a primary route. As an example, we can have a side-menu that lives within the primary route with its own `router-outlet`: that’s an auxiliary route.
+
+## Why are Auxiliary Routes useful?
+
+Why would you want to add auxiliary routes to your application? Well — I would argue there are two good reasons for doing it: auxiliary routes are helpful for both technical and User Experience reasons:
+
+- In terms of UX, we use them for providing our users the ability to access or toggle portions of the page via the URL. That means you can link your application’s users to deep parts of your application with a simple URL, without them having to click anywhere
+
+- In technical terms, we can also reduce the initial loading time by lazy loading the routes in the same way as we would do with normal full-page routes
+
+Auxiliary Routes can provide two non-trivial improvements to your application — and here’s even further good news: the Angular Router makes working with them a breeze. Let’s learn how! 🚀
+
+## How do we create an Auxiliary Route?
+
+Creating an auxiliary route works in the same way as creating normal routes, with one difference: to create an auxiliary route, we need to assign a name to the `router-outlet ` element that will host its contents.
+
+That means:
+- a router-outlet without a name will render the primary route matched by the URL
+- a router-outlet with a name assigned will match and host auxiliary routes
+
+## Authentication Popup as an Auxiliary Route
+
+One of the most classic uses of auxiliary routes is creating popups that are also accessible via URL.
+
+For example, I would argue that redirecting users directly to a login popup rather than prompting them to click a button makes for a much better UX. But at the same time, if the login was not requested — why load it?
+
+While there may be good reasons for doing it beforehand, which we will explore later on, in some cases you simply want to download **only the strictly required amount of code** your users need to be able to use your app.
+
+### Creating a new Library
+
+I assume you have already created an Angular project with the CLI.
+
+I am a huge fan of Angular libraries — and as such, I always recommend to create a separate library (be it within a monorepo or not) if you have a fair amount of code that you can share and reuse between multiple applications.
+
+So — the first thing we do is to create a new library auth using the CLI:
+
+```
+ng generate library auth
+```
+
+[The full source code of the application can be found on GitHub.](https://github.com/Gbuomprisco/ng-auxiliary-routes)
+
+### Creating the Sign In and Sign up Modules
+
+Next, we will be creating two modules: `sign-in` and `sign-up`.
+
+The main module `AuthModule` created with the library will simply be used as a routing wapper to these two sub-modules. Of course, they will be lazy-loaded.
+
+Assume we have generated the two modules with the CLI: what we need to do is to provide the routing needed to load their route component:
+
+```typescript
+// sign in module
+
+@NgModule({
+  declarations: [SignInComponent],
+    imports: [
+        CommonModule,
+        SignInRoutingModule
+    ]
+})
+export class SignInModule { }
+
+// sign in routing module
+@NgModule({
+    imports: [
+        RouterModule.forChild([{
+            path: '',
+            component: SignInComponent
+        }])
+    ],
+    exports: [RouterModule]
+})
+export class SignInRoutingModule {}
+```
+
+The process for `SignUpModule` is the same, so we’ll skip it.
+
+Below, we define the two routes and we lazy load them using `loadChildren`:
+
+```typescript
+const routes: Route[] = [
+  {
+    component: AuthComponent,
+    path: '',
+    children: [
+      {
+        path: 'sign-in',
+        loadChildren: () => import('./sign-in/sign-in.module').then(m => m.SignInModule)
+      },
+      {
+        path: 'sign-up',
+        loadChildren: () => import('./sign-up/sign-up.module').then(m => m.SignUpModule)
+      },
+      {
+        path: '**',
+        redirectTo: 'sign-in'
+      }
+    ]
+  }
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forChild(routes)
+  ],
+  exports: [RouterModule]
+})
+export class AuthRoutingModule { }
+```
+
+As we have mentioned, `AuthModule` and its component `AuthComponent` are simply wrappers around our two sub-routes.
+
+This is what `AuthComponent` looks like:
+
+```typescript
+@Component({
+  selector: 'auth',
+  template: `
+    <router-outlet></router-outlet>
+  `
+})
+export class AuthComponent {}
+```
+
+Our Library’s routing is done! Certainly, our components are still empty, but we will get back to them later on.
+
+## Wiring app the application with the Auth library
+
+The first thing we need to do is to create a new router-outlet in the App component’s template:
+
+```html
+// Primary Routing outlet
+<router-outlet></router-outlet>
+
+// Dialog Routing outlet
+<router-outlet name="dialog"></router-outlet>
+```
+
+Now that we have created a secondary router outlet, we can define the routes that will be injected into it.
+
+Let’s open the `app.routing.module` file and add a new route in which we will instantiate the new routing library:
+
+```typescript
+const authRoute = {
+  path: 'auth',
+  outlet: 'dialog',
+  loadChildren: () => import('@auth').then(m => m.AuthModule)
+};
+
+const routes: Routes = [
+  authRoute,
+  // other routes
+];
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+
+As you can see above, thanks to the `loadChildren` function, we can lazy load the module `AuthModule` and the Angular routing will automatically import the bundled scripts for that module alone.
+
+It’s important to notice that we have added the property outlet to the routing configuration, which refers to the name of the router outlet we defined in the template in the previous step.
+
+
+### Navigating to Auxiliary Routes
+Navigating to auxiliary routes is also possible is the directive routerLink. Check out below how to navigate to the routes we have just built:
+
+```html
+<button 
+  [routerLink]="[{ outlets: { dialog: ['auth', 'sign-in'] } }]"
+>
+  Sign In
+</button>
+
+<button 
+  [routerLink]="[{ outlets: { dialog: ['auth', 'sign-up'] } }]"
+>
+  Sign Up
+</button>
+```
+
+## Creating the Sign In and Sign Up Components
+
+It’s now time to create the components for signing in and up into your application.
+
+We will use Angular Material’s Dialog module to display the data as a dialog:
+
+```typescript
+@Component({
+  selector: 'sign-in',
+  template: `
+    <ng-template #dialog>
+      <div mat-dialog-title>
+        Sign In
+      </div>
+
+      <div mat-dialog-content>
+        <div>
+          <mat-form-field appearance="outline">
+            <input type="email" placeholder="Email" matInput />
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="outline">
+            <input type="password" placeholder="Password" matInput />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div mat-dialog-actions>
+        <button mat-flat-button color="primary">
+          Sign In
+        </button>
+      </div>
+    </ng-template>
+  `,
+  styleUrls: ['./sign-in.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class SignInComponent implements AfterViewInit {
+  @ViewChild('dialog') template: TemplateRef<any>;
+
+  constructor(
+      private dialog: MatDialog
+  ) { }
+
+  ngAfterViewInit() {
+    this.dialog.open(this.template, { width: '350px' });
+  }
+}
+```
+
+### The dialog is closed, but the URL is still the same!
+This is a common problem: if the dialog gets closed, the context of being in a certain route should also reset — but those are not actually connected in any way.
+
+That means, we need to handle this situation manually: wee subscribe to the event when the dialog is closed, and then we navigate to the previous route
+
+```typescript
+ngAfterViewInit() {
+  const ref = this.dialog.open(this.template, { width: '350px'});
+
+  ref.afterClosed().subscribe(() => {
+    this.router.navigate(['']);
+  });
+}
+```
+
+It gets a little bit more complex when you do not know in which route you currently are: in that case, you can strip the auxiliary route from the current primary route and navigate there. 
+
+The code below should work in most situations:
+
+```typescript
+const urlWithoutAuxiliaryRoute = this.router
+  .createUrlTree(['.'], { relativeTo: this.route })
+  .root.children[PRIMARY_OUTLET].toString();
+
+this.router.navigate([urlWithoutAuxiliaryRoute]);
+```
+
+### Let’s see it in action!
+
+Here is a preview of what we’ve achieved: try to pay particular attention to the Network tab and see that the bundles are downloaded as I click on the button!
+
+![Demo](https://miro.medium.com/max/2000/1*_pbpk3nf1I8IJZjXyzzXxA.gif)
+
+## This is great. But can we do better?
+The answer is yes! The Angular router allows strategies to preload certain modules. You can choose to pre-load all the modules OR, better, you can use `ngx-quicklink`.
+
+This library will intelligently pre-load the routes that are currently visible in your page, and will only do so if the web page is idle and a link that points t the route is currently visible within the viewport. 
+
+As soon as the route becomes visible, the library will start fetching the bundles so that they will be readily available to execute.
+
+Adding NgxQuicklink is extremely easy:
+
+- First, we import the module
+- Then, we add the strategy to the main routing configuration
+
+```typescript
+RouterModule.forRoot(routes, {
+  preloadingStrategy: QuicklinkStrategy
+})
+```
+
+Remember to also add the module to the lazy-loaded routes!
+
+## Final Words
+As you have seen, lazy loading auxiliary routes is a feature easily enabled by the Angular Router that allows us to ship much better applications both from a UX and a technical perspective.
+
+The techniques described above can be applied to a multitude of use cases: think about all the popups in your applications that are not currently auxiliary route: how much more lightweight would your application be if they were all lazy-loaded as auxiliary routes? And how great would it be if you could create links to deeper parts of your application?
+
+I’m sure you know the answers 😉
+
+[The source code can be found on GitHub](https://github.com/Gbuomprisco/ng-auxiliary-routes)
+
+If you need any clarifications, or if you think something is unclear or wrong, do please leave a comment!
+

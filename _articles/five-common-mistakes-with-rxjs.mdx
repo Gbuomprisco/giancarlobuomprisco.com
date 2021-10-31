@@ -1,0 +1,210 @@
+---
+date: '2020-08-03T00:00:00.322Z'
+title: 5 common mistakes with RxJS
+coverImage: "https://miro.medium.com/max/1400/1*SZ7Ubdlu8CbNjvI8-LezVw.jpeg"
+excerpt: A list of common mistakes while using RxJS, and explanations on what to do instead
+collection: rxjs
+live: true
+canonical: https://blog.bitsrc.io/5-common-mistakes-with-rxjs-1b09d4c19387
+tags:
+  - rxjs
+---
+
+This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io/5-common-mistakes-with-rxjs-1b09d4c19387) blog
+
+As a Consultant, I’ve had the privilege to work with many teams and projects in a relatively short amount of time.
+
+This not only allowed me to learn a lot from the existing codebases and team members but also to understand the biggest mistakes committed by the teams who weren’t very familiar with Rx and Angular.
+
+## 1) Not Unsubscribing
+
+I and many others have talked at length about the subject, but this is still the most common mistake I normally see — i.e. not unsubscribing from a stream at all.
+
+This has various consequences such as:
+- Causing memory leaks
+- Causing unwanted callbacks being called
+- Potentially, causing serious bugs in your app
+
+The best and most elegant way to unsubscribe from Observable is using a subject that emits a value when the component is destroyed.
+
+Alternatively, you can maintain a class property on your component with the subscription, and unsubscribe it when the component is destroyed.
+
+It’s pretty important, don’t forget.
+
+## 2) Omitting an initial value
+
+This happens pretty commonly with Angular forms. Say you subscribe to a stream expecting to get the value — but you never get one. How is that possible?
+
+Well — sometimes it’s caused by the fact that the stream was not initialized by an initial value, and an event was never dispatched.
+
+Here’s a common scenario with Angular’s forms:
+
+```typescript
+const name = new FormControl('Giancarlo');
+const formGroup = new FormGroup({ name });
+const valueChanges$ = formGroup.valueChanges;
+
+valueChanges.subscribe((value) => {
+    // do something
+});
+```
+
+Unless the user changes the `name` FormControl in some way, the callback will never be called.
+
+But — we do want the subscription to emit using the initial value of the `FormGroup` (and many would expect it to do so).
+
+In this case, we need to push an initial value using the operator `startWith`:
+
+```typescript
+const valueChanges$ = formGroup.valueChanges.pipe(
+  startWith(formGroup.value)
+);
+
+valueChanges.subscribe((value) => {
+    // do something
+});
+```
+
+In this case, we will receive an emission using the initial value of the form, and all the changes emitted after that.
+
+## 3) Using the wrong Operators
+
+There are a lot of operators out there — and while you certainly don’t need to learn them all, you need to make sure you understand the details of each one that you are using.
+
+Small differences can have big consequences.
+
+
+### Example: mergeMap vs switchMap
+
+One of the most commonly used operators is `mergeMap`. This operator allows you to flatten an inner Observable and will maintain many active streams for each event: this is great in some situations, and not very ideal in others.
+
+In many cases, you may want to instead maintain only 1 active subscription. For example, if you have an event whose events call an HTTP endpoint, you may want to cancel the outgoing requests and only call the very latest one: in this case, you’ll be better off with `switchMap`.
+
+If you’re not careful, `mergeMap` may cause duplicate and unwanted subscriptions, while `switchMap` can lead to race conditions. Ultimately, both may lead to bugs and your code malfunctioning.
+
+This is one example of the many, sometimes tiny, differences that make RxJS operators.
+
+As I said above — you do not need to know every Rx operator. You do need, though, to understand the small peculiarities of the ones you’re using and compare with similar others to understand which one is suitable in your case.
+
+Other notable differences you should be aware of:
+- `zip` vs `forkJoin` vs `combineLatest` vs r`ace
+- `merge` vs `combineLatest`
+- `timer` vs `interval`
+- `never` vs `empty`
+- `of` vs `from`
+- `buffer` vs `window`
+
+## 4) Using the wrong type of Subject
+
+Another important mistake not to commit is to not choose the wrong type of Subject for your task.
+
+Subjects are a special type of Observables that allow you to push values in the stream and also retrieve them by subscribing to it.
+
+While normal `Subject` likely cover most situations, there are slight differences that you should be aware of.
+
+### Late Subscribers
+
+One common scenario is when your Subject emits events before an observer subscribes to its changes. 
+
+If you’re expecting your subscriber to receive the data, you’re out of luck: it won’t.
+In this kind of scenario, you should instead opt for a `ReplaySubject`, which is able to replay all the events it received to also late subscribers. 
+
+It is particularly useful also when you only want to keep the latest value in memory which you can do by defining its buffer size.
+
+Another alternative is the `BehaviorSubject` — which instead requires a value in order to be defined.
+
+## 5) Performing imperative logic inside the Subscription callback
+
+One of the greatest things about RxJs is that combining operators and reusing their logic is an incredibly nice (and easy) way to build reusable bits of code.
+
+Many of the benefits from writing Rx code ends once we subscribe to an Observable: the logic we write within subscription callbacks is not Rx-land and it’s the beginning of the end of FRP in our code.
+
+I am not saying you should never subscribe, of course, but my recommendation is to keep the logic within the subscription callbacks as small as possible — and wherever you can, avoid subscribing directly (for example, using the Angular async pipe).
+
+What are the drawbacks of using logic within subscriptions?
+
+### Limited Reusability
+
+RxJS streams are pipeable, which means they can be combined and extended and therefore reused.
+
+Any time you subscribe and perform logic within the subscription, you take away some logic that instead could have been offloaded to an Rx operator:
+
+```typescript
+const allItems$ = this.service.items$.pipe(
+  filter(Boolean)
+);
+
+const doneItems$ = allItems$.pipe(
+   map(items => items.filter(item => item.done)),
+);
+
+const numberOfRemainingItems$ = combineLatest(
+  [allItems$, doneItems$]
+).pipe(
+   map(([items, doneItems]) => items - doneItems),
+);
+```
+
+As you can see, creating intermediate streams, or offloading logic to separate operators, is an awesome way of reusing logic across your application.
+
+As a rule of thumb:
+- do not check whether a value is truthy within your subscription, you can easily handle it with the operator `filter(Boolean)`
+- don’t transform data in your subscription
+- side effects: for example, showing/hiding a loading icon, can be done with the `tap` or/and the `finalize` operators
+
+### Less Declarative
+
+Let’s see an example between an imperative and a declarative snippet:
+
+```typescript
+class UsersDashboardComponent {
+  users: User[];
+  activeUsers: [];
+  bannedUsers: [];
+
+  constructor(private service: UsersService) {
+     this.service.users$.subscribe(users => {
+        if (users) {
+          this.users = users;
+          this.activeUsers = users.filter(user => user.active);
+          this.bannedUsers = users.filter(user => user.banned);
+        }
+     });
+  }
+}
+```
+
+Now, let’s convert the above declarative streams:
+
+```typescript
+class UsersDashboardComponent {
+  users$ = this.service.users$.pipe(
+    filter(Boolean)
+  );
+
+  activeUsers$ = this.users$.pipe(
+    map(users => users.filter(user => user.active)),
+  );
+
+  bannedUsers$ = this.users$.pipe(
+    map(users => users.filter(user => user.banned)),
+  );
+
+  constructor(private service: UsersService) {}
+}
+```
+
+With that said, don’t forget to subscribe either, otherwise, your observables will never emit.
+
+## Final Words
+
+Rx is a pretty awesome library and a tool that can help you handle complex asynchronous aspects of your application with ease. It’s also quite big, and most often misunderstood.
+
+Making sure you follow the recommendations above will at least ensure that you’re taking care of an extremely common cause of mistakes, or bugs that you spend hours trying to fix.
+
+In summary:
+- Unsubscribe, always
+- Don’t omit an initial value if you expect one
+- Learn well the operators that you’re using. Small differences can lead to big mistakes.
+- Use the right type of `Subject`: they are suited for different use-cases
+- Write as much logic as possible declaratively and within your streams. Also, reuse the logic with custom operators or intermediate streams.

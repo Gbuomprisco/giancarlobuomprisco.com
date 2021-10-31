@@ -1,0 +1,258 @@
+---
+date: '2020-05-09T00:00:00.322Z'
+title: 3 Ways to Render Large Lists in Angular
+coverImage: "https://cdn-images-1.medium.com/max/2560/1*URBd9pgYJGC0vhqthQ-z8g.jpeg"
+excerpt: "An overview of the available techniques to render large lists of items with Angular"
+collection: angular
+live: true
+canonical: https://blog.bitsrc.io/3-ways-to-render-large-lists-in-angular-9f4dcb9b65
+tags:
+  - angular
+  - performance
+---
+
+This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io) blog
+
+Frameworks in 2020 got better, more efficient and faster. With that said, rendering large lists of items on the Web without causing the Browser to freeze can still be hard even for the fastest frameworks available.
+
+This is one of the many cases where “the framework is fast, your code is slow”.
+
+There are many different techniques that make rendering a large number of items in a non-blocking way for the users. In this article, I want to explore the current techniques available, and which ones are best to use based on particular use-cases.
+
+Although this article focuses on how to optimize rendering with Angular, these techniques are actually applicable to other frameworks or simply Vanilla Javascript.
+
+This article goes in detail about an aspect I talked about in one of my previous articles: rendering too much data.
+[**Top Reasons Why Your Angular App Is Slow**](https://blog.bitsrc.io/top-reasons-why-your-angular-app-is-slow-c36780a0a289)
+
+We will take a look at the following techniques:
+
+* Virtual Scrolling (using the Angular CDK)
+
+* Manual Rendering
+
+* Progressive Rendering
+
+## 1. Virtual Scrolling
+
+Virtual Scrolling is probably the most efficient way of handling large lists, with a catch. Thanks to the [Angular CDK](https://material.angular.io/cdk/scrolling/overview) and other plugins it is very easy to implement in any component.
+
+The concept is simple, but the implementation is not always the easiest:
+
+* given a container and a list of items, an item is only rendered if it’s within the visible boundaries of the container
+
+To use the CDK’s Scrolling module, we first need to install the module:
+
+```
+npm i @angular/cdk
+```
+
+Then, we import the module:
+
+```typescript
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
+@NgModule({
+    // more stuff
+    imports: [ ScrollingModule, ...]
+})
+export class AppModule {}  
+```
+
+We can now use the components to use virtual scrolling in our components:
+
+```html
+<cdk-virtual-scroll-viewport itemSize="50">       
+    <div cdkVirtualFor="let item of items">
+        {{ item }}
+    </div>
+</cdk-virtual-scroll-viewport>
+```
+
+[**cdk-virtual-scrolling-2 - StackBlitz**](https://stackblitz.com/edit/cdk-virtual-scrolling-2?embed=1&file=src/app/app.component.ts)
+
+As you can see, this is extremely easy to use and the results are impressive.The component renders thousands and thousands of items without any problem.
+
+If Virtual Scrolling is so good and easy to achieve, why bother exploring other techniques? This is something I’ve been wondering too — and actually there’s more than one reason as to why.
+
+* The way it’s going to work **is very dependent on implementation**: it’s hard to be able to manage all the possible scenarios with one single implementation.
+For example, my component depended on the Autocomplete field (built by the same team) and unfortunately, it didn’t work as expected. **The more complex your items, the more difficult it’s going to be**.
+
+* Another module, another **big chunk of code added to your app**.
+
+* Accessibility and Usability: the hidden items are not rendered, and therefore won’t be searchable.
+
+Virtual Scrolling is ideal (when it works) in a number of situations:
+
+* an undefined and possibly enormous list of items (approximately greater than 5k, but it’s highly dependent on the complexity of each item)
+
+* infinite scrolling of items
+
+## 2. Manual Rendering
+
+One of the options I’ve tried to speed up a large list of items is manual rendering using Angular’s API rather than relying on *ngFor.
+
+We have a simple ngFor loop template:
+
+```html
+<tr 
+ngFor="let item of data; trackBy: trackById; let isEven= even; let isOdd=odd"
+class="h-12"
+[class.bg-gray-400]="isEven"
+[class.bg-gray-500]="isOdd"
+>
+    <td>
+        <span class="py-2 px-4">{{ item.id }}</span>
+    </td>
+
+    <td>
+        <span>{{ item.label }}</span>
+    </td>
+
+    <td>
+        <a>
+            <button class="py-2 px-4 rounded (click)="remove(item)">x</button>
+        </a>
+    </td>
+</tr>
+```
+
+I’m using a benchmark inspired by [js-frameworks-benchmark](https://github.com/krausest/js-framework-benchmark) to calculate the rendering of 10000 simple items.
+
+The first benchmark run was done with a simple, regular *ngFor. Here are the results: scripting took 1099ms and rendering took 1553ms, 3ms painting.
+
+![](https://cdn-images-1.medium.com/max/4146/1*LGYl5iEdCclao9xBwf8OWA.png)
+
+By using Angular’s API, we can manually render the items.
+
+```html
+<tbody>
+    <ng-container #itemsContainer></ng-container>
+</tbody>
+
+<ng-template #item let-item="item" let-isEven="isEven">
+    <tr class="h-12"
+            [class.bg-gray-400]="isEven"
+            [class.bg-gray-500]="!isEven"
+        >
+        <td>
+            <span class="py-2 px-4">{{ item.id }}</span>
+        </td>
+
+        <td>
+            <span>{{ item.label }}</span>
+        </td>
+
+        <td>
+            <a>
+                <button class="py-2 px-4 rounded" (click)="remove(item)">x</button>
+            </a>
+        </td>
+    </tr>
+</ng-template>
+```
+
+The controller’s code changes in the following way:
+
+* we declare our template and our container
+
+```typescript
+@ViewChild('itemsContainer', { read: ViewContainerRef }) container: ViewContainerRef;
+@ViewChild('item', { read: TemplateRef }) template: TemplateRef<*any*>;
+```
+
+* when we build the data, we also render it using the `ViewContainerRef` `createEmbeddedView` method
+
+```typescript
+private buildData(length: number) {
+    const start = this.data.length;
+    const end = start + length;
+
+    for (let n = start; n <= end; n++) {
+        this.container.createEmbeddedView(this.template, {
+            item: {
+            id: n,
+            label: Math.random()
+            },
+            isEven: n % 2 === 0
+        });
+    }
+}
+```
+
+Results show a modest improvement:
+
+* 734ms time spent scripting, 1443 rendering, and 2ms painting
+
+![](https://cdn-images-1.medium.com/max/3604/1*CH1WBRRNITeihGU_GTKtxg.png)
+
+In practical terms, though, it’s still super slow! The browser freezes for a few seconds when the button is clicked, delivering a poor user experience to the user.
+
+This is how it looks like (I’m moving the mouse to simulate a loading indicator 😅):
+
+![](https://cdn-images-1.medium.com/max/4044/1*xk1PjG4TZWoGyaRv52PbeQ.gif)
+
+Let’s now try *Progressive Rendering* combined with *Manual Rendering*.
+
+## 3. Progressive Rendering
+
+The concept of progressive rendering is simply to render a subset of items progressively and postpone the rendering of other items in the event loop. This allows the browser to smoothly and progressively render all the items.
+
+The code below is simply:
+
+* we create an interval running every 10ms and render 500 items at once
+
+* when all items have been rendered, based on the index, we stop the interval and break the loop
+
+```typescript
+private buildData(length: number) {
+    const ITEMS_RENDERED_AT_ONCE = 500;
+    const INTERVAL_IN_MS = 10;
+
+    let currentIndex = 0;
+
+    const interval = setInterval(() => {
+    const nextIndex = currentIndex + ITEMS_RENDERED_AT_ONCE;
+
+    for (let n = currentIndex; n <= nextIndex ; n++) {
+        if (n >= length) {
+        clearInterval(interval);
+        break;
+        }
+
+        const context = {
+        item: {
+            id: n,
+            label: Math.random()
+        },
+        isEven: n % 2 === 0
+        };
+
+        this.container.createEmbeddedView(this.template, context);
+    }
+
+    currentIndex += ITEMS_RENDERED_AT_ONCE;
+}, INTERVAL_IN_MS);
+```
+
+
+Notice that the number of items rendered and the interval time **is totally dependent on your circumstances**. For example, if your items are very complex, rendering 500 items at once is certainly going to be very slow.
+
+As you can see below, the stats look certainly worse:
+
+![](https://cdn-images-1.medium.com/max/6078/1*vvRWsqcSW78AwqdpPQYQMg.png)
+
+What’s not worse though is the user experience. Even though the time it takes to render the list is longer than before, the user can’t tell. We’re rendering 500 items at once, and the rendering happens outside of the container boundaries.
+
+Some issues may arise with the container changing its size or scroll position while that happens, so these issues need to be mitigated in a few cases.
+
+Let’s see how it looks like:
+
+![](https://cdn-images-1.medium.com/max/4044/1*rXyVNesQmRiG2v7nS374Ow.gif)
+
+## Final Words
+
+The above techniques are certainly useful in some situations and I’ve used them whenever virtual scrolling was not the best option.
+
+With that said, for the most part, virtual scrolling using a great library like Angular’s CDK is definitely the best way to tackle large lists.
+
+If you need any clarifications, or if you think something is unclear or wrong, do please leave a comment!

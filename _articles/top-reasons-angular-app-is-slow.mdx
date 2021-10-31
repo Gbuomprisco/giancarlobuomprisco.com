@@ -1,0 +1,180 @@
+---
+date: '2020-01-21'
+title: Top Reasons Why Your Angular App Is Slow
+coverImage: "https://cdn-images-1.medium.com/max/7918/0*d4quzk2cNQJ_O9Fq"
+excerpt: "Is your app slow? Learn what to watch out when debugging poor performance in your Angular apps!"
+collection: angular
+live: true
+canonical: https://blog.bitsrc.io/top-reasons-why-your-angular-app-is-slow-c36780a0a289
+tags:
+  - angular
+  - performance
+---
+
+This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io) blog
+
+## Introduction
+
+Angular is, by default, a fast and performant framework. While it leaves ample space for improvement by opting out some of its magic, we almost never have to do anything special to write extremely performant code for the average app.
+
+With that said, some difficulties will eventually arise when we are writing either **performance-critical** apps, apps with **large and complex content**, or apps **updated extremely frequently**.
+
+There are loads of resources and popular advice out there about improving performance with Angular apps. While most of it is totally good and valid advice, what I have personally found while mitigating performance issues is not often talked about.
+
+In this article, I want to show some of the most important reasons why Angular apps become slow at scale. What we will see is that it doesn’t really matter the framework used — these tips will be valid for any framework.
+
+## Micro Optimizations: Do they Matter?
+
+In my experience, this is a very misunderstood topic among developers. Whenever I’ve had to deal with performance issues, many colleagues were pointing out at code that could have been causing these issues, which very often happened to be micro-optimizations that would only save a few milliseconds.
+
+Some examples:
+
+* *“We’re using too much reduce, map and filter, let’s replace them all with for loops!”*
+
+* *“Let’s use a dictionary for accessing data faster!”*
+
+* *“Bitwise Operators!”*
+
+I always thought there was something else going on.
+
+**The ones above are all very valid points** if you are coding performance-critical applications, frameworks or libraries. The first thing people look at when trying to find the reason why they’re experiencing poor performance is to debug every function call:
+
+* *“How much did it take to find an item in this list [of maybe 300 items]?*
+
+* *“How long did it take to sort [800 items]”?*
+
+But when you’re developing an application, these optimizations may count much less than you think.
+
+**This is not to say it can’t happen**, but I would start questioning two other possible issues first:
+
+* How much is the app actually rendering?
+
+* How often is the framework re-rendering components?
+
+As we will see, even when following best practices, sometimes they’re not enough to prevent slow performance. And most often it’s not due to the framework we’re using but to our code or architecture.
+
+## Your app is rendering too often
+
+Let’s start with this quite common issue: your application re-renders components unnecessarily, making your application slower than it could be. This is both easy to solve and easy to cause.
+
+### Change Detection
+
+Setting the default change detection to **OnPush** is an almost mandatory step if your application is suffering from slow performance, or if you want to prevent from it happening in the future.
+
+By setting your components to update only “on push”, you prevent re-rendering components that don’t need to be checked. It’s straightforward and its usage is greatly simplified when using Observables and the Async pipe.
+
+### Async Pipe
+
+Even if you’re using OnPush and the async pipe in your templates, you may still be re-rendering more than it is actually needed.
+
+For example, in my experience, preventing observables from emitting is a good way to prevent your component from re-rendering. For example, you may use operators such as filter and distinctUntilChanged to skip re-renderings altogether.
+
+Another issue that I’ve experienced even when using Observables and Async pipe was due to selecting items from a store without selectors. If we write and use granular selectors, **we only receive updates from the state slice affected**.
+
+If we select the whole object from a Redux state tree, the selectors will emit every time the tree-changed, and as a result, **we will end up triggering updates on components that are virtually unaffected**.
+
+This is a seemingly subtle improvement that ended up making one of my applications **from barely usable to decently performant on IE11**.
+
+For more information about improving efficiently with RxJS, check out my article below:
+[**RxJS Patterns: Efficiency and Performance**](https://blog.bitsrc.io/rxjs-patterns-efficiency-and-performance-10bbf272c3fc)
+
+### High-Frequency Updates
+
+This is a use-case where Angular doesn’t excel at, and it is probably due to Zone.js, which is also the reason behind Angular’s magical change detection.
+
+Zone.js will monkey-patch all events and will schedule a change detection when any of these happened. That means that if your application is streaming events at a fast rate (Websocket, or even DOM events), for each event received, Zone will trigger a change detection. There’s definitely room for improvements in similar cases.
+
+I have talked in depth about this at the link below:
+[**Quantum Angular: Maximizing Performance by Removing Zone**](https://blog.bitsrc.io/quantum-angular-maximizing-performance-by-removing-zone-e0eefe85b8d8)
+
+Of course, you don’t need to remove Zone from your app to solve this issue. Here are a few steps you can take instead:
+
+* detach the affected components, then update surgically when your subscriptions get notified
+
+* use ngZone.runOutsideAngular(callback) to run the callback outside of Angular’s change detection
+
+* last resort: exclude the event from being monkey-patched by Zone
+
+## Your app is rendering too much
+
+No matter how fast your framework is, if you are rendering thousands of complex components in one go, the browser is eventually going to show some amount of lag.
+
+Even if maybe on your Macbook Pro it isn’t very noticeable, slower machines will definitely struggle, and you should think that not everyone is using a powerful machine.
+
+It’s extremely important to make sure that components rendered many items (eg. within lists) are optimized in a particular way.
+
+How can you solve this?
+
+### Keying
+
+This is the simplest and probably most well-known technique which is baked in most libraries. The concept is simple: we assign a key to each item of a list, and the library will re-render it only if the key has changed.
+
+This works great when adding/removing items or when the amount of items changes is limited but still doesn’t solve a performance issue if we render a vast amount of items at once. For example — if we render a very large list at page load.
+
+### **Virtual Scrolling**
+
+Only render what the user can see.
+
+While this has accessibility/usability implications to be aware of, it is one of the best methods to improve perceived performance and avoid getting the page frozen for an unreasonable amount of time, [which is less than you’d think](https://www.smashingmagazine.com/2015/09/why-performance-matters-the-perception-of-time/).
+
+[It’s pretty easy to implement: the Angular CDK provides a utility for ](https://material.angular.io/cdk/scrolling/overview)this!
+
+### **Async Rendering**
+
+This is an older technique, to which I’d prefer virtual scrolling, but that can still be better than rendering 1000 items at once and it is very easy to implement without having to write much code.
+
+The concept is this: start rendering a limited number of items (ex, 50 out of 500), then schedule a subsequent rendering with the next 50 items using **setTimeout(0)** until all items are rendered**. **This is a simple technique, so the results are also simple — but the browser won’t get stuck for 250ms while rendering.
+
+### **Lazy Rendering**
+
+Not everything has to be rendered right away, sometimes we can simply render a component when the user needs to interact with it.
+
+Here’s a similar use-case I worked on: I was working on a page that used many instances of [Quill](https://quilljs.com/), a famous WYSIWYG library.
+
+This is a great tool, but it’s pretty heavy. Instantiating one of its components took 20–30ms, and I had to render hundreds of them on a page. My Macbook pro crashed.
+
+Instantiating it right away was pretty silly: WYSIWYG can be simple HTML when not interacted with. I could simply instantiate the component when the user needed to, e.g. when hovered or clicked on. All performance issues were gone!
+
+### Lazy Listeners
+
+This is directly related to the previous points: subscribing and listening to too many events may be quite expensive.
+
+Avoiding subscribing to too many events can be done in different ways:
+
+* If you have a large list of items with DOM handlers, make sure you only subscribe to the items that are visible (virtual scrolling help with this)
+
+* Sometimes you may want to only create one single global event from within a Service, rather than subscribing to the event in each Directive/Component
+
+## Some code… is just slow
+
+If you’ve done your research and figured out that your app doesn’t render that much and doesn’t render that often, then your code may just simply be quite slow. This is probably due to some heavy scripting and not DOM-related.
+
+Cheer up! It’s a good thing, as nowadays we have the tools to resolve this sort of issue.
+
+* Use [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers). The [Angular CLI](https://angular.io/guide/web-worker) also provides a command to generate a WebWorker in a snap. When is this a suitable route? Simple — when your code has nothing to do with rendering and takes a while to execute. This is normally crunching numbers, data-processing, etc. That’s great for Redux, right? [Wait, don’t do that yet.](https://twitter.com/MikeRyanDev/status/954151139968249857)
+
+* Use [WebAssembly](https://webassembly.org/), for example using [AssemblyScript](https://github.com/AssemblyScript/assemblyscript). Read this case study from [Figma](https://www.figma.com/blog/webassembly-cut-figmas-load-time-by-3x/) for more information.
+
+If the above are not routes you’re comfortable with, or simply don’t solve your use case, then it’s time to try micro-optimizations and see by how much they can improve your runtime performance:
+
+* Use a [Custom Iterable Differ](https://blog.mgechev.com/2017/11/14/angular-iterablediffer-keyvaluediffer-custom-differ-track-by-fn-performance/)
+
+* Turn everything into for-loops, scrap filter, reduce and map. Use break and continue to reduce the number of iterations
+
+* Maintain the shape of your objects. Learn more about how Angular is so fast [watching this video from Misko Hevery](https://www.youtube.com/watch?v=EqSRpkMRyY4)
+
+## Takeaways
+
+* Opt-out of the framework’s magic: make sure you use ChangeDetection.OnPush and TrackBy for arrays
+
+* Render less often by surgically triggering change detections on your components. Run outside Zone when needed.
+
+* Try to render less using a variety of techniques such as virtual scrolling and lazy rendering
+
+* Don’t listen to everything: subscribe to only the items that are visible, and subscribe to only one global event listener
+
+### Resources
+
+* One of the most enlightening talks about Angular-related performance issues: [Performance optimizations in Angular | Mert Değirmenci](https://www.youtube.com/watch?v=Tlmx1PbP8Qw&t=6s)
+
+If you need any clarifications, or if you think something is unclear or wrong, do please leave a comment!

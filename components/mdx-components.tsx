@@ -1,12 +1,13 @@
 import { SITE_URL } from "../lib/constants";
 import ArticlesList from "./articles-list";
 import PostsList from "./posts-list";
+import TweetEmbed from "./tweet-embed";
 
 const LazyImage: React.FC<Record<string, string>> = (
   props: Record<string, string>
 ) => (
   <img
-    className={props.class ?? "" + " shadow-lg my-4 rounded-lg"}
+    className={props.class}
     src={props.src}
     alt={props.alt}
     loading="lazy"
@@ -31,6 +32,7 @@ const MDXComponents = {
   a: ExternalLink,
   ArticlesList,
   PostsList,
+  TweetEmbed,
 };
 
 export default MDXComponents;

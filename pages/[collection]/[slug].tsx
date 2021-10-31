@@ -142,6 +142,7 @@ function getPostItemBySlug(slug: string) {
     "excerpt",
     "series",
     "content",
+    "canonical",
   ]);
 
   if (article) {

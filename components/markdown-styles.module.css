@@ -17,13 +17,31 @@
 }
 
 .markdown pre {
-  @apply my-4 shadow-lg;
+  @apply my-8 shadow-lg;
+}
+
+.markdown img {
+  width: 150%;
+  max-width: 150%;
+
+  @apply relative block shadow-xl my-16 rounded-lg max-w-full lg:max-w-none lg:right-1/4;
 }
 
 .markdown ul {
   list-style: circle;
 
   @apply pl-10 pb-3 mb-3;
+}
+
+.markdown blockquote {
+  background-color: #fafafa;
+  border-bottom: 8px solid var(--accent-light);
+
+  @apply rounded my-6 p-4 shadow-lg text-base text-gray-900;
+}
+
+.markdown blockquote::first-letter {
+  initial-letter: 2;
 }
 
 .markdown li {
@@ -38,7 +56,7 @@
 
 .markdown pre:not([class]) {
   background: #efefef;
-  padding: 1rem;
+  padding: 0.25rem;
   margin: 2rem 0;
   overflow: auto;
   border-radius: 0.3em;
