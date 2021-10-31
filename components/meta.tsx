@@ -24,16 +24,6 @@ const Meta = () => {
         href="/favicon/favicon.png"
       />
 
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600&display=swap"
-      />
-
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap"
-      />
-
       <link rel="manifest" href="/favicon/site.webmanifest" />
       <link rel="mask-icon" href="/favicon/favicon.png" color="#000000" />
 

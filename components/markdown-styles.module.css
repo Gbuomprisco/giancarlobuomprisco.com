@@ -11,7 +11,7 @@
 }
 
 .markdown p {
-  @apply leading-8 text-xl font-normal mt-2 mb-6 font-serif;
+  @apply leading-8 text-lg font-thin mt-2 mb-6 font-serif;
 
   color: var(--color);
 }
@@ -45,7 +45,7 @@
 }
 
 .markdown li {
-  @apply leading-8 text-xl my-2 font-serif;
+  @apply leading-8 text-lg font-thin my-2 font-serif;
 
   color: var(--color);
 }

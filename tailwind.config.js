@@ -6,7 +6,7 @@ module.exports = {
   },
   theme: {
     fontFamily: {
-      serif: ["Noto Serif"],
+      serif: ["Merriweather"],
       sans: ["-apple-system", "BlinkMacSystemFont", "Inter"],
     },
     extend: {

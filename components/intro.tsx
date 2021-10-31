@@ -22,20 +22,20 @@ const Intro = () => {
         </div>
 
         <div className="flex-col space-y-6">
-          <h2 className="text-xl md:text-2xl">
-            I am a programmer, startup founder, teacher, sometimes weightlifter
+          <h2 className="text-2xl font-medium">
+            I&apos;m a programmer, startup founder, teacher, sometimes
+            weightlifter
           </h2>
 
-          <p className="text-base md:text-lg">
-            On this site I write about coding, the projects I am working on, and
-            my life in general
+          <p className="text-base font-serif">
+            On this site I write about programming, the projects I&apos;m
+            working on, and my life in general
           </p>
 
-          <p className="text-base md:text-lg">
-            Building digital products is one of my biggest passions. Lately,
-            I&apos;ve been getting more and more interested in Serverless for
-            Front-end Developers, and helping everyone to write full-stack
-            applications from scratch
+          <p className="text-base font-serif">
+            Lately, I&apos;ve been getting more and more interested in
+            Serverless for Front-end Developers, and helping beginners to write
+            full-stack applications from scratch
           </p>
         </div>
       </div>
