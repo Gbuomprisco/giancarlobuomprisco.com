@@ -13,16 +13,6 @@ fields:
   config:
     required: false
     color_format: Hex
-- name: logo
-  type: file
-  config:
-    maxSize: 64
-  label: Logo
-- name: emoji
-  type: text
-  config:
-    required: false
-  label: Emoji
 - name: primaryColorLight
   type: color
   label: Primary Color Light
@@ -35,3 +25,13 @@ fields:
   config:
     required: false
     color_format: Hex
+- name: logo
+  type: file
+  config:
+    maxSize: 64
+  label: Logo
+- name: emoji
+  type: text
+  config:
+    required: false
+  label: Emoji
