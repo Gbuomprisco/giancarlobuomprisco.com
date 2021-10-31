@@ -8,7 +8,7 @@ const Author = () => {
       </a>
 
       <a
-        className="text-xs text-gray-600"
+        className="text-sm text-gray-600"
         target="_blank"
         rel="noreferrer noopened"
         href={TWITTER_URL}

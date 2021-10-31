@@ -22,6 +22,7 @@ const ArticlePreview = ({ post }: Props) => {
   } = post;
 
   const postTitle = series ? `${series}: ${title}` : title;
+  const href = `/${collection.name.toLowerCase()}/${slug}`;
 
   return (
     <div>
@@ -32,12 +33,12 @@ const ArticlePreview = ({ post }: Props) => {
           slug={slug}
           title={postTitle}
           src={coverImage}
-          collection={collection}
+          href={href}
         />
       </div>
 
       <h3 className="text-2xl font-bold mb-2 leading-snug">
-        <Link as={`/${collection}/${slug}`} href="/[collection]/[slug]">
+        <Link as={href} href="/[collection]/[slug]">
           <a className="hover:underline">{postTitle}</a>
         </Link>
       </h3>
@@ -52,7 +53,7 @@ const ArticlePreview = ({ post }: Props) => {
         <span className="text-gray-600">·</span>
 
         <div className="text-xs">
-          <CollectionName name={collection} />
+          <CollectionName collection={collection} />
         </div>
       </div>
 

@@ -1,17 +1,15 @@
-import { getBrandingByCollection } from "../lib/collectionBranding";
 import styles from "./collection-branding-bar.module.css";
+import Collection from "../types/collection";
 
-const CollectionBrandingBar: React.FC<{ collection: string }> = ({
+const CollectionBrandingBar: React.FC<{ collection: Collection }> = ({
   collection,
 }) => {
-  const branding = getBrandingByCollection(collection);
-
   return (
     <div
       style={
         {
-          "--from": branding.colorPrimaryLight,
-          "--to": branding.colorPrimary,
+          "--from": collection.primaryColorLight,
+          "--to": collection.primaryColor,
         } as Record<string, string>
       }
       className={styles.gradient}

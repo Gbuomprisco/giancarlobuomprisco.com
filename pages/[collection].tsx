@@ -5,14 +5,17 @@ import Layout from "../components/layout";
 import CollectionBrandingBar from "../components/collection-branding-bar";
 import ConvertkitPostSignup from "../components/convertkit-post-signup";
 
-import { getAllCollections, getArticlesByCollection } from "../lib/api";
+import { getArticlesByCollection } from "../lib/api";
+import { getCollections, getCollection } from "../lib/collections";
+
 import Article from "../types/article";
 import CollectionName from "../components/collection-name";
 import PostTitle from "../components/post-title";
+import Collection from "../types/collection";
 
 type Props = {
   posts: Article[];
-  collection: string;
+  collection: Collection;
   preview?: boolean;
 };
 
@@ -26,7 +29,7 @@ const CollectionPosts = ({ posts, collection, preview }: Props) => {
 
         <div className="flex justify-center">
           <PostTitle>
-            <CollectionName logoSize="90px" name={collection} />
+            <CollectionName logoSize="90px" collection={collection} />
           </PostTitle>
         </div>
 
@@ -52,8 +55,8 @@ type Params = {
 };
 
 export async function getStaticProps({ params }: Params) {
-  const collection = params.collection;
-  const posts = getArticlesByCollection(collection);
+  const collection = getCollection(params.collection);
+  const posts = getArticlesByCollection(collection.name);
 
   return {
     props: {
@@ -64,13 +67,15 @@ export async function getStaticProps({ params }: Params) {
 }
 
 export async function getStaticPaths() {
-  const collections = getAllCollections();
+  const collections = getCollections();
 
   return {
     paths: collections.map((collection) => {
+      const collectionName = collection?.data.name.toLowerCase();
+
       return {
         params: {
-          collection,
+          collection: collectionName,
         },
       };
     }),

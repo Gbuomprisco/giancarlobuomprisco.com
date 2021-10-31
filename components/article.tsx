@@ -15,7 +15,6 @@ import PostTitle from "./post-title";
 import CollectionName from "./collection-name";
 
 import Article from "../types/article";
-import { getBrandingByCollection } from "../lib/collectionBranding";
 
 const Article: React.FC<{
   post: Article;
@@ -26,11 +25,12 @@ const Article: React.FC<{
 }> = ({ post, content, series, morePosts, isFallback }) => {
   const title = post.series ? `${post.series}: ${post.title}` : post.title;
   const ogImage = post.ogImage?.url || post.coverImage;
-  const branding = getBrandingByCollection(post.collection);
+  const collection = post.collection;
 
   const style: Record<string, string> = {
-    "--accent": branding.colorPrimary,
-    "--accent-light": branding.colorPrimaryLight,
+    "--accent": collection.primaryColor,
+    "--accent-light": collection.primaryColor,
+    "--accent-contrast": collection.contrastColor,
   };
 
   return (
@@ -84,8 +84,8 @@ const Article: React.FC<{
                 <SectionSeparator />
 
                 <h3 className="text-2xl md:text-3xl text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center">
-                  <span>More Posts for</span>{" "}
-                  <CollectionName logoSize="28px" name={post.collection} />
+                  <span>Learn more about</span>{" "}
+                  <CollectionName logoSize="28px" collection={collection} />
                 </h3>
 
                 <ArticlesList posts={morePosts} />

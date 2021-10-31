@@ -116,7 +116,10 @@ export async function getStaticPaths() {
   const articles = getAllArticles(["slug", "collection"]);
   const posts = getAllPosts(["slug", "collection"]);
 
-  const paths = [...articles, ...posts].map(({ collection, slug }) => {
+  const paths = [...articles, ...posts].map((post) => {
+    const slug = post.slug;
+    const collection = post.collection.name.toLowerCase();
+
     return {
       params: {
         collection,

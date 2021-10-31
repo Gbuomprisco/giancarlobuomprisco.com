@@ -1,6 +1,8 @@
+import Collection from "./collection";
+
 type Hub = {
   name: string;
-  collection: string;
+  collection: Collection;
   live: boolean;
   slug: string;
   content: string;

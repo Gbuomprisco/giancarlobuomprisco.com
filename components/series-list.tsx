@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 import Article from "../types/article";
 import DateFormatter from "./date-formatter";
-import { getBrandingByCollection } from "../lib/collectionBranding";
 
 const SeriesList: React.FC<{
   series: string | undefined;
@@ -26,22 +25,20 @@ const SeriesList: React.FC<{
       <div className="flex flex-col space-y-4">
         {posts.map(({ collection, title, slug, date, readingTime }, index) => {
           const isCurrent = router.asPath.includes(slug);
-          const branding = getBrandingByCollection(collection);
 
           const style = isCurrent
             ? {
-                backgroundColor: branding.colorPrimary,
+                backgroundColor: collection.primaryColor,
               }
             : {};
+
+          const href = `/${collection.name.toLowerCase()}/${slug}`;
+          const hrefString = `/[collection]/[slug]`;
 
           return (
             <div key={slug} className="flex flex-row items-center space-x-6">
               <div>
-                <Link
-                  as={`/${collection}/${slug}`}
-                  href="/[collection]/[slug]"
-                  passHref
-                >
+                <Link as={href} href={hrefString} passHref>
                   <div
                     style={style}
                     className={`rounded-full cursor-pointer w-10 h-10 opacity-90 hover:opacity-100 flex items-center justify-center ${
@@ -57,10 +54,7 @@ const SeriesList: React.FC<{
 
               <div className="flex flex-col space-y-1">
                 <h3 className="leading-snug text-xl">
-                  <Link
-                    as={`/${collection}/${slug}`}
-                    href="/[collection]/[slug]"
-                  >
+                  <Link as={href} href={hrefString}>
                     <a
                       className={`hover:underline ${
                         isCurrent ? "font-bold" : "font-medium"

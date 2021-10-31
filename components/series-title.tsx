@@ -1,13 +1,11 @@
-import { getBrandingByCollection } from "../lib/collectionBranding";
+import Collection from "../types/collection";
 
-const SeriesTitle: React.FC<{ collection: string }> = ({
+const SeriesTitle: React.FC<{ collection: Collection }> = ({
   children,
   collection,
 }) => {
-  const branding = getBrandingByCollection(collection);
-
   const style: Record<string, string> = {
-    color: branding.colorPrimary,
+    color: collection.primaryColor,
     lineHeight: "1.2",
   };
 

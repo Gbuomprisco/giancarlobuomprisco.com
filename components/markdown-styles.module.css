@@ -11,9 +11,14 @@
 }
 
 .markdown p {
-  @apply leading-8 text-lg font-thin mt-2 mb-6 font-serif;
+  @apply leading-8 text-lg font-normal md:font-thin mt-2 mb-6 font-serif;
 
   color: var(--color);
+}
+
+.markdown b,
+.markdown strong {
+  font-weight: 800;
 }
 
 .markdown pre {
@@ -35,9 +40,9 @@
 
 .markdown blockquote {
   background-color: #fafafa;
-  border-bottom: 8px solid var(--accent-light);
+  border-top: 8px solid var(--accent-light);
 
-  @apply rounded my-6 p-4 shadow-lg text-base text-gray-900;
+  @apply rounded-lg my-12 p-8 shadow-lg hover:shadow-xl font-semibold text-2xl text-gray-800 font-sans;
 }
 
 .markdown blockquote::first-letter {
@@ -45,7 +50,7 @@
 }
 
 .markdown li {
-  @apply leading-8 text-lg font-thin my-2 font-serif;
+  @apply leading-8 text-lg font-normal md:font-thin my-2 font-serif;
 
   color: var(--color);
 }
@@ -91,10 +96,12 @@
 
 .markdown ::selection {
   background: var(--accent-light);
+  color: var(--accent-contrast);
   font-weight: bold;
 }
 
 .markdown ::-moz-selection {
   background: var(--accent-light); 
+  color: var(--accent-contrast);
   font-weight: bold;
 }

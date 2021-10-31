@@ -9,12 +9,16 @@ type Props = {
 };
 
 const PostPreview = ({ post }: Props) => {
-  const { title, slug, collection, date, readingTime } = post;
+  const { title, slug, date, collection, readingTime } = post;
+
+  const collectionName = collection.name.toLowerCase();
+  const href = `/${collectionName}/${slug}`;
+  const hrefString = "/[collection]/[slug]";
 
   return (
     <div>
       <h3 className="text-2xl font-bold mb-2 leading-snug">
-        <Link as={`/${collection}/${slug}`} href="/[collection]/[slug]">
+        <Link as={href} href={hrefString}>
           <a className="hover:underline">{title}</a>
         </Link>
       </h3>
@@ -29,7 +33,7 @@ const PostPreview = ({ post }: Props) => {
         <span className="text-gray-600">·</span>
 
         <div className="text-xs">
-          <CollectionName name={collection} />
+          <CollectionName collection={collection} />
         </div>
       </div>
     </div>

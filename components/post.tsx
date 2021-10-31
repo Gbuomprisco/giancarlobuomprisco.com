@@ -14,7 +14,6 @@ import CollectionName from "./collection-name";
 
 import PostType from "../types/blog-post";
 import PostsList from "./posts-list";
-import { getBrandingByCollection } from "../lib/collectionBranding";
 
 const Post: React.FC<{
   post: PostType;
@@ -22,16 +21,17 @@ const Post: React.FC<{
   isFallback: boolean;
   content: MDXRemoteSerializeResult;
 }> = ({ post, content, morePosts, isFallback }) => {
-  const branding = getBrandingByCollection(post.collection);
+  const collection = post.collection;
 
   const style: Record<string, string> = {
-    "--accent": branding.colorPrimary,
-    "--accent-light": branding.colorPrimaryLight,
+    "--accent": collection.primaryColor,
+    "--accent-light": collection.primaryColorLight,
+    "--accent-contrast": collection.contrastColor,
   };
 
   return (
     <Layout>
-      <CollectionBrandingBar collection={post.collection} />
+      <CollectionBrandingBar collection={collection} />
 
       <Container>
         <MainHeader />
@@ -61,8 +61,8 @@ const Post: React.FC<{
                 <SectionSeparator />
 
                 <h3 className="text-2xl md:text-3xl text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center">
-                  <span>More Posts for</span>{" "}
-                  <CollectionName logoSize="28px" name={post.collection} />
+                  <span>Learn more about</span>{" "}
+                  <CollectionName logoSize="28px" collection={collection} />
                 </h3>
 
                 <PostsList posts={morePosts} />

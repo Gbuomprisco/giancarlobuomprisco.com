@@ -24,6 +24,12 @@ const Meta = () => {
         href="/favicon/favicon.png"
       />
 
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="//fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Merriweather:wght@300;400;700&display=swap"
+      />
+
       <link rel="manifest" href="/favicon/site.webmanifest" />
       <link rel="mask-icon" href="/favicon/favicon.png" color="#000000" />
 

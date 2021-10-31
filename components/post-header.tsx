@@ -8,19 +8,25 @@ import BlogPost from "../types/blog-post";
 import SeriesTitle from "./series-title";
 import Author from "./author";
 
-const PostHeader = ({ post }: { post: Article | BlogPost }) => {
-  const { title, date, collection, readingTime, live } = post;
+type Props = {
+  post: Article | BlogPost;
+};
+
+const PostHeader = ({ post }: Props) => {
+  const { title, date, readingTime, slug, live, collection } = post;
 
   const series = "series" in post && post.series;
   const coverImage = "coverImage" in post ? post.coverImage : "";
+  const href = `/${collection.name.toLowerCase()}/${slug}`;
 
   return (
     <>
       {series && <SeriesTitle collection={collection}>{series}</SeriesTitle>}
+
       <PostTitle>{title}</PostTitle>
 
       <div className="mb-4 flex justify-center">
-        <CollectionName logoSize="18px" name={collection} />
+        <CollectionName logoSize="18px" collection={collection} />
       </div>
 
       <div className="max-w-2xl mx-auto mb-6">
@@ -48,6 +54,7 @@ const PostHeader = ({ post }: { post: Article | BlogPost }) => {
               height="auto"
               title={title}
               src={coverImage}
+              href={href}
             />
           </div>
         </div>

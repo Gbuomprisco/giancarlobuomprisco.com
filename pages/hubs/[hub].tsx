@@ -6,7 +6,6 @@ import MainHeader from "../../components/main-header";
 import Layout from "../../components/layout";
 import Container from "../../components/container";
 import MDXRenderer from "../../components/mdx-renderer";
-import markdownStyles from "../../components/markdown-styles.module.css";
 
 import ConvertkitPostSignup from "../../components/convertkit-post-signup";
 import CollectionBrandingBar from "../../components/collection-branding-bar";
@@ -14,7 +13,6 @@ import CollectionName from "../../components/collection-name";
 
 import { getHubBySlug, getAllHubs, queryAll } from "../../lib/api";
 import Hub from "../../types/hub";
-import { getBrandingByCollection } from "../../lib/collectionBranding";
 import markdownToHtml from "../../lib/markdownToHtml";
 
 type Props = {
@@ -29,11 +27,11 @@ type Params = {
 };
 
 const HubPage = ({ hub, content }: Props) => {
-  const branding = getBrandingByCollection(hub.collection);
+  const collection = hub.collection;
 
   const style: Record<string, string> = {
-    "--accent": branding.colorPrimary,
-    "--accent-light": branding.colorPrimaryLight,
+    "--accent": collection.primaryColor,
+    "--accent-light": collection.primaryColorLight,
   };
 
   return (
@@ -53,7 +51,7 @@ const HubPage = ({ hub, content }: Props) => {
           <Hero>{hub.name}</Hero>
 
           <div className="flex justify-center mb-16">
-            <CollectionName name={hub.collection} />
+            <CollectionName collection={hub.collection} />
           </div>
 
           <div>
@@ -75,7 +73,7 @@ export async function getStaticProps({ params }: Params) {
   const { hub: slug } = params;
 
   const hub = getHubBySlug(slug) as Hub;
-  const data = queryAll(hub.collection, hub.tags);
+  const data = queryAll(hub.collection.name, hub.tags);
   const content = await markdownToHtml(hub.content, data);
 
   return {

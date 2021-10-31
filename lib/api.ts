@@ -1,6 +1,4 @@
-import fs from "fs";
 import { join } from "path";
-import matter, { GrayMatterFile } from "gray-matter";
 import { IS_PRODUCTION } from "./constants";
 
 import Article from "../types/article";
@@ -8,11 +6,12 @@ import BasePost from "../types/base-post";
 import BlogPost from "../types/blog-post";
 import Hub from "../types/hub";
 
+import { getPath, readDirectory, readFrontMatter } from "./fs-utils";
+import { getCollection } from "./collections";
+
 type ArticleFields = Array<keyof Article>;
 type BlogPostFields = Array<keyof BlogPost>;
 type HubsFields = Array<keyof Hub>;
-
-const MDX = `mdx`;
 
 const DEFAULT_ARTICLE_FIELDS: ArticleFields = [
   "title",
@@ -55,22 +54,20 @@ const postsDirectory = join(process.cwd(), POSTS_DIRECTORY_NAME);
 const hubsDirectory = join(process.cwd(), HUBS_DIRECTORY_NAME);
 
 export function getArticleSlugs() {
-  return fs.readdirSync(articlesDirectory);
+  return readDirectory(articlesDirectory);
 }
 
 export function getPostsSlugs() {
-  return fs.readdirSync(postsDirectory);
+  return readDirectory(postsDirectory);
 }
 
 export function getHubsSlugs() {
-  return fs.readdirSync(hubsDirectory);
+  return readDirectory(hubsDirectory);
 }
 
 const allArticles = getArticleSlugs();
 const allPosts = getPostsSlugs();
 const allHubs = getHubsSlugs();
-
-const postCache = new Map<string, GrayMatterFile<string>>();
 
 export function getArticleBySlug(
   slug: string,
@@ -105,14 +102,20 @@ export function getArticlesByCollection(
   collection: string,
   fields: ArticleFields = DEFAULT_ARTICLE_FIELDS
 ) {
-  return getAllArticles(fields, (item) => item.collection === collection);
+  return getAllArticles(
+    fields,
+    (item) => item.collection?.name.toLowerCase() === collection.toLowerCase()
+  );
 }
 
 export function getPostsByCollection(
   collection: string,
   fields: BlogPostFields = DEFAULT_POST_FIELDS
 ) {
-  return getAllPosts(fields, (item) => item.collection === collection);
+  return getAllPosts(
+    fields,
+    (item) => item.collection?.name.toLowerCase() === collection.toLowerCase()
+  );
 }
 
 export function getPostsBySeries(
@@ -139,7 +142,9 @@ function getReadingTimeInMinutes(content: string, wpm = 225) {
   return Math.ceil(words / wpm);
 }
 
-function filterByPublishedPostsOnly(post: Partial<Article>) {
+function filterByPublishedPostsOnly<Item extends { live: boolean }>(
+  post: Item
+) {
   if (!IS_PRODUCTION || !("live" in post)) {
     return true;
   }
@@ -169,9 +174,9 @@ function getPostFieldsBySlug<PostType>(
   directory: string,
   fields: Array<keyof PostType> = []
 ): Partial<PostType> | undefined {
-  const postPathData = getPostPath(slug, directory);
+  const postPathData = getPath(slug, directory);
   const { fullPath, realSlug } = postPathData;
-  const file = readPost(fullPath, directory);
+  const file = readFrontMatter(fullPath);
 
   if (!file) {
     return;
@@ -180,7 +185,7 @@ function getPostFieldsBySlug<PostType>(
   const { data, content } = file;
   const readingTime = getReadingTimeInMinutes(content);
 
-  const items: Record<string, string> = {
+  const items: Record<string, unknown> = {
     live: data.live,
     readingTime: `${readingTime} min read`,
   };
@@ -188,6 +193,11 @@ function getPostFieldsBySlug<PostType>(
   for (const field of fields as string[]) {
     if (field === "slug") {
       items[field] = realSlug;
+      continue;
+    }
+
+    if (field === "collection") {
+      items[field] = getCollection(data[field]);
       continue;
     }
 
@@ -223,14 +233,14 @@ export function getAllArticles(
 export function queryAll(collection: string, tags: string[]) {
   const articles = getAllArticles(DEFAULT_ARTICLE_FIELDS, (article) => {
     return (
-      article.collection === collection &&
+      article.collection?.name === collection &&
       tags?.some((tag) => article.tags?.includes(tag))
     );
   });
 
   const posts = getAllPosts(DEFAULT_POST_FIELDS, (post) => {
     return (
-      post.collection === collection &&
+      post.collection?.name === collection &&
       tags?.some((tag) => post?.tags?.includes(tag))
     );
   });
@@ -274,37 +284,4 @@ function _getAllPosts<Type extends BasePost>(
 
       return item.date > nextItem.date ? -1 : 1;
     });
-}
-
-function getPostPath(slug: string, directory: string) {
-  const regExp = /\.(mdx|md)$/;
-  const result = slug.match(regExp);
-  const realSlug = slug.replace(regExp, "");
-  const extension = (result && result[0]) ?? `.${MDX}`;
-  const postPath = `${realSlug}${extension}`;
-  const fullPath = join(directory, postPath);
-
-  return {
-    fullPath,
-    realSlug,
-  };
-}
-
-function readPost(fullPath: string, directory: string) {
-  const key = `${directory}:${fullPath}`;
-
-  if (postCache.has(key)) {
-    return postCache.get(key);
-  }
-
-  try {
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const file = matter(fileContents);
-
-    postCache.set(key, file);
-
-    return file;
-  } catch (e) {
-    return;
-  }
 }
