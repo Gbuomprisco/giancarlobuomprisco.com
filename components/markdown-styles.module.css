@@ -39,14 +39,10 @@
 }
 
 .markdown blockquote {
-  background-color: #fafafa;
-  border-top: 8px solid var(--accent-light);
+  border-left: 8px solid var(--accent-light);
+  font-weight: 400;
 
-  @apply rounded-lg my-12 p-8 shadow-lg hover:shadow-xl font-semibold text-2xl text-gray-800 font-sans;
-}
-
-.markdown blockquote::first-letter {
-  initial-letter: 2;
+  @apply my-12 p-8 md:font-light shadow-xl text-3xl text-gray-500 font-sans;
 }
 
 .markdown li {

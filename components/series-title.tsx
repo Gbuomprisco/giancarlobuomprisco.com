@@ -11,7 +11,7 @@ const SeriesTitle: React.FC<{ collection: Collection }> = ({
 
   return (
     <h1
-      className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-4 text-center"
+      className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-2 text-center"
       style={style}
     >
       {children}

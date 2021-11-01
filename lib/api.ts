@@ -291,3 +291,17 @@ function _getAllPosts<Type extends BasePost>(
       return item.date > nextItem.date ? -1 : 1;
     });
 }
+
+export function getAllTags() {
+  const tags = getAllArticles().reduce<string[]>((acc, post) => {
+    return [...acc, ...post.tags];
+  }, []);
+
+  return Array.from(new Set(tags));
+}
+
+export function getArticlesByTag(tag: string) {
+  return getAllArticles(DEFAULT_ARTICLE_FIELDS, (article) => {
+    return Boolean(article.tags?.includes(tag));
+  });
+}

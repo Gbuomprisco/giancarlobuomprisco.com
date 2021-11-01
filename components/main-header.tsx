@@ -3,7 +3,7 @@ import Navigation from "./navigation";
 
 const Header = () => {
   return (
-    <div className="flex-row flex justify-between items-center my-8 md:my-12">
+    <div className="flex-row flex justify-between items-center my-6 md:my-8">
       <MainLogo />
       <Navigation />
     </div>

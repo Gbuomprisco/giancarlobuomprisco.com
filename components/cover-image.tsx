@@ -4,13 +4,22 @@ import Link from "next/link";
 type Props = {
   title: string;
   src: string;
-  width: string;
-  height: string;
   href: string;
+  className?: string;
+  width?: string;
+  height?: string;
   slug?: string;
 };
 
-const CoverImage = ({ title, src, slug, href, width, height }: Props) => {
+const CoverImage = ({
+  title,
+  src,
+  slug,
+  href,
+  width,
+  height,
+  className,
+}: Props) => {
   const imageStyle = {
     width,
     height,
@@ -19,8 +28,9 @@ const CoverImage = ({ title, src, slug, href, width, height }: Props) => {
   const image = (
     <img
       style={imageStyle}
-      className={cn("shadow-small block", {
-        "hover:shadow-medium transition-shadow duration-200": slug,
+      className={cn("block", {
+        "hover:shadow-xl transition-shadow duration-500": slug,
+        [`${className}`]: true,
       })}
       src={src}
       alt={`Cover Image for ${title}`}

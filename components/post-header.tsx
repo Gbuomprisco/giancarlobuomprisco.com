@@ -1,12 +1,15 @@
+import Link from "next/link";
+
 import DateFormatter from "./date-formatter";
 import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
-import CollectionName from "./collection-name";
+import CollectionTag from "./collection-tag";
 import DraftBadge from "./draft-badge";
 import Article from "../types/article";
 import BlogPost from "../types/blog-post";
 import SeriesTitle from "./series-title";
 import Author from "./author";
+import Tag from "./tag";
 
 type Props = {
   post: Article | BlogPost;
@@ -25,8 +28,9 @@ const PostHeader = ({ post }: Props) => {
 
       <PostTitle>{title}</PostTitle>
 
-      <div className="mb-4 flex justify-center">
-        <CollectionName logoSize="18px" collection={collection} />
+      <div className="mb-6 flex space-x-2 items-center justify-center">
+        <CollectionTag logoSize="18px" collection={collection} />
+        <PostTags tags={post.tags} collection={collection.name} />
       </div>
 
       <div className="max-w-2xl mx-auto mb-6">
@@ -50,6 +54,7 @@ const PostHeader = ({ post }: Props) => {
         <div className="mb-8 md:mb-16 sm:mx-0">
           <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
             <CoverImage
+              className="shadow-lg"
               width="100%"
               height="auto"
               title={title}
@@ -62,5 +67,34 @@ const PostHeader = ({ post }: Props) => {
     </>
   );
 };
+
+function PostTags({
+  tags,
+  collection,
+}: {
+  tags: string[];
+  collection: string;
+}) {
+  return (
+    <>
+      {tags
+        .filter((tag) => {
+          // exclude collections with the same name as the tag
+          return tag.toLowerCase() !== collection.toLowerCase();
+        })
+        .map((tag) => {
+          const href = `/tags/${tag}`;
+
+          return (
+            <Link key={tag} href="/tags/[tag]" as={href} passHref>
+              <Tag>
+                <a href={href}>{tag}</a>
+              </Tag>
+            </Link>
+          );
+        })}
+    </>
+  );
+}
 
 export default PostHeader;

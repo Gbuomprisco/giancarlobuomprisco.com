@@ -25,11 +25,10 @@ const ArticlePreview = ({ post }: Props) => {
   const href = `/${collection.name.toLowerCase()}/${slug}`;
 
   return (
-    <div>
+    <div className="shadow-lg hover:shadow-xl transition-shadow duration-500">
       <div className="mb-3">
         <CoverImage
-          width="100%"
-          height="auto"
+          className="h-full lg:h-40 xl:h-48 w-full shadow"
           slug={slug}
           title={postTitle}
           src={coverImage}
@@ -37,13 +36,15 @@ const ArticlePreview = ({ post }: Props) => {
         />
       </div>
 
-      <h3 className="text-2xl font-bold mb-2 leading-snug">
-        <Link as={href} href="/[collection]/[slug]">
-          <a className="hover:underline">{postTitle}</a>
-        </Link>
-      </h3>
+      <div className="px-4 py-2">
+        <h3 className="text-2xl font-bold mb-2 leading-snug">
+          <Link as={href} href="/[collection]/[slug]">
+            <a className="hover:underline">{postTitle}</a>
+          </Link>
+        </h3>
+      </div>
 
-      <div className="text-xs mb-2 flex flex-row space-x-2 items-center">
+      <div className="text-xs mb-4 flex flex-row space-x-2 items-center px-4">
         <div className="text-gray-600">
           <DateFormatter dateString={date} />
         </div>
@@ -57,7 +58,7 @@ const ArticlePreview = ({ post }: Props) => {
         </div>
       </div>
 
-      <p className="leading-relaxed mb-4 text-sm">{excerpt}</p>
+      <p className="leading-relaxed mb-4 px-4 text-sm">{excerpt}</p>
     </div>
   );
 };

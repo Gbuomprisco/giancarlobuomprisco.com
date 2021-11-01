@@ -1,27 +1,35 @@
+import Head from "next/head";
+
 import Container from "../components/container";
 import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
-import Head from "next/head";
+import Hero from "../components/hero";
+import SubHeading from "../components/subheading";
+
+import { TITLE } from "../lib/constants";
+
+const Heading: React.FC = ({ children }) => {
+  return <h3 className="font-semibold text-3xl leading-loose">{children}</h3>;
+};
 
 const About = () => {
   return (
     <>
       <Layout>
         <Head>
-          <title>About</title>
+          <title>{TITLE} | About Me</title>
         </Head>
 
         <Container>
           <MainHeader />
 
-          <div className="max-w-2xl mx-auto leading-loose text-lg">
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight mb-10 md:pr-8 mx-auto">
-              About Me
-            </h1>
+          <Hero>About Me</Hero>
+          <SubHeading>The past decade of my life in a web-page</SubHeading>
 
+          <div className="max-w-2xl mx-auto leading-loose text-lg mt-12">
             <div className="flex-col space-y-8 pb-12">
               <div>
-                <h3 className="font-semibold text-3xl">TDLR;</h3>
+                <Heading>TDLR;</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
@@ -44,7 +52,7 @@ const About = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold text-3xl">2021</h3>
+                <Heading>2021</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
@@ -75,7 +83,7 @@ const About = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold text-3xl">2020</h3>
+                <Heading>2020</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
@@ -107,7 +115,7 @@ const About = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold text-3xl">2019</h3>
+                <Heading>2019</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
@@ -149,7 +157,7 @@ const About = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold text-3xl">2017-2018</h3>
+                <Heading>2017-2018</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
@@ -177,7 +185,7 @@ const About = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold text-3xl">2015-2016</h3>
+                <Heading>2015-2016</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
@@ -196,7 +204,7 @@ const About = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold text-3xl">2013-2014</h3>
+                <Heading>2013-2014</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p>
@@ -227,7 +235,7 @@ const About = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold text-3xl">2010-2013</h3>
+                <Heading>2010-2013</Heading>
 
                 <p className="font-serif flex-col space-y-6">
                   <p className="font-serif">

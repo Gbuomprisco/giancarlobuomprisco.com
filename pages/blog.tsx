@@ -5,6 +5,7 @@ import PostsList from "../components/posts-list";
 import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
 import Hero from "../components/hero";
+import SubHeading from "../components/subheading";
 
 import { getAllPosts } from "../lib/api";
 import Post from "../types/article";
@@ -19,13 +20,14 @@ const Blog = ({ posts }: Props) => {
     <>
       <Layout>
         <Head>
-          <title>{TITLE} - Blog</title>
+          <title>{TITLE} | Blog</title>
         </Head>
 
         <Container>
           <MainHeader />
 
           <Hero>Blog</Hero>
+          <SubHeading>Short-form posts, notes and tips</SubHeading>
 
           <div className="space-y-12 mt-8 md:mt-16">
             <div className="w-full md:w-8/12 lg:w-6/12">

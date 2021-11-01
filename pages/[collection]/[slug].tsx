@@ -146,6 +146,7 @@ function getPostItemBySlug(slug: string) {
     "series",
     "content",
     "canonical",
+    "tags",
   ]);
 
   if (article) {
@@ -162,6 +163,7 @@ function getPostItemBySlug(slug: string) {
       "slug",
       "collection",
       "content",
+      "tags",
     ]) as BlogPost,
     type: Types.BlogPost,
   };

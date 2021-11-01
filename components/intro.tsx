@@ -27,12 +27,12 @@ const Intro = () => {
             weightlifter
           </h2>
 
-          <p className="text-base font-serif">
+          <p className="text-base">
             On this site I write about programming, the projects I&apos;m
             working on, and my life in general
           </p>
 
-          <p className="text-base font-serif">
+          <p className="text-base">
             Lately, I&apos;ve been getting more and more interested in
             Serverless for Front-end Developers, and helping beginners to write
             full-stack applications from scratch

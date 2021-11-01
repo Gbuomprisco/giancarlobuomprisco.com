@@ -1,14 +1,13 @@
 import Link from "next/link";
+import IconLogo from "./icon-logo";
 
 const MainLogo = () => {
   return (
-    <h2 className="font-normal tracking-tight md:tracking-tighter leading-tight">
-      <Link href="/" passHref>
-        <a className="hover:underline">
-          <b>GIANCARLO</b>BUOMPRISCO
-        </a>
-      </Link>
-    </h2>
+    <Link href="/" passHref>
+      <a className="hover:underline">
+        <IconLogo />
+      </a>
+    </Link>
   );
 };
 

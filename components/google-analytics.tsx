@@ -1,11 +1,28 @@
-import Script from "next/script";
+const GoogleAnalyticsScript: React.FC<{ accountId: string }> = ({
+  accountId,
+}) => {
+  const script = getAnalyticsScript(accountId);
 
-function GoogleAnalyticsScript() {
-  const env = process.env.NODE_ENV;
+  return (
+    <>
+      <script
+        async
+        defer
+        src="https://www.googletagmanager.com/gtag/js"
+      ></script>
 
-  if (env !== "production") return null;
+      <script
+        id="gtmDataLayer"
+        dangerouslySetInnerHTML={{ __html: script }}
+      ></script>
+    </>
+  );
+};
 
-  const script = `
+export default GoogleAnalyticsScript;
+
+function getAnalyticsScript(id: string) {
+  return `
     window.dataLayer = window.dataLayer || [];
 
     function gtag() {
@@ -13,22 +30,6 @@ function GoogleAnalyticsScript() {
     }
 
     gtag('js', new Date());
-    gtag('config', 'UA-172483071-1');
+    gtag('config', '${id}');
 `;
-
-  return (
-    <>
-      <Script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=UA-172483071-1"
-      ></Script>
-
-      <Script
-        id="gtmDataLayer"
-        dangerouslySetInnerHTML={{ __html: script }}
-      ></Script>
-    </>
-  );
 }
-
-export default GoogleAnalyticsScript;

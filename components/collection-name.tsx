@@ -2,6 +2,7 @@ import cn from "classnames";
 import Link from "next/link";
 
 import Collection from "../types/collection";
+import CollectionImage from "./collection-image";
 
 function CollectionName({
   collection,
@@ -33,33 +34,6 @@ function CollectionName({
 }
 
 export default CollectionName;
-
-function CollectionImage({
-  collection,
-  size,
-}: {
-  collection: Collection;
-  size: string;
-}) {
-  if (collection.emoji) {
-    return <span style={{ fontSize: size }}>{collection.emoji}</span>;
-  }
-
-  const style: Record<string, string> = {
-    width: size,
-    height: size,
-  };
-
-  return (
-    <img
-      className="object-contain"
-      loading="lazy"
-      style={style}
-      src={collection.logo}
-      alt={collection.name}
-    />
-  );
-}
 
 function getCollectionClass(name: string) {
   return `collection--${name.toLowerCase()}`;

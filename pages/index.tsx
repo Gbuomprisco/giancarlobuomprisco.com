@@ -18,7 +18,10 @@ const Index = ({ allPosts }: Props) => {
     <>
       <Layout>
         <Head>
-          <title>{TITLE}</title>
+          <title>
+            {TITLE} | Learn how to build Serverless applications with web
+            technologies such as React, Next.js, Angular, NestJS and Firebase
+          </title>
         </Head>
 
         <Container>
@@ -28,8 +31,12 @@ const Index = ({ allPosts }: Props) => {
             <Intro />
           </div>
 
-          <div className="flex-col space-y-12 mt-8 md:mt-16">
-            <ArticlesList posts={allPosts} />
+          <div className="mt-8 md:mt-16">
+            <h2 className="text-2xl font-bold">Latest Articles</h2>
+
+            <div className="flex-col space-y-12 mt-4">
+              <ArticlesList posts={allPosts} />
+            </div>
           </div>
         </Container>
       </Layout>
