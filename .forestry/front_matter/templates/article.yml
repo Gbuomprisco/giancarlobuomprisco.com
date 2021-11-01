@@ -44,8 +44,13 @@ fields:
     - rxjs
     - thoughts
     source:
-      type: simple
-      section: 
-      file: 
+      type: pages
+      section: collection
+      file: _articles/five-common-mistakes-with-rxjs.mdx
       path: 
   label: Collection
+- name: canonical
+  type: text
+  config:
+    required: false
+  label: Canonical
