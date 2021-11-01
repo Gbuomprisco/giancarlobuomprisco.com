@@ -43,3 +43,4 @@ fields:
   label: Published
 pages:
 - _posts/streamline-your-code-with-typescript-assertions.mdx
+- _posts/using-brotli-with-node.js.mdx
