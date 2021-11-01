@@ -1,18 +1,18 @@
 ---
 date: 2021-11-01T22:53:02+01:00
-collection: _collections/node.mdx
+collection: "node.mdx"
 tags: []
 title: Using Brotli with Node.js
-live: false
+live: true
 
 ---
-Brotli is a compression algorithm developed by Google, able to compress data even smaller than gzip.
+Brotli is a compression algorithm developed by Google, able to compress data even smaller than gzip can.
 
 Compressing can be useful in many situations; the most notable being serving your website assets in a much smaller format.
 
 But there are times when we may want to use _brotli_ programmatically, for example using NodeJS.
 
-As a personal anectode, I recently needed to store large(ish) strings into Redis, which is an in-memory database. Of course, space size is limited, and every byte counts.
+As a personal anectode, I recently needed to store large(ish) strings into **Redis**, which is an in-memory database. Of course, space size is limited, and every byte counts.
 
 I was willing to pay a small CPU-related price for saving space and network transfer payloads (which Firebase, of course, bills me for).
 
@@ -31,19 +31,30 @@ Like many other APIs, Node comes with async and sync versions. For simplicity, w
 
 When compressing, we need to turn the input data structure into a string. 
 
-    import { brotliCompressSync } from 'zlib';
-    
-    // let's assume this is an object or string you want to store, such as a JSON object;
-    const data = [];
-    const compressed = brotliCompressSync(JSON.stringify(data)).toString('base64');
-    
-    // do something with "compressed"
+```typescript
+import { brotliCompressSync } from 'zlib';
 
-This can become a small utility function
+// let's assume this is an object or 
+// string you want to store
+// such as a JSON object
+const data = [];
 
-    export function compressWithBrotli(data: unknown) {
-      return brotliCompressSync(JSON.stringify(data)).toString('base64');
-    }
+const compressed = brotliCompressSync(
+  JSON.stringify(data)
+).toString('base64');
+
+// do something with "compressed"
+```
+
+The above can become a small utility function:
+
+```typescript
+export function compressWithBrotli(data: unknown) {
+  return brotliCompressSync(
+    JSON.stringify(data)
+  ).toString('base64');
+}
+```
 
 ### Decompressing
 
@@ -53,14 +64,18 @@ For decompressing a Brotli base64 string and turning it back into its JSON repre
 * we then decompress using the built-in utility `brotliDecompressSync`
 * we check if the value is truthy, and if so, parse the string using `JSON.parse`
 
-    import { brotliDecompressSync } from 'zlib';
-    
-    export function decompressWithBrotli(data: string) {
-      const buffer = Buffer.from(data, 'base64');
-      const value = brotliDecompressSync(buffer).toString('utf-8');
-    
-      return value ? JSON.parse(value) : undefined;
-    }
+```typescript
+import { brotliDecompressSync } from 'zlib';
+
+export function decompressWithBrotli(data: string) {
+  const buffer = Buffer.from(data, 'base64');
+
+  const value = 
+    brotliDecompressSync(buffer).toString('utf-8');
+
+  return value ? JSON.parse(value) : undefined;
+}
+```
 
 We can now use the utility functions `compressWithBrotli` and `decompressWithBrotli` to compress our text on-the-fly.
 

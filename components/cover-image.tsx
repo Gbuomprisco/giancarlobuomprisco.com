@@ -29,7 +29,7 @@ const CoverImage = ({
     <img
       style={imageStyle}
       className={cn("block", {
-        "hover:shadow-xl transition-shadow duration-500": slug,
+        "transition-shadow duration-500": slug,
         [`${className}`]: true,
       })}
       src={src}

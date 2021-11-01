@@ -22,7 +22,7 @@
 }
 
 .markdown pre {
-  @apply my-8 shadow-lg;
+  @apply my-8 shadow-xl;
 }
 
 .markdown img {

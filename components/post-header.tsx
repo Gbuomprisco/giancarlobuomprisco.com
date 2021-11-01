@@ -28,7 +28,7 @@ const PostHeader = ({ post }: Props) => {
 
       <PostTitle>{title}</PostTitle>
 
-      <div className="mb-6 flex space-x-2 items-center justify-center">
+      <div className="mb-6 flex space-x-3 items-center justify-center">
         <CollectionTag logoSize="18px" collection={collection} />
         <PostTags tags={post.tags} collection={collection.name} />
       </div>
@@ -54,7 +54,7 @@ const PostHeader = ({ post }: Props) => {
         <div className="mb-8 md:mb-16 sm:mx-0">
           <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
             <CoverImage
-              className="shadow-lg"
+              className="shadow-xl rounded-md"
               width="100%"
               height="auto"
               title={title}

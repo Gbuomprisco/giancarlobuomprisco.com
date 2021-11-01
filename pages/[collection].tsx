@@ -5,21 +5,25 @@ import Layout from "../components/layout";
 import CollectionBrandingBar from "../components/collection-branding-bar";
 import ConvertkitPostSignup from "../components/convertkit-post-signup";
 
-import { getArticlesByCollection } from "../lib/api";
+import { getArticlesByCollection, getPostsByCollection } from "../lib/api";
 import { getCollections, getCollectionByName } from "../lib/collections";
 
 import Article from "../types/article";
+import Post from "../types/blog-post";
+
 import CollectionName from "../components/collection-name";
 import PostTitle from "../components/post-title";
 import Collection from "../types/collection";
+import PostsList from "../components/posts-list";
 
 type Props = {
-  posts: Article[];
+  articles: Article[];
+  posts: Post[];
   collection: Collection;
   preview?: boolean;
 };
 
-const CollectionPosts = ({ posts, collection, preview }: Props) => {
+const CollectionPosts = ({ posts, articles, collection, preview }: Props) => {
   return (
     <Layout preview={preview}>
       <CollectionBrandingBar collection={collection} />
@@ -33,8 +37,20 @@ const CollectionPosts = ({ posts, collection, preview }: Props) => {
           </PostTitle>
         </div>
 
-        <div className="mt-8 md:mt-12">
-          <ArticlesList posts={posts} />
+        <div className="mt-8 md:mt-12 flex flex-col space-y-8">
+          {articles.length ? (
+            <div className="flex flex-col space-y-4">
+              <h2 className="text-xl font-bold">Latest Articles</h2>
+              <ArticlesList posts={articles} />
+            </div>
+          ) : null}
+
+          {posts.length ? (
+            <div className="flex flex-col space-y-4">
+              <h2 className="text-xl font-bold">Latest Posts</h2>
+              <PostsList posts={posts} />
+            </div>
+          ) : null}
         </div>
 
         <div className="w-full md:w-8/12 mx-auto">
@@ -56,11 +72,13 @@ type Params = {
 
 export async function getStaticProps({ params }: Params) {
   const collection = getCollectionByName(params.collection);
-  const posts = getArticlesByCollection(params.collection);
+  const articles = getArticlesByCollection(params.collection);
+  const posts = getPostsByCollection(params.collection);
 
   return {
     props: {
       posts,
+      articles,
       collection,
     },
   };
