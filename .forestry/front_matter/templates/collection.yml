@@ -35,3 +35,5 @@ fields:
   config:
     required: false
   label: Emoji
+pages:
+- _collections/node.mdx
