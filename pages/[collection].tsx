@@ -6,7 +6,7 @@ import CollectionBrandingBar from "../components/collection-branding-bar";
 import ConvertkitPostSignup from "../components/convertkit-post-signup";
 
 import { getArticlesByCollection } from "../lib/api";
-import { getCollections, getCollection } from "../lib/collections";
+import { getCollections, getCollectionByName } from "../lib/collections";
 
 import Article from "../types/article";
 import CollectionName from "../components/collection-name";
@@ -55,8 +55,8 @@ type Params = {
 };
 
 export async function getStaticProps({ params }: Params) {
-  const collection = getCollection(params.collection);
-  const posts = getArticlesByCollection(collection.name);
+  const collection = getCollectionByName(params.collection);
+  const posts = getArticlesByCollection(params.collection);
 
   return {
     props: {
@@ -67,18 +67,18 @@ export async function getStaticProps({ params }: Params) {
 }
 
 export async function getStaticPaths() {
-  const collections = getCollections();
+  const paths = getCollections().map((collection) => {
+    const collectionName = collection?.name.toLowerCase();
+
+    return {
+      params: {
+        collection: collectionName,
+      },
+    };
+  });
 
   return {
-    paths: collections.map((collection) => {
-      const collectionName = collection?.data.name.toLowerCase();
-
-      return {
-        params: {
-          collection: collectionName,
-        },
-      };
-    }),
+    paths,
     fallback: false,
   };
 }

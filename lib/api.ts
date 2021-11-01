@@ -7,7 +7,7 @@ import BlogPost from "../types/blog-post";
 import Hub from "../types/hub";
 
 import { getPath, readDirectory, readFrontMatter } from "./fs-utils";
-import { getCollection } from "./collections";
+import { getCollectionBySlug } from "./collections";
 
 type ArticleFields = Array<keyof Article>;
 type BlogPostFields = Array<keyof BlogPost>;
@@ -99,22 +99,28 @@ export function getAllCollections() {
 }
 
 export function getArticlesByCollection(
-  collection: string,
+  collectionSlug: string,
   fields: ArticleFields = DEFAULT_ARTICLE_FIELDS
 ) {
+  const collection = getCollectionBySlug(collectionSlug);
+
   return getAllArticles(
     fields,
-    (item) => item.collection?.name.toLowerCase() === collection.toLowerCase()
+    (item) =>
+      item.collection?.name.toLowerCase() === collection.name.toLowerCase()
   );
 }
 
 export function getPostsByCollection(
-  collection: string,
+  collectionSlug: string,
   fields: BlogPostFields = DEFAULT_POST_FIELDS
 ) {
+  const collection = getCollectionBySlug(collectionSlug);
+
   return getAllPosts(
     fields,
-    (item) => item.collection?.name.toLowerCase() === collection.toLowerCase()
+    (item) =>
+      item.collection?.name.toLowerCase() === collection.name.toLowerCase()
   );
 }
 
@@ -197,7 +203,7 @@ function getPostFieldsBySlug<PostType>(
     }
 
     if (field === "collection") {
-      items[field] = getCollection(data[field]);
+      items[field] = getCollectionBySlug(data[field]);
       continue;
     }
 

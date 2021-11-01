@@ -11,9 +11,10 @@ import CollectionBrandingBar from "../../components/collection-branding-bar";
 
 import { getPostsBySeriesSlug, getAllSeries, slugify } from "../../lib/api";
 import Article from "../../types/article";
+import Collection from "../../types/collection";
 
 type Props = {
-  collection: string;
+  collection: Collection;
   series: string;
   posts: Article[];
 };
