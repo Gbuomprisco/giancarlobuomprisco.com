@@ -54,3 +54,5 @@ fields:
   config:
     required: false
   label: Canonical
+pages:
+- _articles/caching-rxjs-streams-into-web-storage.mdx
