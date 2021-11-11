@@ -1,0 +1,75 @@
+---
+date: 2021-11-11T22:49:22+01:00
+collection: _collections/rxjs.mdx
+tags:
+- rxjs
+- jest
+- testing
+title: Testing RxJS timers with Jest
+live: true
+
+---
+Testing RxJS has always been a challenge for me, especially when using timers. Some testing utilities (such as Angular's) make it easier - others not so much.
+
+Jest, though, didn't make me miss Angular's utilities much; I didn't find too much online, and StackOverflow's answers led to more questions. So this is for you, and the future me.
+
+### Testing a simple timer stream with Jest's timers
+
+Let's write a dead-simple RxJS operator which emits a value every 100 milliseconds. We will test that it emitted 5 times in 499 milliseconds, no more, and no less.
+
+When we want to use Jest's timers, we need to enable such functionality:
+
+```typescript
+jest.useFakeTimers();
+```
+
+Let's create a simple function `tick` to advance by a certain number of ms:
+
+```typescript
+const tick = (ms = 0) => {  
+	jest.advanceTimersByTime(ms);
+};
+```
+
+By default, it advances by 0 milliseconds.
+
+And now, on to the test.
+
+We can use Jest's mock to count the times they have been called.
+
+```typescript
+// a simple mock
+
+const fn = () => jest.fn(() => 1);
+```
+
+Now, nothing special, we will create the timer stream; it starts from 0 and advances every 100 milliseconds:
+
+```typescript
+const stream$ = timer(0, 100).pipe(
+  tap(fn),
+);
+```
+
+And here is the full test:
+
+```typescript
+it('emits 5 times', async () => {
+  const fn = jest.fn(() => 1);
+  const stream$ = timer(0, 100).pipe(tap(fn));
+
+  // subscribe to the stream, otherwise it will never execute
+  stream$.subscribe();
+
+  // advance time by 499 ms
+  tick(499);
+
+  // expect the spy "fn" to have been called 5 times
+  expect(fn.mock.calls.length).toEqual(5);
+});
+```
+
+And here is proof :)
+
+  
+![Test running in WebSorm](/assets/kapture-2021-11-11-at-23-24-28.gif "Test running in WebSorm")
