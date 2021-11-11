@@ -53,7 +53,7 @@ const CollectionPosts = ({ posts, articles, collection, preview }: Props) => {
           ) : null}
         </div>
 
-        <div className="w-full md:w-8/12 mx-auto">
+        <div className="w-full md:w-8/12 mx-auto mt-8">
           <ConvertkitPostSignup />
         </div>
       </Container>

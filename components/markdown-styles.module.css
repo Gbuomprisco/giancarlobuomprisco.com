@@ -40,9 +40,9 @@
 
 .markdown blockquote {
   border-left: 8px solid var(--accent-light);
-  font-weight: 400;
+  font-weight: 500;
 
-  @apply my-12 p-8 md:font-light shadow-xl text-3xl text-gray-500 font-sans;
+  @apply my-12 p-8 md:font-light shadow-xl text-3xl text-gray-700 font-sans;
 }
 
 .markdown li {
