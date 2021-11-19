@@ -56,3 +56,4 @@ fields:
   label: Canonical
 pages:
 - _articles/caching-rxjs-streams-into-web-storage.mdx
+- _articles/i-m-launching-blaze-a-boilerplate-for-building-a-saas-with-next.js-and-firebase.mdx
