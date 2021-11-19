@@ -20,7 +20,7 @@ const Contact = () => {
     <>
       <Layout>
         <Head>
-          <title>{TITLE} | Contact Me</title>
+          <title key="title">{TITLE} | Contact Me</title>
         </Head>
 
         <Container>

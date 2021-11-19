@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 import Container from "../components/container";
 import MainHeader from "../components/main-header";
 import ArticlesList from "../components/articles-list";
@@ -26,6 +28,10 @@ type Props = {
 const CollectionPosts = ({ posts, articles, collection, preview }: Props) => {
   return (
     <Layout preview={preview}>
+      <Head>
+        <title key="title">{collection.name}</title>
+      </Head>
+
       <CollectionBrandingBar collection={collection} />
 
       <Container>

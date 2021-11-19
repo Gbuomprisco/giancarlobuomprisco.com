@@ -29,7 +29,7 @@ const PostHeader = ({ post }: Props) => {
       <PostTitle>{title}</PostTitle>
 
       <div className="mb-6 flex space-x-3 items-center justify-center">
-        <CollectionTag logoSize="18px" collection={collection} />
+        <CollectionTag logoSize="22px" collection={collection} />
         <PostTags tags={post.tags} collection={collection.name} />
       </div>
 

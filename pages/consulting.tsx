@@ -14,20 +14,28 @@ const About = () => {
     <>
       <Layout>
         <Head>
-          <title>{TITLE} | Consulting Services</title>
+          <title key="title">{TITLE} | Consulting Services</title>
+
+          <meta
+            key="meta:description"
+            name="description"
+            content={
+              "Specialized consulting about Angular, React, Next, Firebase, NestJS, StencilJS"
+            }
+          ></meta>
         </Head>
 
         <Container>
           <MainHeader />
 
           <div className="max-w-2xl mx-auto leading-loose text-lg">
-            <Hero>Consulting Services</Hero>
+            <Hero>Consulting</Hero>
 
             <div className="mt-4">
               <SubHeading>
                 <span className=" flex flex-row space-x-4 justify-center items-center">
                   <span
-                    style={{ minWidth: "32px", minHeight: "32px" }}
+                    style={{ minWidth: "26px", minHeight: "26px" }}
                     className="block rounded-full bg-green-300"
                   ></span>
                   <span>I am currently available for consulting services</span>
@@ -43,19 +51,23 @@ const About = () => {
 
                 <ul className="ml-4 mt-4" style={{ listStyle: "circle" }}>
                   <li>
-                    Angular architecture, project set-up, performance tuning,
-                    RxJs
+                    Angular: architecture, project set-up, performance tuning
+                    and optimization, testing strategy
                   </li>
+
+                  <li>RxJs</li>
 
                   <li>Next.js and React</li>
                   <li>StencilJS apps and design systems, including Ionic</li>
-                  <li>Firebase, and GCP</li>
-                  <li>NestJS and Node</li>
+                  <li>Firebase and Google Cloud Platform (GCP)</li>
+                  <li>NestJS</li>
                   <li>TailwindCSS, Material Design</li>
-                  <li>Vanilla Typescript or Javascript</li>
+                  <li>Vanilla Typescript and Javascript</li>
                   <li>Code Reviews</li>
                   <li>UI/UX</li>
-                  <li>Training for any of the above technologies</li>
+
+                  <li>Technical Writing</li>
+                  <li>Training/Coaching for any of the above technologies</li>
                 </ul>
               </div>
 

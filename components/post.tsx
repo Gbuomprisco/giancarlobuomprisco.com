@@ -1,5 +1,6 @@
 import Head from "next/head";
 import type { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { SITE_NAME, TWITTER_HANDLE } from "../lib/constants";
 
 import Container from "./container";
 import PostBody from "./post-body";
@@ -14,13 +15,16 @@ import CollectionName from "./collection-name";
 
 import PostType from "../types/blog-post";
 import PostsList from "./posts-list";
+import ArticleType from "../types/article";
+import ArticlesList from "./articles-list";
 
 const Post: React.FC<{
   post: PostType;
   morePosts: PostType[];
+  moreArticles: ArticleType[];
   isFallback: boolean;
   content: MDXRemoteSerializeResult;
-}> = ({ post, content, morePosts, isFallback }) => {
+}> = ({ post, content, morePosts, moreArticles, isFallback }) => {
   const collection = post.collection;
 
   const style: Record<string, string> = {
@@ -44,7 +48,9 @@ const Post: React.FC<{
               <Head>
                 <title>{post.title}</title>
 
-                <meta property="twitter:title" content={post.title} />
+                <meta property="og:type" content="article" />
+                <meta property="og:title" key="og:title" content={post.title} />
+                <meta property="og:site_name" content={SITE_NAME} />
                 <meta property="article:published_time" content={post.date} />
               </Head>
 
@@ -56,12 +62,25 @@ const Post: React.FC<{
               <ConvertkitPostSignup />
             </div>
 
+            {Boolean(moreArticles.length) && (
+              <div>
+                <SectionSeparator />
+
+                <h3 className="text-2xl md:text-3xl text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center">
+                  <span>Articles about</span>{" "}
+                  <CollectionName logoSize="28px" collection={collection} />
+                </h3>
+
+                <ArticlesList posts={moreArticles} />
+              </div>
+            )}
+
             {Boolean(morePosts.length) && (
               <div>
                 <SectionSeparator />
 
                 <h3 className="text-2xl md:text-3xl text-center font-semibold my-4 md:my-12 flex flex-row space-x-4 items-center justify-center">
-                  <span>Learn more about</span>{" "}
+                  <span>Posts about</span>{" "}
                   <CollectionName logoSize="28px" collection={collection} />
                 </h3>
 

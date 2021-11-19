@@ -25,10 +25,10 @@ const ArticlePreview = ({ post }: Props) => {
   const href = `/${collection.name.toLowerCase()}/${slug}`;
 
   return (
-    <div className="shadow-lg hover:shadow-xl transition-shadow duration-500">
+    <div className="shadow-lg rounded-md hover:shadow-xl transition-shadow duration-500">
       <div className="mb-3">
         <CoverImage
-          className="h-full w-full lg:h-48 xl:h-48 shadow"
+          className="h-full w-full lg:h-48 xl:h-48 rounded-t-md"
           slug={slug}
           title={postTitle}
           src={coverImage}

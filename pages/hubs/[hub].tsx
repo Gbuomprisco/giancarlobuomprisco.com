@@ -43,8 +43,7 @@ const HubPage = ({ hub, content }: Props) => {
 
         <div className="mb-16" style={style}>
           <Head>
-            <title>{hub.name}</title>
-
+            <title key="title">{hub.name}</title>
             <meta property="twitter:title" content={hub.name} />
           </Head>
 

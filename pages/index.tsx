@@ -1,13 +1,14 @@
+import Head from "next/head";
+
 import Container from "../components/container";
 import ArticlesList from "../components/articles-list";
 import Intro from "../components/intro";
 import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
 
+import { TITLE, MISSION_STATEMENT } from "../lib/constants";
 import { getAllArticles } from "../lib/api";
-import Head from "next/head";
 import Post from "../types/article";
-import { TITLE } from "../lib/constants";
 
 type Props = {
   allPosts: Post[];
@@ -18,9 +19,8 @@ const Index = ({ allPosts }: Props) => {
     <>
       <Layout>
         <Head>
-          <title>
-            {TITLE} | Learn how to build Serverless applications with web
-            technologies such as React, Next.js, Angular, NestJS and Firebase
+          <title key="title">
+            {TITLE} | {MISSION_STATEMENT}
           </title>
         </Head>
 

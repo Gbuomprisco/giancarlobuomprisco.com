@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 import Container from "../../components/container";
 import MainHeader from "../../components/main-header";
 import ArticlesList from "../../components/articles-list";
@@ -16,6 +18,10 @@ type Props = {
 const TagPage = ({ posts, tag }: Props) => {
   return (
     <Layout>
+      <Head>
+        <title key="title">Tags</title>
+      </Head>
+
       <Container>
         <MainHeader />
 

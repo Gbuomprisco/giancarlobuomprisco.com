@@ -24,7 +24,7 @@ const Article: React.FC<{
   isFallback: boolean;
 }> = ({ post, content, series, morePosts, isFallback }) => {
   const title = post.series ? `${post.series}: ${post.title}` : post.title;
-  const ogImage = post.ogImage?.url || post.coverImage;
+  const ogImage = post.ogImage?.url ?? post.coverImage;
   const collection = post.collection;
 
   const style: Record<string, string> = {
@@ -48,15 +48,28 @@ const Article: React.FC<{
               <Head>
                 <title>{title}</title>
 
-                <meta property="twitter:title" content={title} />
+                <meta property="og:type" content="article" />
+                <meta property="og:title" content={title} key="og:title" />
                 <meta property="article:published_time" content={post.date} />
 
                 {post.excerpt && (
-                  <meta property="og:description" content={post.excerpt} />
+                  <>
+                    <meta
+                      property="og:description"
+                      content={post.excerpt}
+                      key="og:description"
+                    />
+
+                    <meta
+                      name="description"
+                      content={post.excerpt}
+                      key="meta:description"
+                    />
+                  </>
                 )}
 
                 {post.canonical && (
-                  <link rel="canonical" href={post.canonical} />
+                  <link rel="canonical" href={post.canonical} key="canonical" />
                 )}
 
                 {ogImage && <meta property="og:image" content={ogImage} />}

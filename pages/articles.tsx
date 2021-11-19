@@ -20,7 +20,15 @@ const Articles = ({ posts }: Props) => {
     <>
       <Layout>
         <Head>
-          <title>{TITLE} | Articles</title>
+          <title key="title">{TITLE} | Articles</title>
+
+          <meta
+            key="meta:description"
+            name="description"
+            content={
+              "Long-form Articles and Guides about Angular, React, Next, Firebase, NestJS, StencilJS"
+            }
+          ></meta>
         </Head>
 
         <Container>

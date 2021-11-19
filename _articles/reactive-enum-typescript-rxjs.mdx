@@ -1,0 +1,320 @@
+---
+collection: rxjs.mdx
+title: A Reactive Enum with Typescript and RxJs
+excerpt: Typescript's template literals' types allow us to generate dynamic and typed code, together. In this article, I want to show how we can build a dynamic reactive enum with TS and RxJS
+date: 2021-11-12T00:00:00+01:00
+coverImage: "/assets/images/posts/reactive-enum-ts-rxjs.webp"
+series: ''
+tags:
+- rxjs
+- typescript
+live: true
+canonical: ''
+
+---
+
+Template Literal Types are one of the best things to happen to TS in a long time. They allow us to generate dynamic code - and also provide the correct types to the consumers. 
+
+This new ability is particularly handy to library creators: imagine automatically creating typed Redux actions based on the prefix of the entity of a reducer, for example.
+
+## Subjects and State
+
+I like RxJs' Behavior Subjects for storing state - it's easy and quick. 
+
+Though there is a ton of repetition - I've always tried to find a way to reduce the boilerplate needed.
+
+Let's see a quick example with an Angular component (the code below is very meta-codey, don't take it too literally):
+
+```typescript
+enum State {
+    Initial,
+    Loading,
+    Success,
+    Error
+}
+
+class MyComponent {
+    readonly state$ = 
+        new BehaviorSubject<State>(State.Initial);
+
+    readonly states = State;
+
+    requestData() {
+        this.state.next(State.Loading);
+
+        return this.http.pipe(
+            tap(() => 
+                this.state.next(State.Success);
+            ),
+            catchError((e) => {
+                this.state.next(State.Error);
+                console.error(e);
+
+                return of([]);
+            })
+        )
+    }
+}
+````
+
+```html
+<ng-container [ngSwitch]="state$ | async">
+    <ng-container *ngSwitchCase="state.Initial">
+        <button (click)="requestData()">
+            Request Data
+        </button> 
+    </ng-container>
+
+    <ng-container *ngSwitchCase="state.Success">
+        All good!
+    </ng-container>
+
+    <ng-container *ngSwitchCase="state.Error">
+        Ooops!
+    </ng-container>
+
+    <ng-container *ngSwitchCase="state.Loading">
+        Loading...
+    </ng-container>
+</ng-container>
+```
+
+Template Literal Types finally allow us to do so. Enter Reactive Enum. Even if you're not interested in using it, learning what's possible with using Template Literal Types is eye-opening.
+
+## Reactive Enum
+
+Our goal is: given a TS enum, generate an Rx `Observable` for each key, so that we can subscribe to each key's value changes.
+
+Here is an example:
+
+```typescript
+// declare an enum
+enum Status {
+  Initial,
+  Pending,
+  Success,
+  Error
+}
+
+// pass your enum to "reactiveEnum"
+const status = reactiveEnum(Status);
+
+// "status" has now autmatically generated a method for each value of the enum
+status.initial$.subscribe(); // false ...  // true
+status.pending$.subscribe(); // false      // ^
+status.success$.subscribe(); // false      // |
+status.error$.subscribe();   // false      // |
+                                           // |
+status.set(Status.Initial);                // |
+status.value$(); // Observable<Status.Initial>
+```
+
+I happen to simplyfing my templates by writing lots of methods that check if the current state is a certain value of the enum. That is, lots of mapping `enum === EnumValue`.
+
+Let's compare the above with the same code if we were to use a `BehaviorSubject`:
+
+```typescript
+import { BehaviorSubject } from 'rxjs';
+
+class MyComponent {
+  private readonly status$ =
+    new BehaviorSubject<Status>(Status.Initial);
+  
+  private readonly initial$ =
+     this.status$.pipe(map(status => status === Status.Initial));
+  
+  private readonly pending$ = 
+    this.status$.pipe(map(status => status === Status.Pending));
+
+  // and so on
+}
+```
+
+When we use the `reactiveEnum` utility, these methods are already there!
+
+### Building it from scratch
+
+Okay! Let's see how we can build the above.
+
+First, let's define the types which we can assign to each key of a reactive enum.
+
+Our reactive enum will contain the following methods:
+
+- all the keys generated using the enum, appended with the dollar sign `$`
+- a few utility methods to set the current value, reset to the original value, unsubscribe, etc.
+
+```typescript
+import { BehaviorSubject, Observable, map } from 'rxjs';
+
+interface CurrentState<S> {
+  value$: Observable<S[keyof S]>;
+
+  value(): S[keyof S];
+}
+
+interface Settable<S> {
+  set(value: S[keyof S]): void;
+}
+
+interface Resettable {
+  reset(): void;
+}
+
+interface Releasable {
+  release(): void;
+}
+
+type KeysToObservableMapper<State> = {
+  readonly [K in Extract<keyof State,
+    string> as `${Lowercase<K>}$`]: Observable<boolean>;
+};
+
+export type ReactiveEnum<S> = KeysToObservableMapper<S> &
+  Settable<S> &
+  CurrentState<S> &
+  Resettable &
+  Releasable;
+
+type Enum<E> = Record<keyof E, E[keyof E]>;
+
+interface Transition<State> {
+  when: Observable<unknown>;
+  become: State[keyof State];
+}
+
+interface Config<State> {
+  initialValue?: State[keyof State];
+}
+
+type ConfigParam<State> = State[keyof State] | Config<State>;
+```
+
+The magic happens here:
+
+```typescript
+type KeysToObservableMapper<State> = {
+  readonly [K in Extract<keyof State,
+    string> as `${Lowercase<K>}$`]: Observable<boolean>;
+};
+```
+
+What's going on here? Let's see:
+
+- we create a Type named `KeysToObservableMapper` which takes an argument `State`, and has the shape of an object
+- we iterate the keys of the argument `State` by using `K in {}`, but we use `Extract` to only get the strings of this type
+- we then map K using the `as` syntax, transform `K` to its lowercase value, and append `$` at the end of the literal type
+- the value of each key is indeed `Observable<boolean>`
+
+### Code generation
+
+Now that our types are in check - we need to write the code that generates the methods dynamically.
+
+Our `reactiveEnum` will accept the enum, and we will use the second parameter for setting the initial value. We leave the interface flexible by allowing a full configuration objec.
+
+```typescript
+function reactiveEnum<State extends Enum<State>>(
+  state: State,
+  config: ConfigParam<State> = {},
+): ReactiveEnum<State> {
+  const initialValue = isConfigObject<State>(config)
+    ? (config as Config<State>).initialValue
+    : config;
+
+  const state$ = 
+    new BehaviorSubject<State | undefined>(initialValue);
+
+  const container: Partial<ReactiveEnum<State>>
+     = {};
+
+  for (const key in state) {
+    const property = `${key.toLowerCase()}$`;
+
+    const value$ = state$.pipe(
+        map((value) => {
+            return value === state[key];
+        }),
+    );
+
+    Object.assign(container, {
+      [property]: value$,
+    });
+  }
+
+  Object.assign(container, {
+    set: (value: State) => state$.next(value),
+    reset: () => state$.next(initialValue),
+    release: () => state$.unsubscribe(),
+    value$: state$.asObservable(),
+    value: () => state$.getValue(),
+  });
+
+  return container as ReactiveEnum<State>;
+}
+
+function isConfigObject<T>(
+    config: ConfigParam<T>
+): config is Config<T> {
+  return Object(config) === config;
+}
+```
+
+What happens here?
+
+- First, we create a subject with an initial value
+- For each property, we define a set of methods attached to an object `container`
+- Each key of the property needs to match the type of our literal type defined in the interface, hence will be `${key.toLowerCase()}$`
+- Once we set the utility methods (release, reset, set, etc.), we return the object to the consumer
+
+## Tests
+
+Let's write a simple test to check the initial value is set up correctly:
+
+```typescript
+enum Status {
+  Initial,
+  Loading,
+}
+
+describe(`reactiveEnum`, () => {
+    it('should start with a default value', (done) => {
+        const status = reactiveEnum(Status, {
+            initialValue: Status.Initial,
+        });
+
+        const streams$ = combineLatest([
+            status.loading$,
+            status.initial$,
+        ]);
+
+        streams$.subscribe(([loading, initial]) => {
+            expect(loading).toBe(false);
+            expect(initial).toBe(true);
+
+            done();
+        });
+    });
+});
+```
+
+## Limitations
+
+This library has some limitations:
+
+- all enum values are converted to its lowercase particularly
+- no current way of setting a value without using an enum. This can be very useful in Angular's templates, if we set a value directly from the template - because we would not need to store a public property with the `Enum`
+
+## Using the library
+
+If you're interested in using this library, you can also install it from NPM
+
+Install the library from NPM:
+
+```
+npm i @ngbites/reactive-enum
+```
+
+## Final Words
+
+This is a very quick example of what TS's template literal types can do, but hopefully can inspire you to do some magic stuff and save you tons of keystrokes.
+
+Ciao!

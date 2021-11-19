@@ -1,0 +1,91 @@
+---
+date: '2021-11-17T00:00:00.322Z'
+collection: firebase.mdx
+tags:
+- firebase
+title: Deleting collections in Firebase's Firestore
+live: true
+
+---
+
+Firebase's Firestore organizes data in `collections` and `documents`; a Firestore `collection` is simply a group of documents, like a simple folder. 
+
+Collections and documents can be represented using a filesystem-like path: for example, imagine we have a `collection` named `users` and a user with ID `1`, its path will be `/users/1`. We can use this path to query or select a reference from Firestore.
+
+One quirky thing to know about Firestore is that we cannot delete collections using a simple API. You'd expect Firestore to provide methods such as `collection.delete()` to drop the entire collection or subcollection; yet, it does not.
+
+In order to delete a collection, you're required to delete every document in the collection. You can use `batch` deletions, but you are still limited to the number of documents in each batch. In the case of huge collections, you will have to delete several batches of documents.
+
+Furthermore, if you delete a document containing sub-collections, these will not be deleted automatically. Weird, huh?
+
+## Deleting Firestore sub-collections using Firebase tools
+
+The package `firebase-tools` has a nifty utility that allows deleting **entire paths** from your Firestore database.
+
+```typescript
+// recursive-delete.ts
+
+const tools = require('firebase-tools');
+
+export async function recursiveDelete(
+    path: string
+): Promise<boolean> {
+  return tools.firestore.delete(path, {
+    project: process.env.GCLOUD_PROJECT,
+    recursive: true,
+    yes: true,
+  });
+}
+
+const usersPath = `/users/1`;
+
+// imagine each user has a sub-collection `posts`
+// for example `/users/1/posts/2`
+// all the documents under `/users/1/posts/` will also be deleted
+
+recursiveDelete(usersPath)
+    .then((done: boolean) => {
+        // done
+    })
+```
+
+Now, that's great and convenient. **BUT. USE. WITH. CAUTION.**.
+
+Again, this is a very disruptive operation. It will delete the document and all the subcollections of this document. And because it's running in an admin environment, no Firestore rule can help you.
+
+Be very, very careful if you're planning on running this command: add the proper guards, check the user permissions programmatically and handle errors gracefully.
+
+## A word on pricing
+
+Does deleting a sub-collection result in only 1 Firestore deletion? 
+
+No. Unfortunately, if your `collection` contains 5000 documents, and you delete the entire `collection` no matter how many operations you execute, Firebase will charge for 5000 deletions.
+
+How to avoid this? Well, it depends on your data structure - and if you can tweak it according to your needs.
+
+For example: does the collection need to be a collection, or could it be part of a document as an array of objects? If the potential size of the `array` is limited, this could be your answer.
+
+With that said, there are other things to take into account:
+
+- Documents are limited to a size of 1MB; getting even near this number would almost certainly be a mistake
+- Firestore also charges for network transfer: if your array has a large number of objects and gets queried very often, you could end up paying even greater charges than having a subcollection, which, instead, **can be paginated**
+
+Ultimately, it depends.
+
+## Final Words
+
+Firestore does not have an API to delete entire collections and sub-collections: you're supposed to batch-delete all the documents within a `collection` and repeat the operation of a `document` contains sub-collections. 
+
+It makes sense, but it's far from being a great DX (Developer Experience).
+
+We can use the `recursiveDelete` delete utility above to bypass this limitation using a `firebase-tools` built-in command that makes it as easy as pie.
+
+With that said, this is a potentially very disruptive and expensive command; it needs to be executed with the proper guards.
+
+If you're using this to save money on the number of deletions, be warned: Firestore will always charge you based on the number of documents deleted, not the number of operations. 
+
+If the operation above deletes ten thousand documents, **Firebase will bill you for ten thousand document deletions**.
+
+If this sounds exaggerated, you will have to restructure your database.
+
+If you have any questions, do not hesitate to send me an email!

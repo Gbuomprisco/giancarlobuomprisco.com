@@ -18,7 +18,7 @@ const TagPage = ({ tags }: Props) => {
   return (
     <Layout>
       <Head>
-        <title>{TITLE} | Tags</title>
+        <title key="title">{TITLE} | Tags</title>
       </Head>
 
       <Container>

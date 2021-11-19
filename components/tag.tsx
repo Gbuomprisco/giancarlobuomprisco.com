@@ -1,4 +1,5 @@
 import cn from "classnames";
+import classes from "./tag.module.css";
 
 const Tag: React.FC<{ style?: Record<string, unknown> }> = ({
   children,
@@ -8,11 +9,11 @@ const Tag: React.FC<{ style?: Record<string, unknown> }> = ({
     <div
       style={
         style ?? {
-          boxShadow: `0 0 0 2px #525252`,
+          "--backgroundColor": `#eee`,
         }
       }
       className={cn(
-        `text-center flex flex-row space-x-1 items-center cursor-pointer justify-center px-3 py-2 rounded hover:shadow-md transition-shadow font-bold`
+        `text-center flex flex-row space-x-1 items-center cursor-pointer justify-center px-2 py-1 rounded hover:shadow-md transition-shadow font-bold ${classes["Tag"]}`
       )}
     >
       {children}

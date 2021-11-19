@@ -43,10 +43,10 @@ const Navigation = () => {
     return (
       <li
         className={
-          "active:text-black text-lg lg:text-base " +
+          "text-lg lg:text-base border-b-4 border-b-transparent transition:border " +
           (isActive(link.path)
-            ? "border-b-4 pb-1 border-yellow-200  font-bold"
-            : "text-gray-800 hover:text-gray-900 font-medium hover:underline")
+            ? "pb-1 border-b-yellow-200 font-bold"
+            : "hover:text-gray-900 font-medium hover:border-b-yellow-200")
         }
       >
         <Link href={link.path} passHref>

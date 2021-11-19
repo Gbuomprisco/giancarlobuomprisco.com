@@ -17,7 +17,7 @@ const About = () => {
     <>
       <Layout>
         <Head>
-          <title>{TITLE} | About Me</title>
+          <title key="title">{TITLE} | About Me</title>
         </Head>
 
         <Container>

@@ -1,5 +1,9 @@
-export const DESCRIPTION = `Giancarlo Buomprisco's Website`;
 export const TITLE = `Giancarlo Buomprisco`;
+export const DESCRIPTION = `Giancarlo Buomprisco`;
+
+export const MISSION_STATEMENT = `Learn how to build Serverless applications with web
+            technologies such as React, Next.js, Angular, NestJS and Firebase`;
+
 export const AUTHOR = `Giancarlo Buomprisco`;
 
 export const THEME_COLOR = `#212121`;

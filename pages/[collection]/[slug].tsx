@@ -65,6 +65,7 @@ const PostPage = ({
     <Post
       post={post as PostType}
       morePosts={morePosts}
+      moreArticles={moreArticles}
       content={content}
       isFallback={router.isFallback}
     />

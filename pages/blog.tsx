@@ -20,13 +20,22 @@ const Blog = ({ posts }: Props) => {
     <>
       <Layout>
         <Head>
-          <title>{TITLE} | Blog</title>
+          <title key="title">{TITLE} | Blog</title>
+
+          <meta
+            key="meta:description"
+            name="description"
+            content={
+              "Short-form posts, notes and tips about Angular, React, Next, Firebase, NestJS, StencilJS"
+            }
+          ></meta>
         </Head>
 
         <Container>
           <MainHeader />
 
           <Hero>Blog</Hero>
+
           <SubHeading>Short-form posts, notes and tips</SubHeading>
 
           <div className="space-y-12 mt-8 md:mt-16">

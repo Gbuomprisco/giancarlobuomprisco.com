@@ -29,7 +29,7 @@ const Series = ({ posts, collection, series }: Props) => {
   return (
     <Layout>
       <Head>
-        <title>{series}</title>
+        <title key="title">{series}</title>
       </Head>
 
       <CollectionBrandingBar collection={collection} />

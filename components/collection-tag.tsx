@@ -4,7 +4,7 @@ import CollectionImage from "./collection-image";
 import Collection from "../types/collection";
 import Tag from "./tag";
 
-function CollecionBadge({
+function CollectionBadge({
   collection,
   logoSize,
 }: {
@@ -14,7 +14,8 @@ function CollecionBadge({
   const size = logoSize ?? `16px`;
 
   const style = {
-    boxShadow: `0 0 0 2px ${collection.primaryColor}`,
+    "--backgroundColor": collection.primaryColor,
+    "--color": collection.contrastColor,
   };
 
   const href = `/${collection.name.toLowerCase()}`;
@@ -35,4 +36,4 @@ function CollecionBadge({
   );
 }
 
-export default CollecionBadge;
+export default CollectionBadge;
