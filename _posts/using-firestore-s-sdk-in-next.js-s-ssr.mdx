@@ -1,0 +1,86 @@
+---
+date: 2021-11-27T17:30:30+01:00
+collection: _collections/next.mdx
+tags:
+- next
+- firebase
+- react
+title: Using Firestore's SDK in Next.js's SSR
+live: false
+
+---
+As I'm venturing into using Next.js to build a Saas boilerplate (coming soon), I'm beginning to understand that while SSR is fantastic, it has a ton of gotchas you need to know before thinking of adopting it.
+
+After spending the better part of my day trying to server-render a component that uses the Firebase SDK, I thought this write-up could help other people.
+
+So, what's the issue?
+
+Firebase has always had a messy relationship with Javascript SDKs. There are many, and they're confusing. The newest v9 version does help a bit, but it made my issue worse.
+
+My code uses `reactfire` to render a FirebaseAppProvider component which initializes a new Firebase App and creates a Context so that you can use `useFirebaseApp` to use the app throughout the application.
+
+One of my components is making a Firestore query, which gets rendered on the server for obvious reasons. However, even if the query doesn't return a result, being asynchronous, it will still call the SDK.
+
+If you're using the Reactfire example, you may be initializing your component in this way:
+
+```typescript
+<FirebaseAppProvider firebaseConfig={config}>  
+  {children}  
+</FirebaseAppProvider>
+```
+
+But then I was met with the following error:
+
+    FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore
+
+At first, I thought the `Firestore` instance using `useFirestore` became `null` before or after a re-render. That was wrong.
+
+The instance was fine; the issue was deep down the Firestore's SDK.
+
+What happens? Firestore checks that the Firestore instance was created using the same SDK, even if it is perfectly working. If it's not, then it will throw this somewhat cryptic error.
+
+It can happen when a Firebase/Firestore instance gets created by another version of the Firebase SDK. Instead of letting `reactfire` create the Firebase instance for me, and I decided to pass it down manually.
+
+The code above becomes:
+
+```typescript
+const app = initializeApp(config);
+
+return (
+ 	<FirebaseAppProvider firebaseApp={app}>
+    	{children}
+	</FirebaseAppProvider>
+);
+```
+
+The error changes, still no luck.
+
+    FirebaseError: Type does not match the expected instance. Did you pass a reference from a different Firestore SDK?
+
+But I feel like I'm getting closer, as the issue now comes from the actual query call, a few lines down.
+
+My feeling at this point is that Firebase is initializing Firestore using the ESM version of the SDK, yet executing the query using the CommonJS version.
+
+This is where the stack trace points to:
+
+    file:///Users/giancarlo/Code/project/node_modules/@firebase/firestore/dist/index.node.cjs.js (18550:19)
+
+Firestore uses a function `cast` to check that the instance is the one from the same library. I have not confirmed this yet with the team, but I believe `rxfire` using the wrong version to perform queries; `reactfire` uses `rxfire` under the hood. If you're not using `reactfire` , there is a good chance your code would have worked fine.
+
+## The solution
+
+At this point, I try to play with Next.js's options. If use `type: "module"` in my `package.json`, I could force `rxfire` to use the ESM version? This opened a can of worms, so I ditched the possibility for the time being.
+
+Then I tried to disable one of Next.js 12's experimental features that got turned on by default in the latest release.
+
+I changed the `next.config.js` configuration file and set the `esmExternals` property to `true`.
+
+    experimental: {
+      esmExternals: true,
+    }
+
+I could not believe my eyes: after several hours of debugging and head-scratching, I got the Firestore SDK to work with SSR.
+
+The issue is that without `Suspense` my queries aren't working - so they get only fetched on the client, but for now, it's good enough.
+
+I'll try Suspense's beta soon: enough head-scratching for today.

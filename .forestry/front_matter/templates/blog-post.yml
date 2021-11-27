@@ -45,3 +45,4 @@ pages:
 - _posts/streamline-your-code-with-typescript-assertions.mdx
 - _posts/testing-rxjs-timers-with-jest.mdx
 - _posts/using-brotli-with-node.js.mdx
+- _posts/using-firestore-s-sdk-in-next.js-s-ssr.mdx
