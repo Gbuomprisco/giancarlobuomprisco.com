@@ -1,12 +1,12 @@
 ---
 date: 2021-11-27T17:30:30+01:00
-collection: _collections/next.mdx
+collection: next.mdx
 tags:
 - next
 - firebase
 - react
 title: Using Firestore's SDK in Next.js's SSR
-live: false
+live: true
 
 ---
 As I'm venturing into using Next.js to build a Saas boilerplate (coming soon), I'm beginning to understand that while SSR is fantastic, it has a ton of gotchas you need to know before thinking of adopting it.
@@ -23,7 +23,7 @@ One of my components is making a Firestore query, which gets rendered on the ser
 
 If you're using the Reactfire example, you may be initializing your component in this way:
 
-```typescript
+```tsx
 <FirebaseAppProvider firebaseConfig={config}>  
   {children}  
 </FirebaseAppProvider>
@@ -43,7 +43,7 @@ It can happen when a Firebase/Firestore instance gets created by another version
 
 The code above becomes:
 
-```typescript
+```tsx
 const app = initializeApp(config);
 
 return (
@@ -65,19 +65,23 @@ This is where the stack trace points to:
 
     file:///Users/giancarlo/Code/project/node_modules/@firebase/firestore/dist/index.node.cjs.js (18550:19)
 
-Firestore uses a function `cast` to check that the instance is the one from the same library. I have not confirmed this yet with the team, but I believe `rxfire` using the wrong version to perform queries; `reactfire` uses `rxfire` under the hood. If you're not using `reactfire` , there is a good chance your code would have worked fine.
+Firestore uses a function `cast` to check that the instance is the same as the instance from the same library. 
+
+I have not confirmed this yet with the team (I may open a bug in `rxfire`), but it seems like `rxfire` is using the wrong version to perform queries. The library `reactfire` uses `rxfire` under the hood; if you're not using it, there is a good chance your code would have worked fine.
 
 ## The solution
 
-At this point, I try to play with Next.js's options. If use `type: "module"` in my `package.json`, I could force `rxfire` to use the ESM version? This opened a can of worms, so I ditched the possibility for the time being.
+At this point, I try to play with Next.js's options. If use `type: "module"` in my `package.json`, I could force `rxfire` to use the ESM version? Doing so opened a can of worms, so I ditched the possibility for the time being.
 
 Then I tried to disable one of Next.js 12's experimental features that got turned on by default in the latest release.
 
-I changed the `next.config.js` configuration file and set the `esmExternals` property to `true`.
+I changed the `next.config.js` configuration file and set the `esmExternals` property to `false`.
 
-    experimental: {
-      esmExternals: true,
-    }
+```tsx
+experimental: {
+  esmExternals: false
+}
+```
 
 I could not believe my eyes: after several hours of debugging and head-scratching, I got the Firestore SDK to work with SSR.
 

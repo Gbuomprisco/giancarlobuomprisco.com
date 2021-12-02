@@ -58,9 +58,13 @@
 .markdown pre:not([class]) {
   background: #efefef;
   padding: 0.25rem;
-  margin: 2rem 0;
+  margin: 2rem 0.15rem;
   overflow: auto;
   border-radius: 0.3em;
+}
+
+.markdown pre[class*="language-"] {
+  font-size: 0.9rem;
 }
 
 .markdown p > code,
@@ -97,7 +101,7 @@
 }
 
 .markdown ::-moz-selection {
-  background: var(--accent-light); 
+  background: var(--accent-light);
   color: var(--accent-contrast);
   font-weight: bold;
 }

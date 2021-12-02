@@ -4,7 +4,7 @@
   "description": "Giancarlo Buomprisco's website",
   "private": true,
   "scripts": {
-    "dev": "next-remote-watch _posts/**/*.mdx _articles/**/*.mdx",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "sitemap": "next-sitemap",
     "start": "next start",

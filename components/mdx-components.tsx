@@ -2,6 +2,7 @@ import { SITE_URL } from "../lib/constants";
 import ArticlesList from "./articles-list";
 import PostsList from "./posts-list";
 import TweetEmbed from "./tweet-embed";
+import CodeSandboxSnippet from './codesandbox-snippet';
 
 const LazyImage: React.FC<Record<string, string>> = (
   props: Record<string, string>
@@ -33,6 +34,7 @@ const MDXComponents = {
   ArticlesList,
   PostsList,
   TweetEmbed,
+  CodeSandboxSnippet
 };
 
 export default MDXComponents;
