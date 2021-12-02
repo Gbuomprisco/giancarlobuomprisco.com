@@ -37,3 +37,4 @@ fields:
   label: Emoji
 pages:
 - _collections/node.mdx
+- _collections/react.mdx
