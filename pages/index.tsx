@@ -27,7 +27,7 @@ const Index = ({ allPosts }: Props) => {
         <Container>
           <MainHeader />
 
-          <div>
+          <div className={'my-12 md:my-24'}>
             <Intro />
           </div>
 

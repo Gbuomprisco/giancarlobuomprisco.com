@@ -18,6 +18,8 @@
 html {
     text-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
+
+    --primary-color: rgba(253, 230, 138);
 }
 
 

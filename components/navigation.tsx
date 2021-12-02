@@ -40,13 +40,20 @@ const Navigation = () => {
   };
 
   const Item: React.FC<{ link: Link }> = ({ link }) => {
+    const active = isActive(link.path);
+
+    const style = active ? {
+      borderColor: 'var(--accent, var(--primary-color))'
+    } : {};
+
     return (
       <li
+        style={style}
         className={
-          "text-lg lg:text-base border-b-4 border-b-transparent transition:border " +
-          (isActive(link.path)
-            ? "pb-1 border-b-yellow-200 font-bold"
-            : "hover:text-gray-900 font-medium hover:border-b-yellow-200")
+          "text-lg lg:text-base border-b-4 pb-1 border-b-transparent transition:border " +
+          (active
+            ? "font-bold border-b-yellow-200"
+            : "hover:text-gray-900 font-medium border-b-transparent hover:border-b-yellow-200")
         }
       >
         <Link href={link.path} passHref>
@@ -79,17 +86,17 @@ const Navigation = () => {
           type="button"
           onClick={toggleMenu}
         >
-          <span className="block relative w-7 rounded-sm bg-black h-1"></span>
-          <span className="block relative w-7 rounded-sm bg-black h-1 mt-1"></span>
-          <span className="block relative w-7 rounded-sm bg-black h-1 mt-1"></span>
+          <span className="block relative w-7 rounded-sm bg-black h-1" />
+          <span className="block relative w-7 rounded-sm bg-black h-1 mt-1" />
+          <span className="block relative w-7 rounded-sm bg-black h-1 mt-1" />
         </button>
       </div>
 
       <ul
-        className="lg:space-x-8 px-4 hidden flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row nav"
+        className="lg:space-x-10 text-gray-800 px-4 hidden flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row nav"
         ref={nav}
       >
-        <li className="flex flex-row justify-between pt-4 mb-6 lg:hidden">
+        <li className="flex flex-row justify-between mb-6 lg:hidden">
           <div>
             <MainLogo />
           </div>
