@@ -42,6 +42,7 @@ fields:
   type: boolean
   label: Published
 pages:
+- _posts/a-conditional-rendering-component-for-react.mdx
 - _posts/streamline-your-code-with-typescript-assertions.mdx
 - _posts/testing-rxjs-timers-with-jest.mdx
 - _posts/using-brotli-with-node.js.mdx
