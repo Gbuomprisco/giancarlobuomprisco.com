@@ -16,32 +16,11 @@ React doesn't have these baked in (like SolidJS), but we can easily add it.
 
 This blog post will show you the conditional rendering component, which you can use with React, but it is also easily applicable to any other JSX-based library.
 
-One challenge I faced was making sure the result of the condition was correctly cast so that we could safely use it with Typescript.
+One challenge I faced was making sure the result of the condition was correctly cast so that **we could safely use it with Typescript**.
 
-I'm calling the component `If`. It accepts two properties:
+### Let's write the If component
 
-* `condition`: it's _any_ value. If it is truthy, then `children` will be displayed
-* `fallback`: it's optional and will be displayed if it's defined, and if it's the condition is `falsy`
-
-Of course, it also accepts a `children` property, which we augment to take a function. Why? Because we want to pass the "casted" value to the children's tree.
-
-For example, if I pass a component `Button` as a condition, I want to be able to use `Button` within the tree because it is not `falsy`. To do so, `Button` will be passed down casted as a parameter of the function we define in the `children`.
-
-```tsx
-function If<Value = unknown>({
-  condition,
-  fallback,
-  children,
-}: React.PropsWithChildren<{
-  condition: Condition<Value>;
-  fallback?: ReactNode;
-  children: ReactNode | ((value: Value) => ReactNode);
-}>) {
-   // body
-}
-```
-
-I'm defining two type aliases with Typescript:
+First, we define two type aliases with Typescript:
 
 * `Falsy` which represent values that are falsy in Javascript
 * `Condition` which is the value passed to the component
@@ -49,6 +28,37 @@ I'm defining two type aliases with Typescript:
 ```tsx
 type Falsy = undefined | null | 0 | "";
 type Condition<Value = unknown> = Value | Falsy;
+```
+
+We're going to call the component `If`.
+
+It accepts two properties:
+
+* `condition`: it's _any_ value. If it is truthy, then `children` will be displayed
+* `fallback`: it's optional and will be displayed if it's defined, and if it's the condition is `falsy`
+
+Of course, it also accepts a `children` property, which **we augment to take a function**.
+
+Why? Because we want to pass the "casted" value to the children's tree.
+
+For example, if I pass a component `Button` as a condition, I want to be able to use `Button` within the tree because it is not `falsy`.
+
+To do so, `Button` will be passed down casted as a parameter of the function we define in the `children`.
+
+```tsx
+type Props = React.PropsWithChildren<{
+  condition: Condition<Value>;
+  fallback?: ReactNode;
+  children: ReactNode | ((value: Value) => ReactNode);
+}>
+
+function If<Value = unknown>({
+  condition,
+  fallback,
+  children,
+}: Props) {
+   // body
+}
 ```
 
 We can now write the body:
@@ -136,5 +146,48 @@ function App() {
 
 <CodeSandboxSnippet src={`https://codesandbox.io/embed/condescending-tree-r0mki?fontsize=14&hidenavigation=1&theme=dark`} />
 
+### Conditionally rendering a component from the props
 
-[Here is a CodeSandox demo](https://codesandbox.io/s/great-meadow-9e1ti?file=/src/App.tsx:701-1150) you can play with!
+Another useful case I found is when I pass components as optional props, and conditionally **render the component if the consumer has passed it**.
+
+Let's assume we have a component which accepts another one.
+
+In the ideal world, I could write the following:
+
+```tsx
+const ReusableComponent: React.FC<{
+  heading?: React.FC;
+}> = ({  heading: Heading, children }) => {
+  return (
+    <div>
+      <If condition={Heading}>
+        <Heading />
+      </If>
+    </div>
+  );
+};
+```
+
+Unfortunately, I (or Typescript) am not smart enough to make the children tree understand that `Heading` was casted as truthy.
+
+`Heading` will error-out because the type-checking cannot understand that the `If` tree is only rendered when the condition value is truthy.
+
+So we use a function to pass the casted value:
+
+```tsx
+const ReusableComponent: React.FC<{
+  heading?: React.FC;
+}> = ({  heading, children }) => {
+  return (
+    <div>
+      <If condition={heading}>
+        {(Heading) => <Heading />}
+      </If>
+    </div>
+  );
+};
+```
+
+I am generally happy with the readability that this offers compared to ternaries, &&, or other weird ways that also make Typescript happy.
+
+Of course, let me know if you have any questions or suggestions to improve this!
