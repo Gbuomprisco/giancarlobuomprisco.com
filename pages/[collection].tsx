@@ -5,7 +5,7 @@ import MainHeader from "../components/main-header";
 import ArticlesList from "../components/articles-list";
 import Layout from "../components/layout";
 import CollectionBrandingBar from "../components/collection-branding-bar";
-import ConvertkitPostSignup from "../components/convertkit-post-signup";
+import ConvertKitPostSignup from "../components/convertkit-post-signup";
 
 import { getArticlesByCollection, getPostsByCollection } from "../lib/api";
 import { getCollections, getCollectionByName } from "../lib/collections";
@@ -60,7 +60,7 @@ const CollectionPosts = ({ posts, articles, collection, preview }: Props) => {
         </div>
 
         <div className="w-full md:w-8/12 mx-auto mt-8">
-          <ConvertkitPostSignup />
+          <ConvertKitPostSignup collection={collection.name} />
         </div>
       </Container>
     </Layout>

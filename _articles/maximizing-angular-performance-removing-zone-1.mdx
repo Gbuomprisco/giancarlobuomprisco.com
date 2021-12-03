@@ -129,7 +129,7 @@ As you can see above, **descriptor** is optional as we want the decorator to be 
 * we store the original method’s value
 
 * we override the method: we call the original function, and then we call **markDirty(*this*)** in order to trigger a change detection
-* 
+*
 ```typescript
 if (descriptor) {
   const original = descriptor.value; // store original
@@ -243,7 +243,7 @@ I applied the decorator to all the template references needed, and I removed Zon
 export class AssetPricerComponent {
   @observed() price$: Observable<string>;
   @observed() trend$: Observable<Trend>;
-  
+
   // ...
 }
 ```
@@ -426,7 +426,7 @@ I hope this article gave you a good idea of what may be coming to Angular, what 
 ### [Source Code](https://gist.github.com/Gbuomprisco/e6b3f762b0be6f3ce296af49253cc4e3)
 
 The source code for the Typescript decorator can be found at its [Github Project](https://github.com/Gbuomprisco/ngx-toolkit/blob/master/projects/observed-property/src/lib/index.ts) page:
-{% gist https://gist.github.com/Gbuomprisco/e6b3f762b0be6f3ce296af49253cc4e3.js %}
+
 ### Resources
 
 * [Frontend Frameworks Benchmark](https://krausest.github.io/js-framework-benchmark/current.html)

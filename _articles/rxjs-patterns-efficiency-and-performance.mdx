@@ -58,7 +58,7 @@ This operator will compare the current value with the previous value of the sour
 
 A very common scenario that we can use in order to explain how this operator works is receiving inputs from a text-input and skip all the events whose value is unchanged from the previous.
 
-    
+
 ```typescript
 const textChanges$ = fromEvent(textElement, 'input');
 
@@ -157,12 +157,12 @@ Canceling is not only important to reduce useless computations and avoid memory 
 ### Unsubscribing
 
 The easiest, imperative way to cancel subscriptions is to simply call the unsubscribe method that every subscription object should have implemented.
-    
+
 ```typescript
 const inputs$ = fromEvent(element, 'input');
 const subscription = inputs.subscribe(/*some work*/);
 
-subscription.unsubscribe(); 
+subscription.unsubscribe();
 ```
 
 While this is a totally effective and working example for unsubscribing streams, it is usually not considered a best-practice. In fact, Rx provides powerful operators that can help us achieve the same, but in a more declarative and reactive way.
@@ -258,7 +258,7 @@ What you may know, is that it has a peculiar behavior: on each emission, instead
 That is, if we have an in-flight HTTP request, it will be canceled when another emission takes place. Of course, depending on the observable type you use, you’d have different teardown effects.
 
 In the example below, I created a simple snippet that will issue requests when the user inputs values in a form. The request will query Github’s API for repositories and render them on screen.
-{% gist https://gist.github.com/Gbuomprisco/22ae06977750d5bee8151eefba75b933.js %}
+
 At the end of the article, we will revisit this example by adding a powerful caching mechanism, and the link to the code.
 
 ## Batching
@@ -322,7 +322,7 @@ In the below example, we will extend our repositories search application with a 
 * when we are about to issue the request, we check if we have a cached result. If not, we go on and execute the request
 
 * when the request is executed, we place the observable itself in a cache, and we use the operator shareReplay(1) to store in memory the latest 1 emissions. When the observable (in the cache) is subscribed again, it will yield its result rather than issue the request again
-{% gist https://gist.github.com/Gbuomprisco/030844d0eafcd2f842752f95f18f76cb.js %}
+
 The example above is simplified and doesn’t take into account error-handling and such. As a result, if you use it as inspiration for your code, you may want to handle more situations.
 
 If you want to see this in action, please visit the following [Stackblitz link](https://stackblitz.com/edit/switchmap-with-cache-example?file=index.ts).

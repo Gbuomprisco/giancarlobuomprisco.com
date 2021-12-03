@@ -32,3 +32,4 @@ yarn-error.log*
 
 # vercel
 .vercel
+/.idea/git_toolbox_prj.xml

@@ -9,7 +9,7 @@ import PostHeader from './post-header';
 import Layout from './layout';
 import CollectionBrandingBar from './collection-branding-bar';
 import SectionSeparator from './section-separator';
-import ConvertkitPostSignup from './convertkit-post-signup';
+import ConvertKitPostSignup from './convertkit-post-signup';
 import PostTitle from './post-title';
 import CollectionName from './collection-name';
 
@@ -91,7 +91,7 @@ const Post: React.FC<{
               </article>
 
               <div className="w-full md:w-8/12 mx-auto">
-                <ConvertkitPostSignup/>
+                <ConvertKitPostSignup collection={post.collection.name} />
               </div>
 
               {Boolean(moreArticles.length) && (

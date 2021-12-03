@@ -150,7 +150,7 @@ function App() {
 
 Another useful case I found is when I pass components as optional props, and conditionally **render the component if the consumer has passed it**.
 
-Let's assume we have a component which accepts another one.
+Let's assume we have a component that accepts another one.
 
 In the ideal world, I could write the following:
 
@@ -168,7 +168,7 @@ const ReusableComponent: React.FC<{
 };
 ```
 
-Unfortunately, I (or Typescript) am not smart enough to make the children tree understand that `Heading` was casted as truthy.
+Unfortunately, I (or Typescript) am not smart enough to make the `children` tree understand that `Heading` was casted as truthy.
 
 `Heading` will error-out because the type-checking cannot understand that the `If` tree is only rendered when the condition value is truthy.
 
@@ -188,6 +188,6 @@ const ReusableComponent: React.FC<{
 };
 ```
 
-I am generally happy with the readability that this offers compared to ternaries, &&, or other weird ways that also make Typescript happy.
+I am generally happy with the readability that this offers compared to ternaries, &&, or other weird ways that make Typescript happy.
 
 Of course, let me know if you have any questions or suggestions to improve this!

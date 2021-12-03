@@ -7,7 +7,7 @@ import Layout from "../../components/layout";
 import Container from "../../components/container";
 import MDXRenderer from "../../components/mdx-renderer";
 
-import ConvertkitPostSignup from "../../components/convertkit-post-signup";
+import ConvertKitPostSignup from "../../components/convertkit-post-signup";
 import CollectionBrandingBar from "../../components/collection-branding-bar";
 import CollectionName from "../../components/collection-name";
 
@@ -58,7 +58,7 @@ const HubPage = ({ hub, content }: Props) => {
           </div>
 
           <div className="w-full md:w-8/12 mx-auto">
-            <ConvertkitPostSignup />
+            <ConvertKitPostSignup collection={hub.collection.name} />
           </div>
         </div>
       </Container>
