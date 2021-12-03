@@ -70,9 +70,10 @@ const Meta = () => {
 
       <meta property="og:site_name" content={constants.SITE_NAME} />
 
-      <meta property="twitter:title" content={constants.SITE_NAME} />
-      <meta property="twitter:card" content="summary_large_image" />
+      <meta key='twitter:title' property="twitter:title" content={constants.SITE_NAME} />
+      <meta key='twitter:description' property="twitter:description" content={constants.DESCRIPTION} />
       <meta property="twitter:creator" content={constants.TWITTER_HANDLE} />
+      <meta property="twitter:card" content="summary_large_image" />
     </Head>
   );
 };

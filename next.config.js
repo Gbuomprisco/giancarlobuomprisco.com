@@ -1,6 +1,15 @@
-const withMDX = require("@next/mdx")();
+const withPlugins = require('next-compose-plugins');
 
-module.exports = withMDX({
+/**
+ * @type {import('next').NextConfig}
+ */
+const config = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   swcMinify: true,
-});
+};
+
+const configWithPlugins = withPlugins([
+  [config],
+]);
+
+module.exports = configWithPlugins;

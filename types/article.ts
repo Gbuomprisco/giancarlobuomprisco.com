@@ -4,7 +4,7 @@ interface Article extends BasePost {
   coverImage: string;
   excerpt: string;
 
-  ogImage: {
+  ogImage?: {
     url: string;
   };
 

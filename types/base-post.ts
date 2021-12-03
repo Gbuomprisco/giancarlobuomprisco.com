@@ -1,4 +1,5 @@
 import Collection from "./collection";
+
 export default interface BasePost {
   slug: string;
   title: string;
@@ -8,4 +9,9 @@ export default interface BasePost {
   tags: string[];
   readingTime: string;
   content: string;
+
+  coverImage?: string;
+  ogImage?: {
+    url: string
+  }
 }

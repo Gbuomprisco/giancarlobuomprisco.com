@@ -28,7 +28,7 @@ const Blog = ({ posts }: Props) => {
             content={
               "Short-form posts, notes and tips about Angular, React, Next, Firebase, NestJS, StencilJS"
             }
-          ></meta>
+          />
         </Head>
 
         <Container>
@@ -39,7 +39,7 @@ const Blog = ({ posts }: Props) => {
           <SubHeading>Short-form posts, notes and tips</SubHeading>
 
           <div className="space-y-12 mt-8 md:mt-16">
-            <div className="w-full md:w-8/12 lg:w-6/12">
+            <div className="w-full">
               <div className="mx-auto flex flex-col space-y-8">
                 <PostsList posts={posts} />
               </div>

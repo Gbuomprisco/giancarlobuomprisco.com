@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { AUTHOR, SITE_NAME, TWITTER_URL } from '../lib/constants';
+import { AUTHOR, SITE_NAME, SITE_URL, TWITTER_URL } from '../lib/constants';
 
 import Container from './container';
 import PostBody from './post-body';
@@ -17,6 +17,7 @@ import PostType from '../types/blog-post';
 import PostsList from './posts-list';
 import ArticleType from '../types/article';
 import ArticlesList from './articles-list';
+import { getBannerFromSlug } from '../lib/banners';
 
 const Post: React.FC<{
   post: PostType;
@@ -26,12 +27,15 @@ const Post: React.FC<{
   content: MDXRemoteSerializeResult;
 }> = ({ post, content, morePosts, moreArticles, isFallback }) => {
   const collection = post.collection;
+  const coverImage = post.coverImage;
 
   const style: Record<string, string> = {
     '--accent': collection.primaryColor,
     '--accent-light': collection.primaryColorLight,
     '--accent-contrast': collection.contrastColor
   };
+
+  const fullImagePath = `${SITE_URL}${coverImage}`;
 
   const structuredDataJson = {
     '@context': 'https://schema.org/',
@@ -41,6 +45,9 @@ const Post: React.FC<{
       '@id': 'https://google.com/article'
     },
     'headline': post.title,
+    'images': [
+      fullImagePath
+    ],
     'author': {
       '@type': 'Person',
       'name': AUTHOR,
@@ -66,9 +73,12 @@ const Post: React.FC<{
                   <title>{post.title}</title>
 
                   <meta property="og:type" content="article"/>
-                  <meta property="og:title" key="og:title" content={post.title}/>
+                  <meta key="og:title" property="og:title" content={post.title}/>
                   <meta property="og:site_name" content={SITE_NAME}/>
                   <meta property="article:published_time" content={post.date}/>
+                  <meta key='twitter:title' property="twitter:title" content={post.title} />
+                  <meta key='og:image' property="og:image" content={fullImagePath}/>;
+                  <meta key="twitter:image" property="twitter:image" content={fullImagePath}/>
 
                   <script type="application/ld+json">
                     {JSON.stringify(structuredDataJson)}
@@ -76,6 +86,7 @@ const Post: React.FC<{
                 </Head>
 
                 <PostHeader post={post}/>
+
                 <PostBody content={content}/>
               </article>
 

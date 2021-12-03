@@ -1,0 +1,478 @@
+---
+title: Generating automatic banners for your Blog
+date: '2021-12-03T00:00:00.322Z'
+excerpt: Say no to custom banners. This blog posts shows you how to generate automatic banners for your articles using Next.js and SVG.
+live: false
+collection: "next.mdx"
+tags:
+  - next
+  - react
+---
+
+Blogging is best when your only worry is delivering the best possible content you can write.
+
+More often than not, instead of focusing on my topic, I become paralyzed by having to choose the design of the posts's cover image.
+
+I have noticed lots of blogs nowadays do not have any image. I understand why: it's a hassle, and drains my creative energy, which should instead
+be spent elsewhere.
+
+As a lazy programmer, the bes thing I can do is automate this process and never have to worry about an image unless it's for good reasons (for example, a massive, distinguished article).
+
+This blog post will show you how I generate SVG for this blog, saving me the hassle of having to design a banner for each post.
+
+We will be using Next.js, SVG, and another tool to convert an SVG to PNG for displaying the banner in external websites such as Twitter and Facebook.
+
+Want to see an example? This post's banner was generated automatically 😃
+
+## Creating a Banner component with JSX
+
+In order to dynamically create an image, we're going to create a simple React component `BlogPostImageSvg`.
+
+This components accepts a bunch of parameters we're going to use to render the tile, an image, and a background-color to make it pretty.your
+
+In the case of this blog, I used:
+- the title of the post
+- the image of the collection (usually the logo of the technology)
+- the branding of the collection (for example, if the collection is Angular, it's red)
+
+```tsx
+type ImageProps = {
+  imageData?: string;
+} | {
+  imageUrl?: string;
+};
+
+const BlogPostImageSvg: React.FC<{
+  color: string;
+  title: string;
+  width?: string;
+  height?: string;
+  fontSize?: string;
+  className?: string
+} & ImageProps> = (props) => {
+ // body of the function
+};
+```
+
+This is an example of a blog post on this website whose banner was auto-generated:
+
+![Dynamic Banner Demo](/assets/images/posts/dynamic-banner-demo.webp "Dynamic Banner Demo")
+
+You must be wondering: why use either `imageData` and `imageUrl`?
+
+When we're going to generate the image on the filesystem to satisfy
+the Open Graph protocol (which does not work with SVGs) we will need to generate an image, and to do so, we're going to convert
+the inner image into its base64 representation, so we no longer need to reference it as an external URL.
+
+### The body of the function
+
+```tsx
+const {
+    color, title, height, width, fontSize, className
+} = props;
+
+// in order to break the tile on multiple lines, we need to break it in tspan tags
+const Spans = getTitleSpans(title);
+const useWidth = width ?? `100%`;
+const useHeight = height ?? `415`;
+const useFontSize = fontSize ?? '4rem';
+
+return (
+    <svg
+      width={useWidth}
+      height={useHeight}
+      viewBox="0 0 800 415"
+      fill="white"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className ?? ''}
+    >
+      <style>{getMedia()}</style>
+      <rect width={useWidth} height={useHeight} fill="white"/>
+
+      <text
+        y="15%"
+        fontFamily={'Inter, Helvetica, sans-serif'}
+        fontWeight={'800'}
+        fontSize={useFontSize}
+        fill={'#222'}
+      >
+        {Spans.map((item, idx) => {
+          return (<tspan key={idx} x="5%" dy="1.2em">{item}</tspan>);
+        })}
+      </text>
+
+      { 'imageUrl' in props ?
+        <image
+          x={'50%'}
+          y={'15%'}
+          width="60%"
+          height="60%"
+          href={props.imageUrl}
+          preserveAspectRatio="xMidYMid" opacity={0.15}
+        /> : null}
+
+      { 'imageData' in props ?
+        <image
+          x={'50%'}
+          y={'15%'}
+          width="60%"
+          height="60%"
+          href={`data:image/png;charset=utf-8;base64,${props.imageData}`}
+          preserveAspectRatio="xMidYMid" opacity={0.15}
+        /> : null}
+
+      <rect width="100%" height="15" fill={color}/>
+    </svg>
+);
+```
+
+### Making it Responsive
+
+In order to make the image responsive on mobile devices, we're going to use media queries and define the size of the text and the height of the SVG based on the resolution.
+
+You should adjust these according to your website's design.
+
+```tsx
+function getMedia() {
+  return `
+    @media (max-width: 768px) {
+      svg {
+        height: 300px;
+      }
+
+      text {
+        font-size: 50px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      svg {
+        height: 200px;
+      }
+
+      text {
+        font-size: 42px;
+      }
+    }
+
+    @media (max-width: 300px) {
+      svg {
+        height: 150px;
+      }
+
+      text {
+        font-size: 32px;
+      }
+    }\`
+    `
+  ;
+}
+```
+
+### Rendering the Title on multiple lines
+
+In order to render a `text` SVG element in multiple lines, we need to break it into multiple elements.
+
+In my specific case, I decided that:
+- I want to render `3` words per line
+- The maximum amount of letters should be `22` (again, your design may change this)
+
+If `3` words of the title exceed `22` letters, then I render the next word on the next line
+ so there is no risk the title will overflow the boundaries of the image.
+
+```tsx
+function getTitleSpans(
+    title: string,
+    maxWords = 3,
+    maxLetters = 22
+) {
+  const words = title.split(' ');
+  const spans: string[] = [];
+
+  let index = 0;
+
+  while (spans.join(' ').length < title.length) {
+    const end = index + maxWords;
+
+    let span = words.slice(index, end).join(' ');
+
+    if (span.length >= maxLetters) {
+      span = words.slice(index, end - 1).join(' ');
+      index--;
+    }
+
+    index += maxWords;
+    spans.push(span);
+  }
+
+  return spans;
+}
+```
+
+I will post the full snippet at the end of this article
+
+## Generating PNGs from our SVG Banners
+
+Now that we have a component which can dynamically generate our posts images, we need to actually generate these on our hosting so that
+they can be loaded on external websites (for example, Twitter) when the link is shared.
+
+Unfortunately, Open Graph does not support SVG. That means, we're going to generate, at build-time, every article's image that is missing the `image` property in its front-matter.
+
+Of course, this depends on your set-up: you can choose a different logic if you need to, but this works well in my case.
+
+If I feel lazy and don't want to spend time making an image, the build-step will do it for me.
+
+### Generating the image in getStaticProps
+
+The following snippet is going to be executed in the `getStaticProps` function of each blog post's page:
+
+```tsx
+if (!('coverImage' in post)) {
+    await generateCoverImage(post);
+
+    post.ogImage = {
+      url: getBannerFromSlug(post.slug),
+    };
+}
+```
+
+And then, we can render the `Open Graph` tag in the `head` of the page:
+
+```tsx
+const fullImagePath = `${SITE_URL}${post.ogImage.url}`;
+
+<Head>
+    <meta property="og:image" content={fullImagePath} />
+</Head>
+```
+
+This is instead the function which generates the image (we will also see its internal functions):
+
+```tsx
+async function generateCoverImage(
+    post: BlogPost
+) {
+  const outputFile = `${post.slug}.webp`;
+
+  // if the file already exists, skip it
+  try {
+    await assertBannerDoesNotExist(outputFile);
+  } catch {
+
+    // these should be updated according to your own website
+    const color = post.collection.primaryColor;
+    const imageUrl = post.collection.logo;
+
+    // converting imageUrl to a base 64 image
+    const imageBuffer = imageUrl ?
+        await convertImageToBase64(imageUrl) :
+         undefined;
+
+    const imageData = imageBuffer ?
+        new Buffer(imageBuffer).toString('base64') :
+         undefined;
+
+    const svg =
+      renderToStaticMarkup(
+        <BlogPostImageSvg
+          imageData={imageData}
+          color={color}
+          title={post.title}
+          width={'800'}
+          height={'418'}
+        />
+      );
+
+    // creating a webp image from the SVG string rendered using React DOM server
+    await createBannerImage(svg, outputFile);
+  }
+}
+```
+
+## Generating a WebP image from an SVG using Sharp
+
+Sharp is a wonderful NodeJS library for image manipulation.
+We're going to use it to generate a WebP image from our SVG string, which we rendered using React.
+
+```tsx
+function getPath(fileName: string) {
+    // implement this to point to the directory of your images
+}
+
+export async function createBannerImage(
+    svg: string,
+    outputFile: string
+) {
+  const fullPath = await getPath(outputFile);
+
+  try {
+    await assertBannerDoesNotExist(fullPath);
+  } catch (e) {
+    // file does not exist, let's go on and create it!
+
+    const data = await getImageFromSvg(svg);
+
+    if (data) {
+      const output = await data.toFile(fullPath);
+
+      console.log(`Banner successfully generated: Size: ${output.size}`);
+    }
+  }
+}
+
+async function getImageFromSvg(svgString: string) {
+  try {
+    const { default: sharp } = await import('sharp');
+    const metadata = await sharp(Buffer.from(svgString));
+
+    return metadata.webp();
+  } catch (e) {
+    console.error(e);
+  }
+}
+```
+
+## Results
+
+Here is a small video demonstrating the responsiveness of the banners, and how it look with multiple banners in the same page (I think, not too bad).
+
+<video autoPlay loop muted>
+    <source src="/assets/images/posts/dynamic-banners-responsive.webm" type="video/webm" />
+</video>
+
+## Full Snippet of the Component
+
+Here is the full snippet of the component:
+
+```tsx
+type ImageProps = {
+  imageData?: string;
+} | {
+  imageUrl?: string;
+};
+
+const BlogPostImageSvg: React.FC<{
+  color: string;
+  title: string;
+  width?: string;
+  height?: string;
+  fontSize?: string;
+  className?: string
+} & ImageProps> = (props) => {
+  const { color, title, height, width, fontSize, className} = props;
+
+  const Spans = getTitleSpans(title);
+  const useWidth = width ?? `100%`;
+  const useHeight = height ?? `415`;
+  const useFontSize = fontSize ?? '4rem';
+
+  return (
+    <svg
+      width={useWidth}
+      height={useHeight}
+      viewBox="0 0 800 415"
+      fill="white"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className ?? ''}
+    >
+      <style>{getMedia()}</style>
+      <rect width={useWidth} height={useHeight} fill="white"/>
+
+      <text
+        y="15%"
+        fontFamily={'Inter, Helvetica, sans-serif'}
+        fontWeight={'800'}
+        fontSize={useFontSize}
+        fill={'#222'}
+      >
+        {Spans.map((item, idx) => {
+          return (<tspan key={idx} x="5%" dy="1.2em">{item}</tspan>);
+        })}
+      </text>
+
+      { 'imageUrl' in props ?
+        <image
+          x={'50%'}
+          y={'15%'}
+          width="60%"
+          height="60%"
+          href={props.imageUrl}
+          preserveAspectRatio="xMidYMid" opacity={0.15}
+        /> : null}
+
+      { 'imageData' in props ?
+        <image
+          x={'50%'}
+          y={'15%'}
+          width="60%"
+          height="60%"
+          href={`data:image/png;charset=utf-8;base64,${props.imageData}`}
+          preserveAspectRatio="xMidYMid" opacity={0.15}
+        /> : null}
+
+      <rect width="100%" height="15" fill={color}/>
+    </svg>
+  );
+};
+
+function getMedia() {
+  return `
+    @media (max-width: 768px) {
+      svg {
+        height: 300px;
+      }
+
+      text {
+        font-size: 50px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      svg {
+        height: 200px;
+      }
+
+      text {
+        font-size: 42px;
+      }
+    }
+
+    @media (max-width: 300px) {
+      svg {
+        height: 150px;
+      }
+
+      text {
+        font-size: 32px;
+      }
+    }\`
+    `
+  ;
+}
+
+function getTitleSpans(title: string, maxWords = 3, maxLetters = 22) {
+  const words = title.split(' ');
+  const spans: string[] = [];
+
+  let index = 0;
+
+  while (spans.join(' ').length < title.length) {
+    const end = index + maxWords;
+
+    let span = words.slice(index, end).join(' ');
+
+    if (span.length >= maxLetters) {
+      span = words.slice(index, end - 1).join(' ');
+      index--;
+    }
+
+    index += maxWords;
+    spans.push(span);
+  }
+
+  return spans;
+}
+
+
+export default BlogPostImageSvg;
+```

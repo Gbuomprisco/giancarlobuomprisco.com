@@ -10,6 +10,7 @@ import BlogPost from '../types/blog-post';
 import SeriesTitle from './series-title';
 import Author from './author';
 import Tag from './tag';
+import BlogPostImageSvg from './blog-post-image-svg';
 
 type Props = {
   post: Article | BlogPost;
@@ -50,9 +51,9 @@ const PostHeader = ({ post }: Props) => {
         </div>
       </div>
 
-      {coverImage && (
-        <div className="mb-8 md:mb-16 sm:mx-0">
-          <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
+      <div className="mb-8 md:mb-16 sm:mx-0">
+        <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
+          {coverImage ?
             <CoverImage
               className="shadow-xl rounded-md"
               width="100%"
@@ -60,10 +61,18 @@ const PostHeader = ({ post }: Props) => {
               title={title}
               src={coverImage}
               href={href}
-            />
-          </div>
+            /> : (
+              <div className="shadow-xl rounded-md">
+                <BlogPostImageSvg
+                  color={collection.primaryColor}
+                  imageUrl={collection.logo ?? ''}
+                  title={post.title}
+                />
+              </div>
+            )
+          }
         </div>
-      )}
+      </div>
     </>
   );
 };
@@ -86,7 +95,7 @@ function PostTags({
           const href = `/tags/${tag}`;
 
           return (
-            <Tag key={tag} >
+            <Tag key={tag}>
               <Link href="/tags/[tag]" as={href}>
                 {tag}
               </Link>

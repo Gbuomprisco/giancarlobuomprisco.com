@@ -43,7 +43,7 @@ const CollectionPosts = ({ posts, articles, collection, preview }: Props) => {
           </PostTitle>
         </div>
 
-        <div className="mt-8 md:mt-12 flex flex-col space-y-8">
+        <div className="mt-8 md:mt-12 flex flex-col">
           {articles.length ? (
             <div className="flex flex-col space-y-4">
               <h2 className="text-xl font-bold">Latest Articles</h2>

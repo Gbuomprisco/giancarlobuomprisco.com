@@ -15,7 +15,7 @@ import PostTitle from './post-title';
 import CollectionName from './collection-name';
 
 import Article from '../types/article';
-import { AUTHOR, TWITTER_URL } from '../lib/constants';
+import { AUTHOR, SITE_URL, TWITTER_URL } from '../lib/constants';
 
 const Article: React.FC<{
   post: Article;
@@ -27,6 +27,7 @@ const Article: React.FC<{
   const title = post.series ? `${post.series}: ${post.title}` : post.title;
   const ogImage = post.ogImage?.url ?? post.coverImage;
   const collection = post.collection;
+  const fullImagePath = `${SITE_URL}${ogImage}`;
 
   const style: Record<string, string> = {
     '--accent': collection.primaryColor,
@@ -42,7 +43,7 @@ const Article: React.FC<{
       '@id': 'https://google.com/article'
     },
     'image': [
-      ogImage
+      fullImagePath
     ],
     'headline': post.title,
     'description': post.excerpt,
@@ -60,7 +61,7 @@ const Article: React.FC<{
         <CollectionBrandingBar collection={post.collection}/>
 
         <Container>
-          <MainHeader />
+          <MainHeader/>
 
           {isFallback ? (
             <PostTitle>Loading…</PostTitle>
@@ -73,6 +74,10 @@ const Article: React.FC<{
                   <meta property="og:type" content="article"/>
                   <meta property="og:title" content={title} key="og:title"/>
                   <meta property="article:published_time" content={post.date}/>
+
+                  <meta key="twitter:title" property="twitter:title" content={title}/>
+                  <meta key="twitter:description" property="twitter:description" content={post.excerpt}/>
+                  <meta key="twitter:image" property="twitter:image" content={fullImagePath}/>
 
                   {post.excerpt && (
                     <>
@@ -94,7 +99,7 @@ const Article: React.FC<{
                     <link rel="canonical" href={post.canonical} key="canonical"/>
                   )}
 
-                  {ogImage && <meta property="og:image" content={ogImage}/>}
+                  <meta property="og:image" content={fullImagePath}/>
 
                   <script type="application/ld+json">
                     {JSON.stringify(structuredDataJson)}
