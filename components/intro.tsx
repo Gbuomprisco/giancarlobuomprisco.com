@@ -37,6 +37,10 @@ const Intro = () => {
             Serverless for Front-end Developers, and helping beginners to write
             full-stack applications from scratch
           </p>
+
+          <p>
+            Below you can find my latest articles and blog posts. Happy reading!
+          </p>
         </div>
       </div>
 

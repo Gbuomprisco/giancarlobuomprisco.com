@@ -8,13 +8,11 @@ type Props = {
 
 const ArticlesList = ({ posts }: Props) => {
   return (
-    <section>
-      <GridList>
-        {posts.map((post) => (
-          <ArticlePreview key={post.slug} post={post} />
-        ))}
-      </GridList>
-    </section>
+    <GridList>
+      {posts.map((post) => (
+        <ArticlePreview key={post.slug} post={post} />
+      ))}
+    </GridList>
   );
 };
 

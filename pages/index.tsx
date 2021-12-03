@@ -7,14 +7,16 @@ import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
 
 import { TITLE, MISSION_STATEMENT } from "../lib/constants";
-import { getAllArticles } from "../lib/api";
+import { getAllArticles, getAllPosts } from '../lib/api';
 import Post from "../types/article";
+import PostsList from '../components/posts-list';
 
 type Props = {
-  allPosts: Post[];
+  posts: Post[];
+  articles: Post[];
 };
 
-const Index = ({ allPosts }: Props) => {
+const Index = ({ posts, articles }: Props) => {
   return (
     <>
       <Layout>
@@ -31,11 +33,21 @@ const Index = ({ allPosts }: Props) => {
             <Intro />
           </div>
 
-          <div className="mt-8 md:mt-16">
-            <h2 className="text-2xl font-bold">Latest Articles</h2>
+          <div className={''}>
+            <div>
+              <h2 className="text-2xl font-bold">Latest Articles</h2>
 
-            <div className="flex-col space-y-12 mt-4">
-              <ArticlesList posts={allPosts} />
+              <div className="mt-4">
+                <ArticlesList posts={articles} />
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold">Latest Posts</h2>
+
+              <div className="mt-4">
+                <PostsList posts={posts} />
+              </div>
             </div>
           </div>
         </Container>
@@ -47,7 +59,7 @@ const Index = ({ allPosts }: Props) => {
 export default Index;
 
 export const getStaticProps = async () => {
-  const allPosts = getAllArticles([
+  const articles = getAllArticles([
     "title",
     "date",
     "slug",
@@ -55,9 +67,17 @@ export const getStaticProps = async () => {
     "excerpt",
     "collection",
     "series",
-  ]);
+  ]).slice(0, 6);
+
+  const posts = getAllPosts([
+    "title",
+    "date",
+    "slug",
+    "coverImage",
+    "collection",
+  ]).slice(0, 6);
 
   return {
-    props: { allPosts },
+    props: { articles, posts },
   };
 };
