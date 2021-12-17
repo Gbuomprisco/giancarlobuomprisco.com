@@ -16,6 +16,24 @@
                     "describe"
                 ]
             }
+        },
+        {
+            "files": [
+                "**/_articles/a-scalable-nextjs-project-structure.mdx"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "american",
+                "domain": "technical",
+                "emotions": [
+                    "confident",
+                    "optimistic",
+                    "friendly"
+                ],
+                "goals": [
+                    "describe"
+                ]
+            }
         }
     ]
 }

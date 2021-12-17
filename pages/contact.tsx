@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Script from "next/script";
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 
 import Container from "../components/container";
 import Layout from "../components/layout";
@@ -10,11 +10,28 @@ import SubHeading from "../components/subheading";
 
 import { EMAIL, TITLE } from "../lib/constants";
 
+declare global {
+  interface Window {
+    Calendly: any;
+  }
+}
+
 const Contact = () => {
   const [text, setText] = useState("Loading Calendly. Please wait...");
 
   const onScriptLoaded = () => setText("");
   const emailHref = `mailto:${EMAIL}`;
+
+  useEffect(() => {
+    if (window.Calendly) {
+      window.Calendly.initInlineWidget({
+        'url': 'https://calendly.com/gcpsk',
+        parentElement: document.getElementById('calendly'),
+      });
+
+      onScriptLoaded();
+    }
+  }, []);
 
   return (
     <>
@@ -49,16 +66,14 @@ const Contact = () => {
               <p className="text-xl font-semibold">{text}</p>
 
               <div
+                id={'calendly'}
                 className="calendly-inline-widget flex items-center justify-center"
-                data-url="https://calendly.com/gcpsk"
                 style={{ minWidth: "320px", height: "650px" }}
-              ></div>
+              />
 
               <Script
                 type="text/javascript"
-                src="https://assets.calendly.com/assets/external/widget.js"
-                async
-                onLoad={onScriptLoaded}
+                src={"https://assets.calendly.com/assets/external/widget.js"}
               />
             </div>
           </div>

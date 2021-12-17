@@ -29,7 +29,11 @@
   width: 150%;
   max-width: 150%;
 
-  @apply relative block shadow-xl my-16 rounded-lg max-w-full lg:max-w-none lg:right-1/4;
+  @apply relative block my-16 rounded-lg max-w-full lg:max-w-none lg:right-1/4;
+}
+
+.markdown img:not([data-shadowless]) {
+  @apply shadow-lg;
 }
 
 .markdown ul {
@@ -70,7 +74,7 @@
 .markdown p > code,
 .markdown li > code {
   background: #efefef;
-  padding: 0.25rem 0.45rem;
+  padding: 0.1rem 0.25rem;
   border-radius: 4px;
   font-size: 1rem;
 }

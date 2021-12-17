@@ -12,8 +12,7 @@
     "lint": "next lint",
     "export": "next export",
     "static": "next build && next export && npm run sitemap && touch ./out/.nojekyll && echo 'giancarlobuomprisco.com' > ./out/CNAME",
-    "deploy": "gh-pages -d out -t true",
-    "release": "npm run static && npm run deploy"
+    "release": "npm run static && gh-pages -d out -t true"
   },
   "dependencies": {
     "@mdx-js/loader": "^1.6.22",

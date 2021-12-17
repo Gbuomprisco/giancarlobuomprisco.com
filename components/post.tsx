@@ -17,7 +17,6 @@ import PostType from '../types/blog-post';
 import PostsList from './posts-list';
 import ArticleType from '../types/article';
 import ArticlesList from './articles-list';
-import { getBannerFromSlug } from '../lib/banners';
 
 const Post: React.FC<{
   post: PostType;
