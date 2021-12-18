@@ -199,8 +199,9 @@ async function generateCoverImage(post: BlogPost) {
     const imageBuffer = imageUrl
       ? await convertImageToBase64(imageUrl)
       : undefined;
+
     const imageData = imageBuffer
-      ? new Buffer(imageBuffer).toString("base64")
+      ? Buffer.from(imageBuffer).toString("base64")
       : undefined;
 
     const svg = renderToStaticMarkup(
@@ -211,6 +212,7 @@ async function generateCoverImage(post: BlogPost) {
         width={"800"}
         height={"418"}
         fontSize={"4em"}
+        injectStyle={true}
       />
     );
 
