@@ -6,10 +6,10 @@ import Intro from "../components/intro";
 import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
 
-import { TITLE, MISSION_STATEMENT } from "../lib/constants";
-import { getAllArticles, getAllPosts } from '../lib/api';
+import * as constants from "../lib/constants";
+import { getAllArticles, getAllPosts } from "../lib/api";
 import Post from "../types/article";
-import PostsList from '../components/posts-list';
+import PostsList from "../components/posts-list";
 
 type Props = {
   posts: Post[];
@@ -22,18 +22,28 @@ const Index = ({ posts, articles }: Props) => {
       <Layout>
         <Head>
           <title key="title">
-            {TITLE} | {MISSION_STATEMENT}
+            {constants.TITLE} | {constants.MISSION_STATEMENT}
           </title>
+
+          <script key="ld:json" type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: constants.TITLE,
+              url: constants.SITE_URL,
+              logo: `${constants.SITE_URL}/assets/images/favicon/favicon.png`,
+            })}
+          </script>
         </Head>
 
         <Container>
           <MainHeader />
 
-          <div className={'my-12 md:my-24'}>
+          <div className={"my-12 md:my-24"}>
             <Intro />
           </div>
 
-          <div className={''}>
+          <div className={""}>
             <div>
               <h2 className="text-2xl font-bold">Latest Articles</h2>
 

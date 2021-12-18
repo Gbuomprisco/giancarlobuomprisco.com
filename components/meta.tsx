@@ -39,9 +39,7 @@ const Meta = () => {
       />
 
       <link rel="shortcut icon" href="/favicon/favicon.ico" />
-      <meta name="msapplication-TileColor" content="#ffffff" />
-      <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
-      <meta name="theme-color" content="#ffffff" />
+      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
 
       <link
         rel="stylesheet"
@@ -50,6 +48,10 @@ const Meta = () => {
       />
 
       <link rel="canonical" href={canonical} key="canonical" />
+
+      <meta name="msapplication-TileColor" content="#ffffff" />
+      <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
+      <meta name="theme-color" content="#ffffff" />
 
       <meta name="theme-color" content={constants.THEME_COLOR} />
       <meta name="author" content={constants.AUTHOR} />
@@ -70,8 +72,18 @@ const Meta = () => {
 
       <meta property="og:site_name" content={constants.SITE_NAME} />
 
-      <meta key='twitter:title' property="twitter:title" content={constants.SITE_NAME} />
-      <meta key='twitter:description' property="twitter:description" content={constants.DESCRIPTION} />
+      <meta
+        key="twitter:title"
+        property="twitter:title"
+        content={constants.SITE_NAME}
+      />
+
+      <meta
+        key="twitter:description"
+        property="twitter:description"
+        content={constants.DESCRIPTION}
+      />
+
       <meta property="twitter:creator" content={constants.TWITTER_HANDLE} />
       <meta property="twitter:card" content="summary_large_image" />
     </Head>

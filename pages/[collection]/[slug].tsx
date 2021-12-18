@@ -1,10 +1,10 @@
-import { useRouter } from 'next/router';
-import { renderToStaticMarkup } from 'react-dom/server';
-import ErrorPage from 'next/error';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { useRouter } from "next/router";
+import { renderToStaticMarkup } from "react-dom/server";
+import ErrorPage from "next/error";
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 
-import Article from '../../components/article';
-import Post from '../../components/post';
+import Article from "../../components/article";
+import Post from "../../components/post";
 
 import {
   getArticleBySlug,
@@ -12,23 +12,23 @@ import {
   getArticlesByCollection,
   getPostsByCollection,
   getPostsBySeries,
-  getAllPosts
-} from '../../lib/api';
+  getAllPosts,
+} from "../../lib/api";
 
-import markdownToHtml from '../../lib/markdownToHtml';
-import ArticleType from '../../types/article';
-import PostType from '../../types/blog-post';
+import markdownToHtml from "../../lib/markdownToHtml";
+import ArticleType from "../../types/article";
+import PostType from "../../types/blog-post";
 
-import { getBlogPostBySlug } from '../../lib/api';
-import BlogPost from '../../types/blog-post';
-import BlogPostImageSvg from '../../components/blog-post-image-svg';
+import { getBlogPostBySlug } from "../../lib/api";
+import BlogPost from "../../types/blog-post";
+import BlogPostImageSvg from "../../components/blog-post-image-svg";
 
 import {
   assertBannerDoesNotExist,
   convertImageToBase64,
   createBannerImage,
-  getBannerFromSlug
-} from '../../lib/banners';
+  getBannerFromSlug,
+} from "../../lib/banners";
 
 enum Types {
   BlogPost,
@@ -45,17 +45,17 @@ type Props = {
 };
 
 const PostPage = ({
-                    post,
-                    type,
-                    morePosts,
-                    moreArticles,
-                    series,
-                    content
-                  }: Props) => {
+  post,
+  type,
+  morePosts,
+  moreArticles,
+  series,
+  content,
+}: Props) => {
   const router = useRouter();
 
   if (!router.isFallback && (!post?.slug || !post.collection)) {
-    return <ErrorPage statusCode={404}/>;
+    return <ErrorPage statusCode={404} />;
   }
 
   if (type === Types.Article) {
@@ -105,12 +105,12 @@ export async function getStaticProps({ params }: Params) {
     .slice(0, maxReadMorePosts);
 
   const seriesName =
-    'series' in post ? (post as ArticleType).series : undefined;
+    "series" in post ? (post as ArticleType).series : undefined;
 
   const series = seriesName ? getPostsBySeries(seriesName) : [];
-  const content = await markdownToHtml(post.content || '');
+  const content = await markdownToHtml(post.content || "");
 
-  if (!('coverImage' in post)) {
+  if (!("coverImage" in post)) {
     await generateCoverImage(post);
 
     post.ogImage = {
@@ -125,14 +125,14 @@ export async function getStaticProps({ params }: Params) {
       series,
       morePosts,
       moreArticles,
-      type
-    }
+      type,
+    },
   };
 }
 
 export async function getStaticPaths() {
-  const articles = getAllArticles(['slug', 'collection']);
-  const posts = getAllPosts(['slug', 'collection']);
+  const articles = getAllArticles(["slug", "collection"]);
+  const posts = getAllPosts(["slug", "collection"]);
 
   const paths = [...articles, ...posts].map((post) => {
     const slug = post.slug;
@@ -141,52 +141,51 @@ export async function getStaticPaths() {
     return {
       params: {
         collection,
-        slug
-      }
+        slug,
+      },
     };
   });
 
   return {
     paths,
-    fallback: false
+    fallback: false,
   };
 }
 
 function getPostItemBySlug(slug: string) {
   const article = getArticleBySlug(slug, [
-    'title',
-    'date',
-    'slug',
-    'ogImage',
-    'coverImage',
-    'collection',
-    'excerpt',
-    'series',
-    'content',
-    'canonical',
-    'tags'
+    "title",
+    "date",
+    "slug",
+    "ogImage",
+    "coverImage",
+    "collection",
+    "excerpt",
+    "series",
+    "content",
+    "canonical",
+    "tags",
   ]);
 
   if (article) {
     return {
       post: article as ArticleType,
-      type: Types.Article
+      type: Types.Article,
     };
   }
 
   return {
     post: getBlogPostBySlug(slug, [
-      'title',
-      'date',
-      'slug',
-      'collection',
-      'content',
-      'tags'
+      "title",
+      "date",
+      "slug",
+      "collection",
+      "content",
+      "tags",
     ]) as BlogPost,
-    type: Types.BlogPost
+    type: Types.BlogPost,
   };
 }
-
 
 async function generateCoverImage(post: BlogPost) {
   const outputFile = `${post.slug}.webp`;
@@ -197,20 +196,23 @@ async function generateCoverImage(post: BlogPost) {
     const color = post.collection.primaryColor;
     const imageUrl = post.collection.logo;
 
-    const imageBuffer = imageUrl ? await convertImageToBase64(imageUrl) : undefined;
-    const imageData = imageBuffer ? new Buffer(imageBuffer).toString('base64') : undefined;
+    const imageBuffer = imageUrl
+      ? await convertImageToBase64(imageUrl)
+      : undefined;
+    const imageData = imageBuffer
+      ? new Buffer(imageBuffer).toString("base64")
+      : undefined;
 
-    const svg =
-      renderToStaticMarkup(
-        <BlogPostImageSvg
-          imageData={imageData}
-          color={color}
-          title={post.title}
-          width={'800'}
-          height={'418'}
-          fontSize={'4em'}
-        />
-      );
+    const svg = renderToStaticMarkup(
+      <BlogPostImageSvg
+        imageData={imageData}
+        color={color}
+        title={post.title}
+        width={"800"}
+        height={"418"}
+        fontSize={"4em"}
+      />
+    );
 
     await createBannerImage(svg, outputFile);
   }
