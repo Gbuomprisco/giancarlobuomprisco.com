@@ -18,17 +18,19 @@ be spent elsewhere.
 
 I am a lazy programmer. So the best thing I can do is automate this process and never have to worry about adding a post image unless it's for good reasons (for example, a massive, distinguished article).
 
-This blog post will show you how I generate SVG for this blog, saving me the hassle of designing a banner for each post.
+This blog post will show you how I generate SVG, saving me the hassle of designing a banner for each post.
 
 We will be using Next.js, SVG, and Sharp to convert an SVG string (rendered by React) to PNG for displaying the banner on external websites such as Twitter and Facebook.
 
-Want to see an example? This post's banner was generated automatically 😃
+Want to see an example? The script has generated this post's banner automatically 😃
 
 ## Creating a Banner component with JSX
 
-To dynamically create an image, we will create a simple React component `BlogPostImageSvg`.
+We will create a simple React component `BlogPostImageSvg`: this component will dynamically create an image based on its props.
 
-This component accepts a bunch of parameters we're going to use to render the tile, an image, and a background-color to make it pretty.
+If the component is used to render an image, we simply display the SVG; furthermore, we will generate an image by converting the SVG to a webp file hosted along your website. This makes is accessible by third websites such as Twitter or Facebook.
+
+This component accepts a few parameters we use to render the tile, an image, and background color to make it pretty.
 
 In the case of this blog, I used:
 - the title of the post
@@ -49,6 +51,7 @@ const BlogPostImageSvg: React.FC<{
   height?: string;
   fontSize?: string;
   className?: string
+  injectStyle?: boolean;
 } & ImageProps> = (props) => {
  // body of the function
 };
@@ -60,7 +63,7 @@ The below is an example of a blog post on this website whose banner was auto-gen
 
 You must be wondering: why use either `imageData` and `imageUrl`?
 
-When we generate the image on the filesystem to satisfy the Open Graph protocol (which does not work with SVGs), we will need to generate an image.
+When we generate the image on the filesystem to satisfy the Open Graph protocol (which does not work with SVGs), we need to create an image.
 
 We're going to convert the inner image into its base64 representation, so we no longer need to reference it as an external URL.
 
@@ -68,12 +71,13 @@ We're going to convert the inner image into its base64 representation, so we no 
 
 ```tsx
 const {
-    color,
-    title,
-    height,
-    width,
-    fontSize,
-    className
+  color,
+  title,
+  height,
+  width,
+  fontSize,
+  className,
+  injectStyle
 } = props;
 
 // in order to break the tile on multiple lines, we need to break it in tspan tags
@@ -83,71 +87,71 @@ const useHeight = height ?? `415`;
 const useFontSize = fontSize ?? '4rem';
 
 return (
-    <svg
+  <svg
+    width={useWidth}
+    height={useHeight}
+    viewBox="0 0 800 415"
+    fill="white"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className ?? ''}
+  >
+    { injectStyle ? <style>
+      {getMedia()}
+    </style> : null }
+
+    <rect
       width={useWidth}
       height={useHeight}
-      viewBox="0 0 800 415"
       fill="white"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className ?? ''}
+  />
+
+    <text
+      y="15%"
+      fontFamily={'Inter, Helvetica, sans-serif'}
+      fontWeight={'800'}
+      fontSize={useFontSize}
+      fill={'#222'}
     >
-      <style>
-        {getMedia()}
-      </style>
+      {Spans.map((item, idx) => {
+        return (
+          <tspan
+              key={idx}
+              x="5%"
+              dy="1.2em"
+          >
+              {item}
+          </tspan>);
+      })}
+    </text>
 
-      <rect
-        width={useWidth}
-        height={useHeight}
-        fill="white"
+    { 'imageUrl' in props ?
+      <image
+        x={'50%'}
+        y={'15%'}
+        width="60%"
+        height="60%"
+        href={props.imageUrl}
+        preserveAspectRatio="xMidYMid"
+        opacity={0.15}
+      /> : null}
+
+    { 'imageData' in props ?
+      <image
+        x={'50%'}
+        y={'15%'}
+        width="60%"
+        height="60%"
+        href={`data:image/png;charset=utf-8;base64,${props.imageData}`}
+        preserveAspectRatio="xMidYMid"
+        opacity={0.15}
+      /> : null}
+
+    <rect
+      width="100%"
+      height="15"
+      fill={color}
     />
-
-      <text
-        y="15%"
-        fontFamily={'Inter, Helvetica, sans-serif'}
-        fontWeight={'800'}
-        fontSize={useFontSize}
-        fill={'#222'}
-      >
-        {Spans.map((item, idx) => {
-          return (
-            <tspan
-                key={idx}
-                x="5%"
-                dy="1.2em"
-            >
-                {item}
-            </tspan>);
-        })}
-      </text>
-
-      { 'imageUrl' in props ?
-        <image
-          x={'50%'}
-          y={'15%'}
-          width="60%"
-          height="60%"
-          href={props.imageUrl}
-          preserveAspectRatio="xMidYMid"
-          opacity={0.15}
-        /> : null}
-
-      { 'imageData' in props ?
-        <image
-          x={'50%'}
-          y={'15%'}
-          width="60%"
-          height="60%"
-          href={`data:image/png;charset=utf-8;base64,${props.imageData}`}
-          preserveAspectRatio="xMidYMid"
-          opacity={0.15}
-        /> : null}
-
-      <rect
-        width="100%"
-        height="15"
-        fill={color}
-      />
-    </svg>
+  </svg>
 );
 ```
 
@@ -219,10 +223,13 @@ function getTitleSpans(
   while (spans.join(' ').length < title.length) {
     const end = index + maxWords;
 
-    let span = words.slice(index, end).join(' ');
+    let span = 
+      words.slice(index, end).join(' ');
 
     if (span.length >= maxLetters) {
-      span = words.slice(index, end - 1).join(' ');
+      span = 
+        words.slice(index, end - 1).join(' ');
+
       index--;
     }
 
@@ -253,14 +260,14 @@ The following snippet is going to be executed in the `getStaticProps` function o
 
 ```tsx
 if (!('coverImage' in post)) {
-    await generateCoverImage(post);
+  await generateCoverImage(post);
 
-    const url = getBannerFromSlug(post.slug);
+  const url = getBannerFromSlug(post.slug);
 
-    // adapt this to your data model
-    post.ogImage = {
-      url,
-    };
+  // adapt this to your data model
+  post.ogImage = {
+    url,
+  };
 }
 ```
 
@@ -270,7 +277,11 @@ And then, we can render the `Open Graph` tag in the `head` of the page:
 const fullImagePath = `${SITE_URL}${post.ogImage.url}`;
 
 <Head>
-    <meta property="og:image" content={fullImagePath} />
+  <meta 
+    key='og:image' 
+    property="og:image" 
+    content={fullImagePath}
+  />
 </Head>
 ```
 
@@ -301,10 +312,9 @@ async function generateCoverImage(
         ) : undefined;
 
     const imageData = imageBuffer ?
-        new Buffer(
-            imageBuffer
-        ).toString('base64') :
-         undefined;
+        Buffer
+          .from(imageBuffer)
+          .toString('base64') : undefined;
 
     const svg =
       renderToStaticMarkup(
@@ -314,6 +324,7 @@ async function generateCoverImage(
           title={post.title}
           width={'800'}
           height={'418'}
+          injectStyle={true}
         />
       );
 
@@ -329,16 +340,18 @@ async function generateCoverImage(
 
 ## Generating a WebP image from an SVG using Sharp
 
-Sharp is a wonderful NodeJS library for image manipulation.
+Sharp is a NodeJS library for image manipulation.
 
-We're going to use it to generate a WebP image from our SVG string, which we rendered using React.
+We're using it to generate a WebP image from our SVG string, which we rendered using React.
 
 - `convertImageToBase64`: we will use this to convert an image to base64
 - `assertBannerDoesNotExist`: we will not generate a banner if it exists, so we use this function to prevent slowing down the build pipeline
 - `createBannerImage` and `getImageFromSvg` will be used to generate a WEBP image from an SVG string
 
 ```tsx
-function getPath(fileName: string) {
+function getPath(
+  fileName: string
+) {
     // implement this to point to
     // the directory of your images
 }
@@ -361,6 +374,7 @@ export async function convertImageToBase64(
     return metadata
         .png()
         .toBuffer();
+
   } catch (e) {
     console.error(e);
   }
@@ -455,6 +469,7 @@ const BlogPostImageSvg: React.FC<{
   height?: string;
   fontSize?: string;
   className?: string
+  injectStyle?: boolean;
 } & ImageProps> = (props) => {
   const {
     color,
@@ -462,7 +477,8 @@ const BlogPostImageSvg: React.FC<{
     height,
     width,
     fontSize,
-    className
+    className,
+    injectStyle,
   } = props;
 
   const Spans = getTitleSpans(title);
@@ -479,9 +495,9 @@ const BlogPostImageSvg: React.FC<{
       xmlns="http://www.w3.org/2000/svg"
       className={className ?? ''}
     >
-      <style>
+      { injectStyle ? <style>
         {getMedia()}
-      </style>
+      </style> : null }
 
       <rect
         width={useWidth}
@@ -558,7 +574,7 @@ function getMedia() {
       text {
         font-size: 32px;
       }
-    }\`
+    }
     `
   ;
 }

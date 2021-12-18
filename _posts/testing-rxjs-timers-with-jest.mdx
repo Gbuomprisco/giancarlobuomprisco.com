@@ -7,15 +7,22 @@ tags:
 - testing
 title: Testing RxJS timers with Jest
 live: true
-
+excerpt: Learn how to test simple time-operators with RxJS and Jest
 ---
-Testing RxJS has always been a challenge for me, especially when using timers. Some testing utilities (such as Angular's) make it easier - others not so much.
 
-Jest, though, didn't make me miss Angular's utilities much; I didn't find too much online, and StackOverflow's answers led to more questions. So this is for you, and the future me.
+Testing RxJS has always been challenging for me, especially when using timer operators (such as `timer`, `debounce`, `interval`). 
+
+Some testing utilities (such as Angular's) make it easier - others not so much.
+
+Jest, though, didn't make me miss Angular's utilities much; I didn't find too much online, and StackOverflow's answers led to more questions. 
+
+So this blog post is for you, and future me.
 
 ### Testing a simple timer stream with Jest's timers
 
-Let's write a dead-simple RxJS operator which emits a value every 100 milliseconds. We will test that it emitted 5 times in 499 milliseconds, no more, and no less.
+Let's write a dead-simple RxJS operator that emits a value every 100 milliseconds. 
+
+We will test that it emitted five times in 499 milliseconds, no more, and no less.
 
 When we want to use Jest's timers, we need to enable such functionality:
 
@@ -70,6 +77,5 @@ it('emits 5 times', async () => {
 ```
 
 And here is proof :)
-
   
-![Test running in WebSorm](/assets/kapture-2021-11-11-at-23-24-28.gif "Test running in WebSorm")
+![Test running in WebStorm](/assets/kapture-2021-11-11-at-23-24-28.gif "Test running in WebStorm")

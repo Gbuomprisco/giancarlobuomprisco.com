@@ -9,9 +9,10 @@ export default interface BasePost {
   tags: string[];
   readingTime: string;
   content: string;
+  excerpt: string;
 
   coverImage?: string;
   ogImage?: {
-    url: string
-  }
+    url: string;
+  };
 }

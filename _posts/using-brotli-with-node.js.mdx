@@ -1,22 +1,24 @@
 ---
 date: 2021-11-01T22:53:02+01:00
 collection: "node.mdx"
-tags: []
+tags: 
+  - node
 title: Using Brotli with Node.js
 live: true
-
+excerpt: This post shows how to compress large strings with Brotli using Node.js. 
 ---
+
 Brotli is a compression algorithm developed by Google, able to compress data even smaller than gzip can.
 
-Compressing can be useful in many situations; the most notable being serving your website assets in a much smaller format.
+Compressing can be helpful in many scenarios; the most notable being serving your website assets in a much smaller format.
 
-But there are times when we may want to use _brotli_ programmatically, for example using NodeJS.
+But there are times when we may want to use _brotli_ programmatically, such as NodeJS.
 
-As a personal anectode, I recently needed to store large(ish) strings into **Redis**, which is an in-memory database. Of course, space size is limited, and every byte counts.
+For example, I needed to store large strings into **Redis**; Redis is an in-memory database, and of course, space is limited, and every byte counts.
 
 I was willing to pay a small CPU-related price for saving space and network transfer payloads (which Firebase, of course, bills me for).
 
-I therefore started researching for the most effective way of compressing the data before writing to Redis, so that:
+Therefore, I started researching for the most effective way of compressing the data before writing to Redis, so that:
 
 * the string would occupy less space
 * the network cost and speed would be lower
@@ -29,7 +31,7 @@ NodeJS comes with utilities for compressing/decompressing Brotli since versions 
 
 Like many other APIs, Node comes with async and sync versions. For simplicity, we'll show the sync versions.
 
-When compressing, we need to turn the input data structure into a string. 
+We need to turn the input data structure into a string when compressing. 
 
 ```typescript
 import { brotliCompressSync } from 'zlib';
@@ -60,9 +62,9 @@ export function compressWithBrotli(data: unknown) {
 
 For decompressing a Brotli base64 string and turning it back into its JSON representation we will need a few more steps:
 
-* first, we turn the compressed string into a `Buffer`
-* we then decompress using the built-in utility `brotliDecompressSync`
-* we check if the value is truthy, and if so, parse the string using `JSON.parse`
+* First, we turn the compressed string into a `Buffer`
+* We then decompress using the built-in utility `brotliDecompressSync`
+* We check if the value is truthy, and if so, parse the string using `JSON.parse`
 
 ```typescript
 import { brotliDecompressSync } from 'zlib';
@@ -77,6 +79,6 @@ export function decompressWithBrotli(data: string) {
 }
 ```
 
-We can now use the utility functions `compressWithBrotli` and `decompressWithBrotli` to compress our text on-the-fly.
+We can now use the utility functions `compressWithBrotli` and `decompressWithBrotli` to compress our text on the fly.
 
 If you want to use the async versions of the API, use the variants `brotliCompress` and `brotliDecompress`.

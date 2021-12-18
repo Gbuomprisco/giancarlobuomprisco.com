@@ -182,6 +182,7 @@ function getPostItemBySlug(slug: string) {
       "collection",
       "content",
       "tags",
+      "excerpt",
     ]) as BlogPost,
     type: Types.BlogPost,
   };

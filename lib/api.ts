@@ -34,6 +34,7 @@ const DEFAULT_POST_FIELDS: BlogPostFields = [
   "readingTime",
   "collection",
   "live",
+  "excerpt",
 ];
 
 const DEFAULT_HUB_FIELDS: HubsFields = [

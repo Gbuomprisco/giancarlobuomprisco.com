@@ -10,7 +10,7 @@ type Props = {
 };
 
 const PostPreview = ({ post }: Props) => {
-  const { title, slug, date, collection, readingTime } = post;
+  const { title, slug, date, collection, readingTime, excerpt } = post;
 
   const collectionName = collection.name.toLowerCase();
   const href = `/${collectionName}/${slug}`;
@@ -57,6 +57,8 @@ const PostPreview = ({ post }: Props) => {
           <CollectionName collection={collection} />
         </div>
       </div>
+
+      <p className="leading-relaxed mb-4 px-4 text-sm">{excerpt}</p>
     </div>
   );
 };
