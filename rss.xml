@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Giancarlo Buomprisco - Articles</title>
+        <link>https://giancarlobuomprisco.com</link>
+        <description>giancarlobuomprisco.com</description>
+        <lastBuildDate>Sat, 18 Dec 2021 15:33:14 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Announcing MakerKit - A SaaS starter for Next.js and Firebase]]></title>
+            <link>https://giancarlobuomprisco.com/next/announcing-makerkit-boilerplate-for-building-saas-with-next.js-firebase</link>
+            <guid>https://giancarlobuomprisco.com/next/announcing-makerkit-boilerplate-for-building-saas-with-next.js-firebase</guid>
+            <pubDate>Fri, 17 Dec 2021 23:00:00 GMT</pubDate>
+            <description><![CDATA[MakerKit is a SaaS starter for Next.js, Firebase, and Tailwind CSS. It comes with authentication, organizations, payments with Stripe, a blog and documentation generators, and much more.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[A Scalable Project Structure for Next.js]]></title>
+            <link>https://giancarlobuomprisco.com/next/a-scalable-nextjs-project-structure</link>
+            <guid>https://giancarlobuomprisco.com/next/a-scalable-nextjs-project-structure</guid>
+            <pubDate>Fri, 10 Dec 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Next.js and React are not opinionated. Much is left to us to figure out - and without rules, our code can get wild pretty quickly. In this post I explain the rationale behind the way I structure my Next.js projects for small and medium-sized apps]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Generating automatic banners for your Blog]]></title>
+            <link>https://giancarlobuomprisco.com/next/automatic-banners-for-your-blog</link>
+            <guid>https://giancarlobuomprisco.com/next/automatic-banners-for-your-blog</guid>
+            <pubDate>Fri, 03 Dec 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Say no to custom banners. This post will teach you how to generate automatic banners for your articles using Next.js, SVG and Sharp]]></description>
+        </item>
+        <item>
+            <title><![CDATA[A Reactive Enum with Typescript and RxJs]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/reactive-enum-typescript-rxjs</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/reactive-enum-typescript-rxjs</guid>
+            <pubDate>Thu, 11 Nov 2021 23:00:00 GMT</pubDate>
+            <description><![CDATA[Typescript's template literals' types allow us to generate dynamic and typed code, together. In this article, I want to show how we can build a dynamic reactive enum with TS and RxJS]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Caching RxJS streams into Web Storage]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/caching-rxjs-streams-into-web-storage</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/caching-rxjs-streams-into-web-storage</guid>
+            <pubDate>Wed, 10 Nov 2021 23:00:00 GMT</pubDate>
+            <description><![CDATA[In this article I will introduce you to a simple utility that allows you to cache RxJS streams in memory or the browser's storage]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Introduction]]></title>
+            <link>https://giancarlobuomprisco.com/next/building-a-blog-with-next</link>
+            <guid>https://giancarlobuomprisco.com/next/building-a-blog-with-next</guid>
+            <pubDate>Mon, 01 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[An Overview]]></title>
+            <link>https://giancarlobuomprisco.com/firebase/introduction-to-firebase-an-overview</link>
+            <guid>https://giancarlobuomprisco.com/firebase/introduction-to-firebase-an-overview</guid>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Firebase is Gooogle's PaaS, geared towards mobile apps but perfect for any kind of application. This post is a brief introduction to Firebase: what it is, what you can use it for, and how to get started]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Benchmarking Angular 12 with Webpack 5]]></title>
+            <link>https://giancarlobuomprisco.com/angular/webpack-5-angular12</link>
+            <guid>https://giancarlobuomprisco.com/angular/webpack-5-angular12</guid>
+            <pubDate>Fri, 14 May 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Angular 12 has been released and with it the much awaited Webpack 5 upgrade. In this post I benchmarked the bundle-size and compilation speed against the previous version]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Principles for creating libraries with Nx and Angular]]></title>
+            <link>https://giancarlobuomprisco.com/angular/how-to-organize-nx-modules-with-angular</link>
+            <guid>https://giancarlobuomprisco.com/angular/how-to-organize-nx-modules-with-angular</guid>
+            <pubDate>Sun, 07 Feb 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Working with Nx may be confusing. This article explains how I create Nx libraries and the principles behind my motivations]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Where to put your Angular models?]]></title>
+            <link>https://giancarlobuomprisco.com/angular/angular-where-to-put-models</link>
+            <guid>https://giancarlobuomprisco.com/angular/angular-where-to-put-models</guid>
+            <pubDate>Mon, 03 Aug 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Organizing entities and models in your Angular app may be hard. This article explains where to put your entities and what mistakes to watch out for]]></description>
+        </item>
+        <item>
+            <title><![CDATA[5 common mistakes with RxJS]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/five-common-mistakes-with-rxjs</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/five-common-mistakes-with-rxjs</guid>
+            <pubDate>Mon, 03 Aug 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[A list of common mistakes while using RxJS, and explanations on what to do instead]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Using the Intersection Observer API with Angular]]></title>
+            <link>https://giancarlobuomprisco.com/angular/intersection-observer-with-angular</link>
+            <guid>https://giancarlobuomprisco.com/angular/intersection-observer-with-angular</guid>
+            <pubDate>Sat, 01 Aug 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[This article shows how to build a directive with Angular that uses the Intersection Observer API to check when an element becomes visible on the page]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Setters vs ngOnChanges: which one is better?]]></title>
+            <link>https://giancarlobuomprisco.com/angular/setters-vs-ng-on-changes</link>
+            <guid>https://giancarlobuomprisco.com/angular/setters-vs-ng-on-changes</guid>
+            <pubDate>Thu, 30 Jul 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Listening to Input changes can be done in different ways. But which one should you use?]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Better code with Typescript aliases]]></title>
+            <link>https://giancarlobuomprisco.com/typescript/better-code-with-typescript-aliases</link>
+            <guid>https://giancarlobuomprisco.com/typescript/better-code-with-typescript-aliases</guid>
+            <pubDate>Sun, 26 Jul 2020 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Build Typescript libraries for the browser with Nx]]></title>
+            <link>https://giancarlobuomprisco.com/typescript/build-typescript-libraries-for-the-browser-with-nx</link>
+            <guid>https://giancarlobuomprisco.com/typescript/build-typescript-libraries-for-the-browser-with-nx</guid>
+            <pubDate>Sat, 25 Jul 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[This article shows how to set up your Webpack configuration to build Typescript libraries with Nx]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Async Rendering with a single Rx Operator]]></title>
+            <link>https://giancarlobuomprisco.com/angular/async-rendering-with-a-single-rx-operator</link>
+            <guid>https://giancarlobuomprisco.com/angular/async-rendering-with-a-single-rx-operator</guid>
+            <pubDate>Sat, 11 Jul 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Increase your app rendering performance with this simple Rx operator]]></description>
+        </item>
+        <item>
+            <title><![CDATA[3 Ways to Render Large Lists in Angular]]></title>
+            <link>https://giancarlobuomprisco.com/angular/three-ways-render-large-lists-angular</link>
+            <guid>https://giancarlobuomprisco.com/angular/three-ways-render-large-lists-angular</guid>
+            <pubDate>Sat, 09 May 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[An overview of the available techniques to render large lists of items with Angular]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Lazy-Loading Auxiliary Routes with Angular — Why and How]]></title>
+            <link>https://giancarlobuomprisco.com/angular/lazy-loading-angular-routes-why-how</link>
+            <guid>https://giancarlobuomprisco.com/angular/lazy-loading-angular-routes-why-how</guid>
+            <pubDate>Thu, 07 May 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Auxiliary Routes can be helpful for both technical and UX reasons: learn why and how to use them with Angular]]></description>
+        </item>
+        <item>
+            <title><![CDATA[6 Concepts to Master to be an Angular Architect]]></title>
+            <link>https://giancarlobuomprisco.com/angular/six-concepts-to-master-to-be-angular-architect</link>
+            <guid>https://giancarlobuomprisco.com/angular/six-concepts-to-master-to-be-angular-architect</guid>
+            <pubDate>Thu, 07 May 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Six concepts every Angular developer should explore in-depth in order to master Angular and design well-architected applications.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[An Opinionated Coding Styleguide for Angular]]></title>
+            <link>https://giancarlobuomprisco.com/angular/opinionated-coding-styleguide-for-angular</link>
+            <guid>https://giancarlobuomprisco.com/angular/opinionated-coding-styleguide-for-angular</guid>
+            <pubDate>Mon, 09 Mar 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[An internal style guide for writing code is an important decision that any development team should define and agree on at some point, ideally early on in the project.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Creating and Integrating Design Systems with StencilJS]]></title>
+            <link>https://giancarlobuomprisco.com/stencil/creating-and-integrating-design-systems-with-stenciljs</link>
+            <guid>https://giancarlobuomprisco.com/stencil/creating-and-integrating-design-systems-with-stenciljs</guid>
+            <pubDate>Fri, 07 Feb 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[A step-by-step guide to building and distributing a design system built with StencilJS]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Top Reasons Why Your Angular App Is Slow]]></title>
+            <link>https://giancarlobuomprisco.com/angular/top-reasons-angular-app-is-slow</link>
+            <guid>https://giancarlobuomprisco.com/angular/top-reasons-angular-app-is-slow</guid>
+            <pubDate>Tue, 21 Jan 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Is your app slow? Learn what to watch out when debugging poor performance in your Angular apps!]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Quantum Angular: Maximizing Performance by Removing Zone]]></title>
+            <link>https://giancarlobuomprisco.com/angular/maximizing-angular-performance-removing-zone-1</link>
+            <guid>https://giancarlobuomprisco.com/angular/maximizing-angular-performance-removing-zone-1</guid>
+            <pubDate>Tue, 19 Nov 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Experiment: Removing Zone from Angular with minimal effort, to boost runtime performance]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Debugging Memory Leaks in Angular]]></title>
+            <link>https://giancarlobuomprisco.com/angular/debugging-memory-leaks-in-angular</link>
+            <guid>https://giancarlobuomprisco.com/angular/debugging-memory-leaks-in-angular</guid>
+            <pubDate>Tue, 29 Oct 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[The situations where memory leaks are most likely to happen, and how you can deal with them using Chrome DevTools]]></description>
+        </item>
+        <item>
+            <title><![CDATA[RxJS Subjects in Depth]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/rxjs-subjects-in-depth</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/rxjs-subjects-in-depth</guid>
+            <pubDate>Tue, 15 Oct 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Learn how RxJS Subjects are used in real-world applications]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Demystifying RxJS for Angular Developers]]></title>
+            <link>https://giancarlobuomprisco.com/angular/demistifying-rxjs-angular-developers</link>
+            <guid>https://giancarlobuomprisco.com/angular/demistifying-rxjs-angular-developers</guid>
+            <pubDate>Wed, 25 Sep 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Understand Enough RxJS for your basic Angular needs]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Debugging Javascript Like a Pro]]></title>
+            <link>https://giancarlobuomprisco.com/javascript/debugging-javascript-like-a-pro</link>
+            <guid>https://giancarlobuomprisco.com/javascript/debugging-javascript-like-a-pro</guid>
+            <pubDate>Mon, 16 Sep 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Discover the best debugging tools Chrome has to offer]]></description>
+        </item>
+        <item>
+            <title><![CDATA[RxJS Patterns: Efficiency and Performance]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/rxjs-patterns-efficiency-and-performance</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/rxjs-patterns-efficiency-and-performance</guid>
+            <pubDate>Mon, 16 Sep 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[A rundown of all RxJS operators and techniques you can leverage to avoid needless computation and make your code snappier and faster]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Soft Skills for Software Developers]]></title>
+            <link>https://giancarlobuomprisco.com/thoughts/soft-skills-for-software-developers</link>
+            <guid>https://giancarlobuomprisco.com/thoughts/soft-skills-for-software-developers</guid>
+            <pubDate>Thu, 29 Aug 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[A write-down of my thoughts about being a good teammate, and what I wish every single one of my future colleagues would know]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Building Scalable Multi-Platform Projects with Angular and Nx]]></title>
+            <link>https://giancarlobuomprisco.com/angular/building-scalable-multi-platform-projects-with-angular-and-nx</link>
+            <guid>https://giancarlobuomprisco.com/angular/building-scalable-multi-platform-projects-with-angular-and-nx</guid>
+            <pubDate>Sun, 25 Aug 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Building a scalable multi-platform monorepo application with Angular and Nx]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Abstracting State with Facades]]></title>
+            <link>https://giancarlobuomprisco.com/angular/abstracting-state-with-ngrx-facades</link>
+            <guid>https://giancarlobuomprisco.com/angular/abstracting-state-with-ngrx-facades</guid>
+            <pubDate>Thu, 27 Jun 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Using Ngrx facades to connect your components with your state]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Tips for Good Communication in Software Development Teams]]></title>
+            <link>https://giancarlobuomprisco.com/thoughts/tips-good-communication-for-software-development-teams</link>
+            <guid>https://giancarlobuomprisco.com/thoughts/tips-good-communication-for-software-development-teams</guid>
+            <pubDate>Thu, 06 Jun 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Whether it is reviewing pull requests or any other form of feedback — doing it the right way, makes a world of difference]]></description>
+        </item>
+        <item>
+            <title><![CDATA[A simple Countdown with RxJS]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/a-simple-countdown-with-rx-js</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/a-simple-countdown-with-rx-js</guid>
+            <pubDate>Wed, 05 Jun 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[In this tutorial, we’re going to build a very simple timer application with only a few lines of code using RxJS]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Building Side Effects]]></title>
+            <link>https://giancarlobuomprisco.com/angular/building-side-effects-in-ngrx</link>
+            <guid>https://giancarlobuomprisco.com/angular/building-side-effects-in-ngrx</guid>
+            <pubDate>Wed, 05 Jun 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Effects are one of the most powerful features in NGRX. Let’s see some practical examples, like calling an API or streaming real-time data]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Architecting the Store]]></title>
+            <link>https://giancarlobuomprisco.com/angular/architecting-the-store-in-ngrx</link>
+            <guid>https://giancarlobuomprisco.com/angular/architecting-the-store-in-ngrx</guid>
+            <pubDate>Sun, 05 May 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[A step-by-step guide to building and architecting the Store in NGRX]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Introduction]]></title>
+            <link>https://giancarlobuomprisco.com/angular/state-management-with-ngrx-introduction</link>
+            <guid>https://giancarlobuomprisco.com/angular/state-management-with-ngrx-introduction</guid>
+            <pubDate>Thu, 02 May 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[An Introduction to the NGRX platform — Concepts, Best Practices, and Tips]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Understanding Angular Modules]]></title>
+            <link>https://giancarlobuomprisco.com/angular/understanding-angular-modules</link>
+            <guid>https://giancarlobuomprisco.com/angular/understanding-angular-modules</guid>
+            <pubDate>Mon, 29 Apr 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[A quick but comprehensive guide for understanding the different types of Angular Modules]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Frameworks don't magically make your code good]]></title>
+            <link>https://giancarlobuomprisco.com/thoughts/frameworks-dont-magically-make-your-code-good</link>
+            <guid>https://giancarlobuomprisco.com/thoughts/frameworks-dont-magically-make-your-code-good</guid>
+            <pubDate>Sat, 27 Apr 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Why using the latest cool stacks doesn’t (always) mean you’re going to write better code]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Practical RxJS and Angular]]></title>
+            <link>https://giancarlobuomprisco.com/angular/practical-rxjs-and-angular</link>
+            <guid>https://giancarlobuomprisco.com/angular/practical-rxjs-and-angular</guid>
+            <pubDate>Fri, 26 Apr 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Practical scenarios with Angular and RxJS, going through useful patterns you may use and what to look out for]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Building an enterprise-grade Angular project structure]]></title>
+            <link>https://giancarlobuomprisco.com/angular/building-an-enterprise-grade-angular-project-structure</link>
+            <guid>https://giancarlobuomprisco.com/angular/building-an-enterprise-grade-angular-project-structure</guid>
+            <pubDate>Thu, 25 Apr 2019 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Multi-environment setup for your Angular app]]></title>
+            <link>https://giancarlobuomprisco.com/angular/multi-environment-setup-for-your-angular-app</link>
+            <guid>https://giancarlobuomprisco.com/angular/multi-environment-setup-for-your-angular-app</guid>
+            <pubDate>Fri, 19 Apr 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Setting up multiple environment setups with the Angular CLI]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Enforce your team coding style with Prettier and TsLint]]></title>
+            <link>https://giancarlobuomprisco.com/typescript/enforce-your-team-style-with-prettier-and-tslint</link>
+            <guid>https://giancarlobuomprisco.com/typescript/enforce-your-team-style-with-prettier-and-tslint</guid>
+            <pubDate>Wed, 17 Apr 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Using TsLint to enforce your team coding style]]></description>
+        </item>
+        <item>
+            <title><![CDATA[OnPush change detection for faster Angular apps]]></title>
+            <link>https://giancarlobuomprisco.com/angular/onpush-change-detection-for-faster-angular-apps</link>
+            <guid>https://giancarlobuomprisco.com/angular/onpush-change-detection-for-faster-angular-apps</guid>
+            <pubDate>Mon, 15 Apr 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Increasing your application's performance using OnPush change detection]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Writing scalable Typescript]]></title>
+            <link>https://giancarlobuomprisco.com/typescript/writing-scalabale-typescript</link>
+            <guid>https://giancarlobuomprisco.com/typescript/writing-scalabale-typescript</guid>
+            <pubDate>Fri, 05 Apr 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Let’s explore in detail how to write clean, safe, enterprise-grade Typescript code]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Automatic Dark Mode with one line of CSS]]></title>
+            <link>https://giancarlobuomprisco.com/css/automatic-dark-mode-any-website</link>
+            <guid>https://giancarlobuomprisco.com/css/automatic-dark-mode-any-website</guid>
+            <pubDate>Sat, 18 Dec 2021 14:52:20 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[A conditional rendering Component for React]]></title>
+            <link>https://giancarlobuomprisco.com/react/conditional-rendering-component-for-react</link>
+            <guid>https://giancarlobuomprisco.com/react/conditional-rendering-component-for-react</guid>
+            <pubDate>Thu, 02 Dec 2021 14:52:20 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Using Firestore's SDK in Next.js's SSR]]></title>
+            <link>https://giancarlobuomprisco.com/next/using-firestore-sdk-in-next.js-ssr</link>
+            <guid>https://giancarlobuomprisco.com/next/using-firestore-sdk-in-next.js-ssr</guid>
+            <pubDate>Sat, 27 Nov 2021 16:30:30 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Deleting collections in Firebase's Firestore]]></title>
+            <link>https://giancarlobuomprisco.com/firebase/deleting-collections-in-firebase</link>
+            <guid>https://giancarlobuomprisco.com/firebase/deleting-collections-in-firebase</guid>
+            <pubDate>Wed, 17 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Testing RxJS timers with Jest]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/testing-rxjs-timers-with-jest</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/testing-rxjs-timers-with-jest</guid>
+            <pubDate>Thu, 11 Nov 2021 21:49:22 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Using Brotli with Node.js]]></title>
+            <link>https://giancarlobuomprisco.com/node/using-brotli-with-node.js</link>
+            <guid>https://giancarlobuomprisco.com/node/using-brotli-with-node.js</guid>
+            <pubDate>Mon, 01 Nov 2021 21:53:02 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Streamline your code with Typescript assertions]]></title>
+            <link>https://giancarlobuomprisco.com/typescript/streamline-your-code-with-typescript-assertions</link>
+            <guid>https://giancarlobuomprisco.com/typescript/streamline-your-code-with-typescript-assertions</guid>
+            <pubDate>Sat, 30 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
