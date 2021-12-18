@@ -14,6 +14,7 @@ interface WithBranding {
 
 interface Collection extends WithEmoji, WithLogo, WithBranding {
   name: string;
+  slug: string;
 }
 
 export default Collection;

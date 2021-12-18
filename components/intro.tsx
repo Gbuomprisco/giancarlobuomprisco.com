@@ -39,6 +39,25 @@ const Intro = () => {
           </p>
 
           <p>
+            I founded{" "}
+            <a
+              target={"_blank noreferrer"}
+              className="border-b-2 font-semibold pb-1 border-[#efee00]"
+              href="https://makerkit.dev"
+            >
+              MakerKit
+            </a>{" "}
+            and co-founded{" "}
+            <a
+              target={"_blank noreferrer"}
+              className="border-b-2 font-semibold pb-1 border-[#1e88e5]"
+              href="https://formtoro.com"
+            >
+              Formtoro
+            </a>
+          </p>
+
+          <p>
             Below you can find my latest articles and blog posts. Happy reading!
           </p>
         </div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import DateFormatter from "./date-formatter";
 import CollectionName from "./collection-name";
 import Post from "../types/blog-post";
-import BlogPostImageSvg from './blog-post-image-svg';
+import BlogPostImageSvg from "./blog-post-image-svg";
 
 type Props = {
   post: Post;
@@ -17,19 +17,19 @@ const PostPreview = ({ post }: Props) => {
   const hrefString = "/[collection]/[slug]";
 
   return (
-    <div className="shadow-lg rounded-md hover:shadow-xl transition-shadow duration-500">
+    <div className="shadow rounded-md hover:shadow-xl transition-shadow duration-500">
       <div className="mb-3">
         <div className="h-full w-full lg:h-48 xl:h-48 rounded-t-md">
           <Link as={href} href={hrefString} passHref>
-            <a className={'flex'}>
+            <a className={"flex"}>
               <BlogPostImageSvg
-                className={'rounded-t-md'}
-                fontSize={'3.2rem'}
-                height={'100%'}
-                width={'100%'}
+                className={"rounded-t-md"}
+                fontSize={"3.2rem"}
+                height={"100%"}
+                width={"100%"}
                 title={title}
                 color={collection.primaryColor}
-                imageUrl={collection.logo ?? ''}
+                imageUrl={collection.logo ?? ""}
               />
             </a>
           </Link>

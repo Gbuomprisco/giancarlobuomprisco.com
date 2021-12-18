@@ -4,7 +4,7 @@ const Author = () => {
   return (
     <div className="flex flex-row space-x-3 items-center">
       <a target="_blank" rel="noreferrer noopened" href={TWITTER_URL}>
-        <img width="45px" height="45px" src={PROFILE_IMAGE} />
+        <img width="50px" height="50px" src={PROFILE_IMAGE} alt="Giancarlo" />
       </a>
 
       <a

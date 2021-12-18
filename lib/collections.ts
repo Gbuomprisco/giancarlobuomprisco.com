@@ -22,11 +22,15 @@ export function getCollectionBySlug(slug: string) {
   });
 
   if (!collection) {
-    console.error(slug);
-    console.trace();
+    throw new Error(`Collection with slug "${slug}" not found`);
   }
 
-  return collection?.data?.data as Collection;
+  const data = collection.data?.data as Collection;
+
+  return {
+    ...data,
+    slug: collection.realSlug,
+  };
 }
 
 export function getCollectionByName(collectionName: string) {

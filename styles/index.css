@@ -22,4 +22,6 @@ html {
     --primary-color: rgba(253, 230, 138);
 }
 
-
+body {
+    @apply bg-white;
+}

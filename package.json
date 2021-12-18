@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
+    "postbuild": "npm run rss",
     "sitemap": "next-sitemap",
+    "rss": "npx ts-node -O '{\"module\": \"commonjs\"}' -P tsconfig.json ./lib/rss-feed",
     "start": "next start",
     "typecheck": "tsc",
     "lint": "next lint",
@@ -19,6 +21,7 @@
     "@next/mdx": "^12.0.0",
     "classnames": "2.3.1",
     "date-fns": "2.21.3",
+    "feed": "^4.2.2",
     "gh-pages": "^3.2.3",
     "gray-matter": "4.0.3",
     "next": "latest",

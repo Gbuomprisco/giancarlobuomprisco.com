@@ -1,0 +1,75 @@
+---
+date: 2021-12-18T15:52:20+01:00
+collection: css.mdx
+tags:
+- CSS
+- tailwind
+title: Automatic Dark Mode with one line of CSS
+live: true
+---
+
+CSS is magic. Fact.
+
+No, seriously, though. I recently incorporated Cal.com's embed in one of my websites for booking appointments. 
+
+The iframe's content looks great, with one downside: my website has a dark theme, and Cal.com's dark themes are only on paid plans (which I'm hoping to upgrade to as soon as I can).
+
+But, in the meantime, I had to find a way to style the `iframe` content to blend seamlessly with my page's theme. 
+
+As you may already know, styling iframes is a pain - hence why so many third parties use them so that the host's styles won't interfere with the embedded content.
+
+To solve this, I found a CSS one-liner that inverts all the colors, resulting in a theme that would probably blow my manual changes out of the water. 
+
+In all honesty, I didn't randomly try this, but I'm sure I read this somewhere on Twitter some time ago, which I recalled (though I wasn't sure it would have worked for content within the iframe).
+
+### Using CSS Filter's to invert your page's colors
+
+For example, if you want to add a dark theme to your whole page, you can use the following rule:
+
+```css
+html {
+  filter: invert(1);
+}
+```
+
+And magic! All the page's colors are inverted. In some cases, the results are spectacular.
+
+If you wanted to use it on an `iframe` so that you could apply the dark theme to the content within, simply add the CSS to the iframe's element:
+
+```html
+<iframe style='filter: invert(1);' src='https://anexternalservice.com/' />
+```
+
+If you are using Tailwind CSS, you could simply add the class `dark:invert` which will invert the colors only if the selected theme is `dark`:
+
+```html
+<iframe class='dark:invert' src='https://anexternalservice.com/' />
+```
+
+### Demo
+
+Try it on this page! Click the button below:
+
+<button 
+  style={{
+    'borderColor': '#000',
+    'borderWidth': '2px',
+  }}
+  className='py-2 px-4'
+  onClick={() => document.firstElementChild.style.filter = document.firstElementChild.style.filter === 'invert(100%)' ? '' : 'invert(100%)'}
+>
+  Click here to toggle Dark Theme
+</button>
+
+### Not Bullet-Proof
+
+Of course, this is a simple approach for simple problems. In my specific case, in which I had nearly no control, it worked great! 
+
+However, more complex pages may not look as well as you expect. For example, look at the author image above for a simple demonstration. 
+
+My recommendation is to use this when: 
+- you need to style elements you have no control over
+- styling simple, individual parts of the page you want to `darkify` automagically
+
+Hopefully, you'll find this as helpful as I did! Ciao!
+

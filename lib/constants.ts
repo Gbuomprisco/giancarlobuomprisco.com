@@ -10,6 +10,7 @@ export const THEME_COLOR = `#212121`;
 export const SITE_URL = `https://giancarlobuomprisco.com`;
 export const SITE_NAME = "giancarlobuomprisco.com";
 export const SITE_DESCRIPTION = "giancarlobuomprisco.com";
+export const SITE_LANGUAGE = `en`;
 
 export const TWITTER_HANDLE = `@gc_psk`;
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
