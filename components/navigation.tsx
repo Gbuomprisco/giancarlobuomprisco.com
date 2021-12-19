@@ -52,9 +52,9 @@ const Navigation = () => {
       <li
         style={style}
         className={
-          "text-lg lg:text-base border-b-4 pb-1 border-b-transparent transition:border " +
+          "text-lg lg:text-base text-gray-700 border-b-4 pb-1 border-b-transparent transition:border " +
           (active
-            ? "font-bold border-b-yellow-200"
+            ? "font-bold  border-b-yellow-200"
             : "hover:text-gray-900 font-medium border-b-transparent hover:border-b-yellow-200")
         }
       >
@@ -95,7 +95,7 @@ const Navigation = () => {
       </div>
 
       <ul
-        className="lg:space-x-10 text-gray-800 px-4 hidden flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row nav z-20"
+        className="lg:space-x-8 text-gray-800 px-4 hidden flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row nav z-20"
         ref={nav}
       >
         <li className="flex flex-row justify-between mb-6 lg:hidden">

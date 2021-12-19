@@ -7,8 +7,8 @@ import TweetEmbed from "./tweet-embed";
 import CodeSandboxSnippet from "./codesandbox-snippet";
 
 const NextImage: React.FC<Record<string, string>> = (props) => {
-  const width = props.width ?? 16;
-  const height = props.height ?? 10;
+  const width = props.width ?? "4";
+  const height = props.height ?? "1";
 
   return (
     <Image

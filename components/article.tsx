@@ -122,7 +122,7 @@ const Article: React.FC<{
 
                 <PostHeader post={post} />
 
-                <div className="mb-12 max-w-2xl mx-auto">
+                <div className="mb-6 max-w-2xl mx-auto">
                   <SeriesList posts={series} series={post.series} />
                 </div>
 

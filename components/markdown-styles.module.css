@@ -25,13 +25,6 @@
   @apply my-8 shadow-xl;
 }
 
-.markdown img {
-  width: 150%;
-  max-width: 150%;
-
-  @apply relative block my-16 rounded-lg max-w-full lg:max-w-none lg:right-1/4;
-}
-
 .markdown img:not([data-shadowless]) {
   @apply shadow-lg;
 }
@@ -44,9 +37,12 @@
 
 .markdown blockquote {
   border-left: 8px solid var(--accent-light);
-  font-weight: 500;
 
-  @apply my-12 p-8 md:font-light shadow-xl text-3xl text-gray-700 font-sans;
+  @apply my-12 p-8 md:font-light shadow-xl text-2xl text-gray-700 !font-sans font-normal;
+}
+
+.markdown blockquote p {
+  @apply text-gray-700 !font-sans font-normal text-2xl;
 }
 
 .markdown li {
