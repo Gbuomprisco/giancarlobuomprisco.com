@@ -6,15 +6,13 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
-    "postbuild": "npm run rss",
+    "postbuild": "npm run rss && npm run sitemap",
     "sitemap": "next-sitemap",
     "rss": "npx ts-node -O '{\"module\": \"commonjs\"}' -P tsconfig.json ./lib/rss-feed",
     "start": "next start",
     "typecheck": "tsc",
     "lint": "next lint",
-    "export": "next export",
-    "static": "next build && next export && npm run sitemap && touch ./out/.nojekyll && echo 'giancarlobuomprisco.com' > ./out/CNAME",
-    "release": "npm run static && gh-pages -d out -t true"
+    "export": "next export"
   },
   "dependencies": {
     "@mdx-js/loader": "^1.6.22",

@@ -56,8 +56,6 @@ const PostHeader = ({ post }: Props) => {
           {coverImage ? (
             <CoverImage
               className="shadow-xl rounded-md"
-              width="100%"
-              height="auto"
               title={title}
               src={coverImage}
               href={href}

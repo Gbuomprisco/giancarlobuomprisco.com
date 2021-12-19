@@ -1,23 +1,22 @@
-import TwitterLogo from "./twitter-logo";
-import LinkedinLogo from "./linkedin-logo";
-import GithubLogo from "./github-logo";
+import Image from "next/image";
 
-import { LINEKDIN_URL } from "../lib/constants";
-
-import {
-  TWITTER_URL,
-  GITHUB_URL,
-  PROFILE_IMAGE,
-  AUTHOR,
-} from "../lib/constants";
+import { PROFILE_IMAGE, AUTHOR } from "../lib/constants";
 
 const Intro = () => {
   return (
-    <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12 items-center">
-      <div className="flex flex-col space-y-4 md:w-7/12">
+    <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12 w-full lg:w-9/12">
+      <div className="flex flex-col space-y-4 justify-center">
         <div className="flex-col space-y-4">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter leading-tight md:pr-8">
-            Ciao! This is Giancarlo 👋
+          <h2 className="flex space-x-4 items-center text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter leading-tight md:pr-8">
+            <Image
+              layout="fixed"
+              width={50}
+              height={50}
+              src={PROFILE_IMAGE}
+              alt={AUTHOR}
+            />
+
+            <span>Ciao! This is Giancarlo 👋</span>
           </h2>
         </div>
 
@@ -60,32 +59,6 @@ const Intro = () => {
           <p>
             Below you can find my latest articles and blog posts. Happy reading!
           </p>
-        </div>
-      </div>
-
-      <div className="mx-auto hidden md:flex">
-        <div className="flex flex-col space-y-6">
-          <div>
-            <img
-              style={{ width: "200px", height: "200px" }}
-              src={PROFILE_IMAGE}
-              alt={AUTHOR}
-            />
-          </div>
-
-          <div className="flex flex-row space-x-6 justify-center">
-            <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer">
-              <TwitterLogo />
-            </a>
-
-            <a href={LINEKDIN_URL} target="_blank" rel="noopener noreferrer">
-              <LinkedinLogo />
-            </a>
-
-            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-              <GithubLogo />
-            </a>
-          </div>
         </div>
       </div>
     </section>

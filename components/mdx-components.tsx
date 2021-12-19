@@ -1,20 +1,27 @@
+import Image from "next/image";
+
 import { SITE_URL } from "../lib/constants";
 import ArticlesList from "./articles-list";
 import PostsList from "./posts-list";
 import TweetEmbed from "./tweet-embed";
 import CodeSandboxSnippet from "./codesandbox-snippet";
 
-const Image: React.FC<Record<string, string>> = (
-  props: Record<string, string>
-) => (
-  <img
-    className={props.class}
-    src={props.src}
-    alt={props.alt}
-    loading="lazy"
-    {...props}
-  />
-);
+const NextImage: React.FC<Record<string, string>> = (props) => {
+  const width = props.width ?? 16;
+  const height = props.height ?? 10;
+
+  return (
+    <Image
+      width={width}
+      height={height}
+      layout="responsive"
+      className={props.class}
+      src={props.src}
+      alt={props.alt}
+      {...props}
+    />
+  );
+};
 
 const ExternalLink: React.FC<{ href: string }> = ({ href, children }) => {
   if (href.startsWith(SITE_URL) || href[0] === "/") {
@@ -29,13 +36,13 @@ const ExternalLink: React.FC<{ href: string }> = ({ href, children }) => {
 };
 
 const MDXComponents = {
-  img: Image,
+  img: NextImage,
   a: ExternalLink,
   ArticlesList,
   PostsList,
   TweetEmbed,
   CodeSandboxSnippet,
-  Image,
+  Image: NextImage,
 };
 
 export default MDXComponents;

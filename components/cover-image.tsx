@@ -1,5 +1,6 @@
-import cn from "classnames";
 import Link from "next/link";
+import Image from "next/image";
+import cn from "classnames";
 
 type Props = {
   title: string;
@@ -11,35 +12,23 @@ type Props = {
   slug?: string;
 };
 
-const CoverImage = ({
-  title,
-  src,
-  slug,
-  href,
-  width,
-  height,
-  className,
-}: Props) => {
-  const imageStyle = {
-    width,
-    height,
-  };
-
+const CoverImage = ({ title, src, slug, href, className }: Props) => {
   const image = (
-    <img
-      style={imageStyle}
+    <Image
+      unoptimized={process.env.NODE_ENV !== "production"}
+      layout="responsive"
+      width={16}
+      height={9}
       className={cn("block", {
         "transition-shadow duration-500": slug,
-        [`${className}`]: true,
       })}
       src={src}
       alt={`Cover Image for ${title}`}
-      loading="lazy"
     />
   );
 
   return (
-    <div className="sm:mx-0">
+    <div className={`sm:mx-0 ${className}`}>
       {slug ? (
         <Link as={href} href="/[collection]/[slug]">
           <a aria-label={title}>{image}</a>

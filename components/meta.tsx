@@ -42,9 +42,9 @@ const Meta = () => {
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
 
       <link
-        rel="stylesheet"
-        type="text/css"
-        href="//fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Merriweather:wght@300;400;700&display=swap"
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin={"true"}
       />
 
       <link rel="canonical" href={canonical} key="canonical" />
