@@ -1,0 +1,229 @@
+---
+date: '2021-12-20T00:00:00.322Z'
+title: A React Component to connect with MetaMask
+excerpt: "In this post, we are going to build a React button able to connect with a Metamask Wallet, and read the wallet's selected address."
+coverImage: /assets/images/posts/react-metamask.webp
+collection: "react.mdx"
+live: false
+tags:
+    - react
+    - next
+    - web3
+---
+
+Web3 is a new, revolutionary, and (very) controversial phenomenon, becoming harder and harder to ignore.
+
+Whether you are fascinated by it or not, it's undeniable that its consequences are far-reaching; many developers are re-training to get up to speed with it.
+
+As I started working on a task for requesting users to connect their wallet to retrieve their MetaMask address, I had the opportunity to work with a Web3 wallet for the first time.
+
+## What's a Wallet?
+
+If you do not know what MetaMask is, here is a short explanation: MetaMask is a digital wallet living in your browser as an extension; you can use it to keep, transfer or move various cryptocurrencies and NFTs. 
+
+Furthermore, web3 websites can request to connect with said wallet, and if authorized, perform actions on behalf of the owners. 
+
+For example, you can connect the wallet to OpenSea (or any other marketplace) and buy an NFT, or connect to PancakeSwap to swap tokens with other ones.
+
+## Building the Component
+
+While being a blockchain engineer involves writing custom *smart contracts*, protocols, etc., it's slightly ironic that web3, as revolutionary as claimed, will still be primarily built using web2 technologies. 
+
+That means tons of Javascript (which is a little bit embarrassing to acknowledge when hacks happen due to this fact).
+
+In short: **we still need the good old Javascript** to build on top of web3, so let's see how we can get started with a simple component, which, thanks to the MetaMask wallet, allows us to **request the user's account of choice using the API** exposed by the Chrome extension.
+
+### Extending Window
+
+We need to extend the Window with the MetaMask API as we use Typescript.
+
+The extension exposes an object named `ethereum` which provides the necessary API to interact with the wallet.
+
+We will add the script below globally or within the same Component's file:
+
+```tsx
+declare global {
+  interface Window {
+    ethereum: {
+      request<T>(params: { method: string }): Promise<T>;
+      on<T>(event: string, cb: (params: T) => void): void;
+      removeListener<T>(event: string, cb: (params: T) => void): void;
+      selectedAddress: string | undefined;
+    };
+  }
+}
+```
+
+### Component Basics
+
+And now we can start writing the component. 
+
+Let's layout a basic `ConnectWalletButton` component:
+
+```tsx
+import React from "react";
+
+const ConnectWalletButton: React.FC<{
+  onConnect: (address: string | undefined) => void
+}> = ({ onConnect }) => {
+  // implementation
+};
+
+export default ConnectWalletButton;
+```
+
+And now we can import it in our `App`:
+
+```tsx
+import "./styles.css";
+import ConnectWalletButton from "./ConnectWalletButton";
+
+export default function App() {
+  const [selectedAddress, setSelectedAddress] = useState<string>();
+  
+  const addressChanged = useCallback((address: string | undefined) => {
+    setSelectedAddress(address);
+  }, []);
+
+  return (
+    <div className="App">
+      <h1>Connect with MetaMask Demo</h1>
+
+      <ConnectWalletButton onChange={addressChanged} />
+    </div>
+  );
+}
+```
+
+We defined a callback to read the address from the button's parent. This is only a good solution if you want to read the address locally, otherwise it would be better to use any state-management tool, like the `Context API` or more complex stuff like Zustand, Redux, etc.
+
+Let's add just enough CSS to make it look good-ish:
+
+```css
+button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  background-color: #03a9f4;
+  color: #fff;
+  font-weight: 600;
+  border-width: 0;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #039be5;
+}
+
+button:active {
+  background-color: #0288d1;
+}
+```
+
+### Using the MetaMask Ethereum API
+
+And now on to the actual logic. 
+
+If you paid attention when we extended `Window`, we have added two methods to the `ethereum` global object (just enough to make this component work because there are a lot more).
+
+- The first method is `request`: by calling it, we can request actions, which in this case will be `eth_requestAccounts`
+- The second method is `on`: by calling it, we can listen to specific events, for example, when the wallet's account has changed
+- The third method `removeListener` will be used to clean up the callback and avoid memory leaks when the component is unmounted
+
+#### Goals
+
+What will the component do?
+- Prompt users to Connect their wallet
+- Display the address if connected
+- Emit an event with the address when it changes
+- Automatically update if the user updates the address or disconnects from MetaMask
+
+#### Implementation
+
+Let's start implementing the goals above. 
+
+First, let's define an async function which lets us request and read the address from MetaMask:
+
+```tsx
+async function readAddress() {
+  const method = "eth_requestAccounts";
+
+  const accounts = await window.ethereum.request<string[]>({
+    method
+  });
+
+  // for simplicity, let's return the first account in the list
+  return accounts[0];
+}
+```
+
+We want to store the address' state as it can mutate from the outside. Because the wallet may already be connected when the component mounts, we initialize it with the property `selectedAddress`:
+
+
+```tsx
+const [address, setAddress] = useState<string>(
+  window.ethereum.selectedAddress
+);
+```
+
+Let's define a function which will read and store the address:
+
+```tsx
+const connectWallet = async () => {
+  const selectedAddress = await readAddress();
+
+  setAddress(selectedAddress);
+  onChange(selectedAddress);
+};
+```
+
+We now need to listen for changes from the extension so that we can update the component according the correct state.
+
+In fact, users can change the current address or disconnect the website using the MetaMask extension:
+
+```tsx
+useEffect(() => {
+  const eventName = `accountsChanged`;
+
+  const listener = ([selectedAddress]: string[]) => {
+    setAddress(selectedAddress);
+    onChange(selectedAddress);
+  };
+
+  // listen for updates
+  window.ethereum.on(eventName, listener);
+  
+  // clean up on unmount
+  return () => {
+    window.ethereum.removeListener(eventName, listener);
+  };
+}, []);
+```
+
+What happens here?
+- we listen for updates using the `on` method, and update the current address using the first element in the list
+- when the component unmounts, we call the `removeListener` method so we can clean everything up
+
+Now, we can finally render our component: 
+
+```tsx
+if (address) {
+  return <button>Connected with {address}</button>;
+}
+
+return <button onClick={connectWallet}>Connect Wallet</button>;
+```
+
+## Demo
+
+Do you have a MetaMask wallet? Awesome, you can try the demo below to try out the code we've written! Also, you can find the complete snippet:
+
+<CodeSandboxSnippet src='https://codesandbox.io/embed/react-component-connect-metamask-zpcql?fontsize=14&hidenavigation=1&theme=dark' />
+
+## Final Words
+
+I know, I know. Web3 is controversial. 
+
+I have some reservations myself, but with that said, I also feel like it's good to keep an open mind about the technology and how it's shaping up the new tools we're going to use in the future, probably.
+
+I hope to make more posts about this as I dig further into the space. To the next one, ciao!

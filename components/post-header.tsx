@@ -1,16 +1,16 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-import DateFormatter from './date-formatter';
-import CoverImage from './cover-image';
-import PostTitle from './post-title';
-import CollectionTag from './collection-tag';
-import DraftBadge from './draft-badge';
-import Article from '../types/article';
-import BlogPost from '../types/blog-post';
-import SeriesTitle from './series-title';
-import Author from './author';
-import Tag from './tag';
-import BlogPostImageSvg from './blog-post-image-svg';
+import DateFormatter from "./date-formatter";
+import CoverImage from "./cover-image";
+import PostTitle from "./post-title";
+import CollectionTag from "./collection-tag";
+import DraftBadge from "./draft-badge";
+import Article from "../types/article";
+import BlogPost from "../types/blog-post";
+import SeriesTitle from "./series-title";
+import Author from "./author";
+import Tag from "./tag";
+import BlogPostImageSvg from "./blog-post-image-svg";
 
 type Props = {
   post: Article | BlogPost;
@@ -19,8 +19,8 @@ type Props = {
 const PostHeader = ({ post }: Props) => {
   const { title, date, readingTime, slug, live, collection } = post;
 
-  const series = 'series' in post && post.series;
-  const coverImage = 'coverImage' in post ? post.coverImage : '';
+  const series = "series" in post && post.series;
+  const coverImage = "coverImage" in post ? post.coverImage : "";
   const href = `/${collection.name.toLowerCase()}/${slug}`;
 
   return (
@@ -30,20 +30,20 @@ const PostHeader = ({ post }: Props) => {
       <PostTitle>{title}</PostTitle>
 
       <div className="mb-6 flex space-x-3 items-center justify-center">
-        <CollectionTag logoSize="22px" collection={collection}/>
-        <PostTags tags={post.tags} collection={collection.name}/>
+        <CollectionTag logoSize="22px" collection={collection} />
+        <PostTags tags={post.tags} collection={collection.name} />
       </div>
 
       <div className="max-w-2xl mx-auto mb-6">
         <div className="flex flex-row space-x-2 items-center justify-center">
           {live ? null : <DraftBadge>Draft</DraftBadge>}
 
-          <Author/>
+          <Author />
 
           <span className="text-gray-600">·</span>
 
           <div className="text-sm text-center text-gray-600">
-            <DateFormatter dateString={date}/>
+            <DateFormatter dateString={date} />
           </div>
 
           <span className="text-gray-600">·</span>
@@ -53,7 +53,7 @@ const PostHeader = ({ post }: Props) => {
 
       <div className="mb-8 md:mb-16 sm:mx-0">
         <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
-          {coverImage ?
+          {coverImage ? (
             <CoverImage
               className="shadow-xl rounded-md"
               width="100%"
@@ -61,16 +61,17 @@ const PostHeader = ({ post }: Props) => {
               title={title}
               src={coverImage}
               href={href}
-            /> : (
-              <div className="shadow-xl rounded-md">
-                <BlogPostImageSvg
-                  color={collection.primaryColor}
-                  imageUrl={collection.logo ?? ''}
-                  title={post.title}
-                />
-              </div>
-            )
-          }
+            />
+          ) : (
+            <div className="shadow-xl rounded-md">
+              <BlogPostImageSvg
+                className="h-[300px] md:h-auto"
+                color={collection.primaryColor}
+                imageUrl={collection.logo ?? ""}
+                title={post.title}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -78,9 +79,9 @@ const PostHeader = ({ post }: Props) => {
 };
 
 function PostTags({
-                    tags,
-                    collection
-                  }: {
+  tags,
+  collection,
+}: {
   tags: string[];
   collection: string;
 }) {

@@ -34,6 +34,23 @@
                     "describe"
                 ]
             }
+        },
+        {
+            "files": [
+                "**/_articles/connect-wallet-react-component.mdx"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "american",
+                "domain": "technical",
+                "emotions": [
+                    "confident",
+                    "friendly"
+                ],
+                "goals": [
+                    "inform"
+                ]
+            }
         }
     ]
 }
