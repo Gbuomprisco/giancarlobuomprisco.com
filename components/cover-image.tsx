@@ -19,7 +19,7 @@ const CoverImage = ({ title, src, slug, href, className }: Props) => {
       layout="responsive"
       width={16}
       height={9}
-      className={cn("block", {
+      className={cn("block rounded-t-md", {
         "transition-shadow duration-500": slug,
       })}
       src={src}

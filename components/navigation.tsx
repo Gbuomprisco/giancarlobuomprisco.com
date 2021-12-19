@@ -42,9 +42,11 @@ const Navigation = () => {
   const Item: React.FC<{ link: Link }> = ({ link }) => {
     const active = isActive(link.path);
 
-    const style = active ? {
-      borderColor: 'var(--accent, var(--primary-color))'
-    } : {};
+    const style = active
+      ? {
+          borderColor: "var(--accent, var(--primary-color))",
+        }
+      : {};
 
     return (
       <li
@@ -93,7 +95,7 @@ const Navigation = () => {
       </div>
 
       <ul
-        className="lg:space-x-10 text-gray-800 px-4 hidden flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row nav"
+        className="lg:space-x-10 text-gray-800 px-4 hidden flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row nav z-20"
         ref={nav}
       >
         <li className="flex flex-row justify-between mb-6 lg:hidden">

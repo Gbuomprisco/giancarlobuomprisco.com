@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import DateFormatter from "./date-formatter";
-import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import CollectionTag from "./collection-tag";
 import DraftBadge from "./draft-badge";
@@ -10,18 +9,14 @@ import BlogPost from "../types/blog-post";
 import SeriesTitle from "./series-title";
 import Author from "./author";
 import Tag from "./tag";
-import BlogPostImageSvg from "./blog-post-image-svg";
 
 type Props = {
   post: Article | BlogPost;
 };
 
 const PostHeader = ({ post }: Props) => {
-  const { title, date, readingTime, slug, live, collection } = post;
-
+  const { title, date, readingTime, live, collection } = post;
   const series = "series" in post && post.series;
-  const coverImage = "coverImage" in post ? post.coverImage : "";
-  const href = `/${collection.name.toLowerCase()}/${slug}`;
 
   return (
     <>
@@ -29,12 +24,12 @@ const PostHeader = ({ post }: Props) => {
 
       <PostTitle>{title}</PostTitle>
 
-      <div className="mb-6 flex space-x-3 items-center justify-center">
+      <div className="mb-8 flex space-x-3 items-center justify-center">
         <CollectionTag logoSize="22px" collection={collection} />
         <PostTags tags={post.tags} collection={collection.name} />
       </div>
 
-      <div className="max-w-2xl mx-auto mb-6">
+      <div className="max-w-2xl mx-auto">
         <div className="flex flex-row space-x-2 items-center justify-center">
           {live ? null : <DraftBadge>Draft</DraftBadge>}
 
@@ -48,28 +43,6 @@ const PostHeader = ({ post }: Props) => {
 
           <span className="text-gray-600">·</span>
           <span className="text-gray-600 text-sm">{readingTime}</span>
-        </div>
-      </div>
-
-      <div className="mb-8 md:mb-16 sm:mx-0">
-        <div className="mx-auto w-12/12 lg:w-10/12 xl:w-8/12 justify-center">
-          {coverImage ? (
-            <CoverImage
-              className="shadow-xl rounded-md"
-              title={title}
-              src={coverImage}
-              href={href}
-            />
-          ) : (
-            <div className="shadow-xl rounded-md">
-              <BlogPostImageSvg
-                className="h-[300px] md:h-auto"
-                color={collection.primaryColor}
-                imageUrl={collection.logo ?? ""}
-                title={post.title}
-              />
-            </div>
-          )}
         </div>
       </div>
     </>

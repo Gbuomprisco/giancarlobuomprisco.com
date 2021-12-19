@@ -9,9 +9,9 @@ const Intro = () => {
         <div className="flex-col space-y-4">
           <h2 className="flex space-x-4 items-center text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter leading-tight md:pr-8">
             <Image
-              layout="fixed"
-              width={50}
-              height={50}
+              layout="intrinsic"
+              width={60}
+              height={60}
               src={PROFILE_IMAGE}
               alt={AUTHOR}
             />
