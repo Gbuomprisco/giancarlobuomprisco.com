@@ -40,7 +40,12 @@ function generateRSSFeed(
       content,
       excerpt: description,
       collection,
+      live,
     } = article;
+
+    if (!live) {
+      return;
+    }
 
     const url = `${baseUrl}/${collection.slug}/${slug}`;
 
@@ -56,8 +61,12 @@ function generateRSSFeed(
   });
 
   posts.forEach((post) => {
-    const { date, slug, title, content, collection } = post;
+    const { date, slug, title, content, collection, live } = post;
     const url = `${baseUrl}/${collection.slug}/${slug}`;
+
+    if (!live) {
+      return;
+    }
 
     feed.addItem({
       title,

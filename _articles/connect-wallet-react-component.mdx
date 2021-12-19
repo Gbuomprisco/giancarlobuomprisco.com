@@ -4,7 +4,7 @@ title: A React Component to connect with MetaMask
 excerpt: "In this post, we are going to build a React button able to connect with a Metamask Wallet, and read the wallet's selected address."
 coverImage: /assets/images/posts/react-metamask.webp
 collection: "react.mdx"
-live: false
+live: true
 tags:
     - react
     - next
@@ -95,7 +95,9 @@ export default function App() {
 }
 ```
 
-We defined a callback to read the address from the button's parent. This is only a good solution if you want to read the address locally, otherwise it would be better to use any state-management tool, like the `Context API` or more complex stuff like Zustand, Redux, etc.
+We defined a callback to read the address from the button's parent. 
+
+The above is a decent solution if you want to read the address locally. Otherwise, should you need to read it globally, it would be better to use any state-management tool like the `Context API` or more complex stuff like Zustand, Redux, etc.
 
 Let's add just enough CSS to make it look good-ish:
 
@@ -142,7 +144,15 @@ What will the component do?
 
 Let's start implementing the goals above. 
 
-First, let's define an async function which lets us request and read the address from MetaMask:
+First, we want to check if the MetaMask extension is installed, otherwise we'll run into runtime errors. For simplicity, we simply check if `window.ethereum` exists:
+
+```tsx
+function isMetaMaskInstalled() {
+  return Boolean(window.ethereum);
+}
+```
+
+Then, we define an async function which lets us request and read the address from MetaMask:
 
 ```tsx
 async function readAddress() {
@@ -155,14 +165,20 @@ async function readAddress() {
   // for simplicity, let's return the first account in the list
   return accounts[0];
 }
+
+function getSelectedAddress() {
+  return window.ethereum?.selectedAddress;
+}
 ```
 
-We want to store the address' state as it can mutate from the outside. Because the wallet may already be connected when the component mounts, we initialize it with the property `selectedAddress`:
+We want to store the address because it can also mutate from the outside. 
+
+Because the wallet may already be connected when the component mounts, we initialize it with the property `selectedAddress`, if found:
 
 
 ```tsx
 const [address, setAddress] = useState<string>(
-  window.ethereum.selectedAddress
+  getSelectedAddress()
 );
 ```
 
@@ -177,13 +193,16 @@ const connectWallet = async () => {
 };
 ```
 
-We now need to listen for changes from the extension so that we can update the component according the correct state.
+We now need to listen for changes from the extension so that we can update the component accordingly.
 
 In fact, users can change the current address or disconnect the website using the MetaMask extension:
 
 ```tsx
 useEffect(() => {
   const eventName = `accountsChanged`;
+  
+  // break if metamask not installed
+  if (!isMetaMaskInstalled()) return;
 
   const listener = ([selectedAddress]: string[]) => {
     setAddress(selectedAddress);
@@ -204,19 +223,35 @@ What happens here?
 - we listen for updates using the `on` method, and update the current address using the first element in the list
 - when the component unmounts, we call the `removeListener` method so we can clean everything up
 
-Now, we can finally render our component: 
+Now, we can finally render our component. 
+
+If MetaMask is not installed, we warn user they cannot connect, and need to install the extension first:
+
+```tsx
+if (!isMetaMaskInstalled()) {
+  return <span>No wallet found. Please install MetaMask.<span/>;
+}
+```
+
+If a wallet is connected, we simply display its selected address:
 
 ```tsx
 if (address) {
   return <button>Connected with {address}</button>;
 }
+```
 
+If a wallet is not connected, we prompt to connect:
+
+```tsx 
 return <button onClick={connectWallet}>Connect Wallet</button>;
 ```
 
 ## Demo
 
-Do you have a MetaMask wallet? Awesome, you can try the demo below to try out the code we've written! Also, you can find the complete snippet:
+Do you have a MetaMask wallet? 
+
+Awesome, you can try the demo below to try out the code we've written! Also, you can find the complete snippet:
 
 <CodeSandboxSnippet src='https://codesandbox.io/embed/react-component-connect-metamask-zpcql?fontsize=14&hidenavigation=1&theme=dark' />
 
@@ -224,6 +259,6 @@ Do you have a MetaMask wallet? Awesome, you can try the demo below to try out th
 
 I know, I know. Web3 is controversial. 
 
-I have some reservations myself, but with that said, I also feel like it's good to keep an open mind about the technology and how it's shaping up the new tools we're going to use in the future, probably.
+I have some reservations myself, but with that said, I also feel like it's good to keep an open mind about the technology and how it's shaping up the new tools we're going to use in the future probably.
 
 I hope to make more posts about this as I dig further into the space. To the next one, ciao!
