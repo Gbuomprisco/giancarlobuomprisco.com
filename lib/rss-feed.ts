@@ -91,11 +91,11 @@ function main() {
     generateRSSFeed(articles, posts);
 
     console.log(`RSS Feed generated successfully...`);
+    process.exit(0);
   } catch (e) {
     console.error(`RSS Feed not generated: ${e}`);
+    process.exit(1);
   }
-
-  process.exit(1);
 }
 
 main();
