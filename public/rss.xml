@@ -3,11 +3,26 @@
     <channel>
         <title>Giancarlo Buomprisco - Articles</title>
         <link>https://giancarlobuomprisco.com</link>
-        <description>giancarlobuomprisco.com</description>
-        <lastBuildDate>Sat, 18 Dec 2021 15:33:14 GMT</lastBuildDate>
+        <description>Learn how to build Serverless applications with web
+            technologies such as React, Next.js, Angular, NestJS and Firebase</description>
+        <lastBuildDate>Sun, 19 Dec 2021 20:54:13 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Lazy Rendering React components with the Intersection Observer API]]></title>
+            <link>https://giancarlobuomprisco.com/react/lazy-rendering-react-components-with-intersection-observer</link>
+            <guid>https://giancarlobuomprisco.com/react/lazy-rendering-react-components-with-intersection-observer</guid>
+            <pubDate>Tue, 21 Dec 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[In this post, we are going to build a React component to lazy rendering React trees to improve performance and page loading speed.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[A React Component to connect with MetaMask]]></title>
+            <link>https://giancarlobuomprisco.com/react/connect-wallet-react-component</link>
+            <guid>https://giancarlobuomprisco.com/react/connect-wallet-react-component</guid>
+            <pubDate>Mon, 20 Dec 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[In this post, we are going to build a React button able to connect with a Metamask Wallet, and read the wallet's selected address.]]></description>
+        </item>
         <item>
             <title><![CDATA[Announcing MakerKit - A SaaS starter for Next.js and Firebase]]></title>
             <link>https://giancarlobuomprisco.com/next/announcing-makerkit-boilerplate-for-building-saas-with-next.js-firebase</link>
@@ -42,12 +57,6 @@
             <guid>https://giancarlobuomprisco.com/rxjs/caching-rxjs-streams-into-web-storage</guid>
             <pubDate>Wed, 10 Nov 2021 23:00:00 GMT</pubDate>
             <description><![CDATA[In this article I will introduce you to a simple utility that allows you to cache RxJS streams in memory or the browser's storage]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Introduction]]></title>
-            <link>https://giancarlobuomprisco.com/next/building-a-blog-with-next</link>
-            <guid>https://giancarlobuomprisco.com/next/building-a-blog-with-next</guid>
-            <pubDate>Mon, 01 Nov 2021 00:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[An Overview]]></title>

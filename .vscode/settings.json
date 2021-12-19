@@ -51,6 +51,20 @@
                     "inform"
                 ]
             }
+        },
+        {
+            "files": [
+                "**/_articles/lazy-rendering-react-components-with-intersection-observer.mdx"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "american",
+                "domain": "general",
+                "emotions": [],
+                "goals": [
+                    "inform"
+                ]
+            }
         }
     ]
 }

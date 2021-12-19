@@ -28,7 +28,7 @@ const CodeSandboxSnippet = ({
       </div>
 
       <ClientOnly>
-        <LazyRender rootMargin="200px 0px">
+        <LazyRender rootMargin="-100px 0px">
           <iframe
             src={src}
             style={style}

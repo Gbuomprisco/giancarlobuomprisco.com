@@ -9,7 +9,7 @@
     "postbuild": "npm run rss && npm run sitemap",
     "sitemap": "next-sitemap",
     "rss": "npx ts-node -O '{\"module\": \"commonjs\"}' -P tsconfig.json ./lib/rss-feed",
-    "start": "next start",
+    "start": "next start -p 3001",
     "typecheck": "tsc",
     "lint": "next lint",
     "export": "next export"

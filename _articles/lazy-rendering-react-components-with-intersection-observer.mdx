@@ -1,10 +1,233 @@
 ---
 date: '2021-12-21T00:00:00.322Z'
-title: Lazy Rendering React components with Intersection Observer
-excerpt: "In this post, we are going to build a React component to lazy rendering React trees to improve performance and page loading speed"
+title: Lazy Rendering React components with the Intersection Observer API
+excerpt: "In this post, we are going to build a React component to lazy rendering React trees to improve performance and page loading speed."
 collection: "react.mdx"
-live: false
+live: true
 tags:
   - react
   - next
 ---
+
+Page speed and UX have become critical SEO metrics that Google, and other search engines, use for ranking pages. 
+
+SEO-aside, **serving fast-loading pages is fundamental** for delivering your content to low-powered devices or users with poor connections (especially as the two factors usually go hand-in-hand).
+
+As a blogger myself, I strive to deliver fast-loading pages and rich and interactive. 
+
+Here's the issue: combining the two can get hard.
+
+This blog sometimes provides coding snippets with CodeSandbox, an excellent online IDE you may be familiar with: I use an `iframe` so that I can embed the content of the page right on my blog posts. 
+
+Of course, loading a whole new React app, tracking scripts, etc., will be costly. We're talking about MBs. So then, what can we do? 
+
+In this blog post, I want to show you how I wrote a React component that uses the Intersection Observer API to load snippets using hefty content (such as CodeSandbox snippets) only when the user scrolls near one of them.
+
+Lazy loading content on your blog or website will result in a faster and better experience for your users and most likely **better Core Vitals**, which generally result in a **better SEO ranking** for your posts.
+
+You can also use this component for deferring the loading of computationally heavy React components, such as Charts or long lists, for **boosting the runtime performance of your React applications**.
+
+We will name this component `LazyRender`. Let's start.
+
+## Building the Lazy Render component
+
+This component will work in this way:
+
+```tsx
+<LazyRender>
+  <CodeSandboxSnippet src={src} />
+</LazyRender>
+```
+
+The `LazyRender` component will render its tree when the `observer` notifies us that the element intersects according to the options we passed.
+
+We allow consumers to pass three properties:
+- `rootMargin`: a string that specifies the vertical and horizontal margins that we can define to control when we are notified: if we use `-200px 0px`, the observer notifies when the user scrolls 200px above or below the target component
+- `threshold`: a numeric property that serves as the threshold after which the Intersection Observer will notify the element is intersecting. For example, if we use `1`, then we will be notified after all the component is visible on the screen
+- `onVisible`: a simple callback that the component calls when becoming visible
+
+```tsx
+const LazyRender: React.FC<{
+  threshold?: number;
+  rootMargin?: string;
+  onVisible?: () => void
+}> = ({ 
+  children, 
+  threshold, 
+  rootMargin, 
+  onVisible 
+}) => {
+```
+
+Because we need the HTML element wrapper to register an Intersection Observer listener, 
+we define a React reference `ref`, which we will assign to a `div` element as a wrapper for the children of this component.
+
+Furthermore, we define a `visible` state to trigger a re-rendering when the component becomes visible.
+
+```tsx
+const ref = useMemo(() => 
+  createRef<HTMLDivElement>(), []);
+
+const [isVisible, setIsVisible] = 
+  useState(false);
+```
+
+Now, we're going to use a `useLayoutEffect` hook to run after the first rendering of our component; this is because we need to get the Intersection Observer to observe the element rendered.
+
+```tsx
+useLayoutEffect(() => {
+  // shouldn't happen but makes TS happy
+  if (!ref.current) {
+    return;
+  }
+
+  const options = {
+    rootMargin: rootMargin ?? "0px",
+    threshold: threshold ?? 1,
+  };
+
+  const observer = 
+    new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+
+          if (onVisible) {
+            onVisible();
+          }
+        }
+      });
+    }, options);
+
+  observer.observe(ref.current);
+
+  // clean up when the component is unmounted
+  return () => {
+    observer.disconnect();
+  };
+}, [threshold, rootMargin, ref, onVisible]);
+```
+
+What's happened above?
+- we created an `Intersection Observer` observer instance and observed the element referenced by `ref` (which we will assign in the render function)
+- when `entry.isIntersecting` is equal to `true`, we set the variable `isVisible` to `true`, which will re-render the component, and this time will also render the `children` tree
+- we also tear down the observer's listener and call the `onVisible` callback if provided by the consumer
+
+Finally, we return the function to render the component:
+
+```tsx
+return <div ref={ref}>{isVisible ? children : null}</div>;
+```
+
+### SSR
+
+If you're using SSR, you may receive an error because React will not run the `useLayoutEffect` hook on the server.
+
+It makes sense to prevent these errors by only wrapping the `LazyRender` component within another component, which will render the tree only if running in the browser.
+
+To do that, we create a new component `ClientOnly`:
+
+```tsx
+function isBrowser() {
+  return typeof window !== 'undefined';
+}
+
+const ClientOnly: React.FC = ({ children }) => {
+  return isBrowser() ? <>{children}</> : null;
+};
+
+export default ClientOnly;
+```
+
+Whenever we use the `LazyRender` component, we can combine it with `ClientOnly` or add it to the component render function itself.
+
+```tsx
+<ClientOnly>
+  <LazyRender>
+    <CodeSandboxSnippet />
+  </LazyRender>
+</ClientOnly>
+```
+
+## CodeSandbox Demo
+
+Of course, here is the CodeSandbox snippet, obviously lazy-loaded! Scroll to the bottom to see the lazy loaded component. After you scroll down, you can see that our text changed from `Not visible yet` to `Visible`.
+
+You will find the complete snippet's source code by clicking on the link or you can find it below:
+
+<CodeSandboxSnippet src='https://codesandbox.io/embed/react-lazy-rendering-component-40i1b?fontsize=14&hidenavigation=1&theme=dark' />
+
+### Full source code
+
+```tsx
+import { 
+  createRef, 
+  useLayoutEffect, 
+  useMemo, 
+  useState 
+} from "react";
+
+const LazyRender: React.FC<{
+  threshold?: number;
+  rootMargin?: string;
+  onVisible?: () => void;
+}> = ({ children, threshold, rootMargin, onVisible }) => {
+  const ref = useMemo(() => 
+    createRef<HTMLDivElement>(), []);
+
+  const [isVisible, setIsVisible] = 
+    useState(false);
+
+  useLayoutEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const options = {
+      rootMargin: rootMargin ?? "0px",
+      threshold: threshold ?? 1
+    };
+
+    const observer = 
+      new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+
+          if (onVisible) {
+            onVisible();
+          }
+        }
+      });
+    }, options);
+
+    observer.observe(ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [threshold, rootMargin, ref, onVisible]);
+
+  return <div ref={ref}>{isVisible ? children : null}</div>;
+};
+
+export default LazyRender;
+```
+
+## Final Words
+
+The component implemented in this blog post is super-simple; you may need to tweak it to consider more scenarios in more complex situations.
+
+For easier use-cases, like in my case, this should more than be sufficient to leverage the fantastic Intersection Observer API.
+
+The local Lighthouse test **recorded a score 3 points higher with lazy-loading**. 
+
+Still, you **may expect even more significant differences** with Google's PageSpeed Insights (a more realistic test for speed, where you'll usually hit a lower score). 
+
+I'd say this is enough reason to start implementing this or any other component with similar functionality to improve loading performance, website SEO, and ultimately your users' experience.
+
+If you also use Angular, you may be interested in [the blog post I created to do the same with an Angular directive](/angular/intersection-observer-with-angular). The code in the Angular example also waits for an amount of time before re-rendering so that we can skip useless renderings when the user scrolls past an element.
+
+To the next one, ciao!

@@ -3,7 +3,8 @@ import { createRef, useLayoutEffect, useMemo, useState } from "react";
 const LazyRender: React.FC<{
   threshold?: number;
   rootMargin?: string;
-}> = ({ children, threshold, rootMargin }) => {
+  onVisible?: () => void;
+}> = ({ children, threshold, rootMargin, onVisible }) => {
   const ref = useMemo(() => createRef<HTMLDivElement>(), []);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -25,6 +26,10 @@ const LazyRender: React.FC<{
         if (isIntersecting(entry)) {
           setIsVisible(true);
           observer.disconnect();
+
+          if (onVisible) {
+            onVisible();
+          }
         }
       });
     }, options);
@@ -34,7 +39,7 @@ const LazyRender: React.FC<{
     return () => {
       observer.disconnect();
     };
-  }, [threshold, rootMargin, ref]);
+  }, [threshold, rootMargin, ref, onVisible]);
 
   return <div ref={ref}>{isVisible ? children : null}</div>;
 };

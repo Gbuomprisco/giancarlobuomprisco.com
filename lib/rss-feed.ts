@@ -21,7 +21,7 @@ function generateRSSFeed(
 
   const feed = new Feed({
     title: `${constants.TITLE} - Articles`,
-    description: constants.SITE_DESCRIPTION,
+    description: constants.MISSION_STATEMENT,
     id: baseUrl,
     link: baseUrl,
     language: constants.SITE_LANGUAGE,
