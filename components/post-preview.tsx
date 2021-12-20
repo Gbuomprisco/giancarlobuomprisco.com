@@ -17,7 +17,7 @@ const PostPreview = ({ post }: Props) => {
   const hrefString = "/[collection]/[slug]";
 
   return (
-    <div className="shadow rounded-md hover:shadow-xl transition-shadow duration-500">
+    <div className="border border-gray-100 rounded-md hover:shadow-xl transition-shadow duration-500">
       <div className="mb-3">
         <div className="h-full w-full lg:h-48 xl:h-48 rounded-t-md">
           <Link as={href} href={hrefString} passHref>
@@ -37,7 +37,7 @@ const PostPreview = ({ post }: Props) => {
       </div>
 
       <div className="px-4 py-2">
-        <h2 className="text-2xl font-bold mb-2 leading-snug">
+        <h2 className="text-xl font-bold mb-2 leading-snug">
           <Link as={href} href={hrefString}>
             <a className="hover:underline">{title}</a>
           </Link>

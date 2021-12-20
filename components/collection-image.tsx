@@ -15,8 +15,8 @@ function CollectionImage({
   if (collection.logo) {
     return (
       <Image
-        className="object-contain"
-        loading="lazy"
+        className="!p-0.5"
+        objectFit="contain"
         layout="fixed"
         width={size}
         height={size}

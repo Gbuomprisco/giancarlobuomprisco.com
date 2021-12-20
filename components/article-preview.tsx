@@ -26,8 +26,8 @@ const ArticlePreview = ({ post }: Props) => {
   const href = `/${collection.name.toLowerCase()}/${slug}`;
 
   return (
-    <div className="shadow rounded-md hover:shadow-xl transition-shadow duration-500">
-      <div className="mb-3">
+    <div className="border border-gray-100 rounded-md hover:shadow-xl transition-shadow duration-500">
+      <div className="mb-3 border-b border-gray-50">
         {coverImage ? (
           <CoverImage
             className="h-full w-full lg:h-48 xl:h-48 rounded-t-md"
@@ -54,7 +54,7 @@ const ArticlePreview = ({ post }: Props) => {
       </div>
 
       <div className="px-4 py-2">
-        <h3 className="text-2xl font-bold mb-2 leading-snug">
+        <h3 className="text-xl font-bold mb-2 leading-snug">
           <Link as={href} href="/[collection]/[slug]">
             <a className="hover:underline">{postTitle}</a>
           </Link>
