@@ -11,15 +11,15 @@ tags:
   - web3
 ---
 
-Web3 is a relatively new, revolutionary (maybe), and controversial (very) phenomenon, considered as the evolution of the Web as we know it today, and becoming harder and harder to ignore.
+Web3 is a relatively new, revolutionary (maybe), and controversial (very) phenomenon, considered the evolution of the Web as we know it today, and becoming harder and harder to ignore.
 
 Whether you are fascinated by it or not, it's undeniable that its consequences are far-reaching; many developers are re-training to get up to speed with it, and the buzz around it has never been this high.
 
-We are not here to discuss its qualities but to show how to start working with Web3 websites using the MetaMask wallet.
+We are not here to discuss its qualities but show how to start working with Web3 websites using the MetaMask wallet.
 
 ---
 
-Recently, I started working on a task for requesting users to connect their wallets to retrieve their MetaMask addresse; I had the opportunity to get my hands dirty with a Web3 technologies for the first time.
+Recently, I started working on a task for requesting users to connect their wallets to retrieve their MetaMask address; I had the opportunity to get my hands dirty with Web3 technologies for the first time.
 
 ## What's a Wallet?
 
@@ -41,7 +41,7 @@ In short: **we still need the good old Javascript** to build on top of web3, so 
 
 We need to extend the Window with the MetaMask API as we use Typescript.
 
-The extension exposes an object named `ethereum` which provides the necessary API to interact with the wallet.
+The extension exposes an object named `ethereum`, which provides the necessary API to interact with the wallet.
 
 We will add the script below globally or within the same Component's file:
 
@@ -101,7 +101,7 @@ export default function App() {
 
 We defined a callback to read the address from the button's parent. 
 
-The above is a decent solution if you want to read the address locally. Otherwise, should you need to read it globally, it would be better to use any state-management tool like the `Context API` or more complex stuff like Zustand, Redux, etc.
+The above is a decent solution if you need to read the address locally. Otherwise, should you need to read it globally, it would be better to use any state-management tool like the `Context API` or more complex stuff like Zustand, Redux, etc.
 
 Let's add just enough CSS to make it look good-ish:
 
@@ -130,11 +130,11 @@ button:active {
 
 And now on to the actual logic. 
 
-If you paid attention when we extended `Window`, we have added two methods to the `ethereum` global object (just enough to make this component work because there are a lot more).
+If you paid attention when we extended `Window`, we have added two methods to the `ethereum` global object (just enough to make this component work because there are many more).
 
-- The first method is `request`: by calling it, we can request actions, which in this case will be `eth_requestAccounts`
+- The first method is `request`: by calling it, we can request actions, which in this case is `eth_requestAccounts`
 - The second method is `on`: by calling it, we can listen to specific events, for example, when the wallet's account has changed
-- The third method `removeListener` will be used to clean up the callback and avoid memory leaks when the component is unmounted
+- The third method `removeListener` is used to clean up the callback and avoid memory leaks when the component is unmounted
 
 #### Goals
 
@@ -148,7 +148,7 @@ What will the component do?
 
 Let's start implementing the goals above. 
 
-First, we want to check if the MetaMask extension is installed, otherwise we'll run into runtime errors. For simplicity, we simply check if `window.ethereum` exists:
+First, we want to check if the user installed the MetaMask extension; otherwise, we'll run into runtime errors. For simplicity, we check if `window.ethereum` exists:
 
 ```tsx
 function isMetaMaskInstalled() {
@@ -175,7 +175,7 @@ function getSelectedAddress() {
 }
 ```
 
-We want to store the address because it can also mutate from the outside. 
+We want to store the address because it can also mutate outside. 
 
 Because the wallet may already be connected when the component mounts, we initialize it with the property `selectedAddress`, if found:
 
@@ -197,7 +197,7 @@ const connectWallet = async () => {
 };
 ```
 
-We now need to listen for changes from the extension so that we can update the component accordingly.
+We now need to listen for changes from the extension to update the component accordingly.
 
 In fact, users can change the current address or disconnect the website using the MetaMask extension:
 
