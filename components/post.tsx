@@ -13,7 +13,7 @@ import ConvertKitPostSignup from "./convertkit-post-signup";
 import PostTitle from "./post-title";
 import CollectionName from "./collection-name";
 
-import PostType from "../types/blog-post";
+import PostType from "../types/note";
 import PostsList from "./posts-list";
 import ArticleType from "../types/article";
 import ArticlesList from "./articles-list";

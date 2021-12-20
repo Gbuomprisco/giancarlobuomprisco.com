@@ -12,15 +12,15 @@ import {
   getArticlesByCollection,
   getPostsByCollection,
   getPostsBySeries,
-  getAllPosts,
+  getAllNotes,
 } from "../../lib/api";
 
 import markdownToHtml from "../../lib/markdownToHtml";
 import ArticleType from "../../types/article";
-import PostType from "../../types/blog-post";
+import PostType from "../../types/note";
 
-import { getBlogPostBySlug } from "../../lib/api";
-import BlogPost from "../../types/blog-post";
+import { getNoteBySlug } from "../../lib/api";
+import BlogPost from "../../types/note";
 import BlogPostImageSvg from "../../components/blog-post-image-svg";
 
 import {
@@ -132,7 +132,7 @@ export async function getStaticProps({ params }: Params) {
 
 export async function getStaticPaths() {
   const articles = getAllArticles(["slug", "collection"]);
-  const posts = getAllPosts(["slug", "collection"]);
+  const posts = getAllNotes(["slug", "collection"]);
 
   const paths = [...articles, ...posts].map((post) => {
     const slug = post.slug;
@@ -175,7 +175,7 @@ function getPostItemBySlug(slug: string) {
   }
 
   return {
-    post: getBlogPostBySlug(slug, [
+    post: getNoteBySlug(slug, [
       "title",
       "date",
       "slug",
@@ -188,14 +188,14 @@ function getPostItemBySlug(slug: string) {
   };
 }
 
-async function generateCoverImage(post: BlogPost) {
-  const outputFile = `${post.slug}.webp`;
+async function generateCoverImage(note: BlogPost) {
+  const outputFile = `${note.slug}.webp`;
 
   try {
     await assertBannerDoesNotExist(outputFile);
   } catch {
-    const color = post.collection.primaryColor;
-    const imageUrl = post.collection.logo;
+    const color = note.collection.primaryColor;
+    const imageUrl = note.collection.logo;
 
     const imageBuffer = imageUrl
       ? await convertImageToBase64(imageUrl)
@@ -209,7 +209,7 @@ async function generateCoverImage(post: BlogPost) {
       <BlogPostImageSvg
         imageData={imageData}
         color={color}
-        title={post.title}
+        title={note.title}
         width={"800"}
         height={"418"}
         fontSize={"4em"}

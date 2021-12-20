@@ -15,31 +15,43 @@ const BlogPostImageSvg: React.FC<
     fontSize?: string;
     className?: string;
     injectStyle?: boolean;
+    viewBox?: string;
   } & ImageProps
 > = (props) => {
-  const { color, title, height, width, fontSize, className, injectStyle } =
-    props;
+  const {
+    color,
+    title,
+    height,
+    width,
+    fontSize,
+    className,
+    injectStyle,
+    viewBox,
+  } = props;
 
   const Spans = getTitleSpans(title);
   const useWidth = width ?? `100%`;
   const useHeight = height ?? `415`;
   const useFontSize = fontSize ?? "4rem";
+  const useViewBox = viewBox ?? `0 0 800 415`;
 
   return (
     <svg
       width={useWidth}
       height={useHeight}
-      viewBox="0 0 800 415"
+      viewBox={useViewBox}
       fill="white"
       xmlns="http://www.w3.org/2000/svg"
       className={className ?? ""}
     >
       {injectStyle ? <style>{getMedia()}</style> : null}
 
+      <title>{title}</title>
+
       <rect width={useWidth} height={useHeight} fill="white" />
 
       <text
-        y="15%"
+        y="25%"
         fontFamily={"Inter, Helvetica, sans-serif"}
         fontWeight={"800"}
         fontSize={useFontSize}

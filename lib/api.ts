@@ -3,14 +3,14 @@ import { IS_PRODUCTION } from "./constants";
 
 import Article from "../types/article";
 import BasePost from "../types/base-post";
-import BlogPost from "../types/blog-post";
+import Note from "../types/note";
 import Hub from "../types/hub";
 
 import { getPath, readDirectory, readFrontMatter } from "./fs-utils";
 import { getCollectionBySlug } from "./collections";
 
 type ArticleFields = Array<keyof Article>;
-type BlogPostFields = Array<keyof BlogPost>;
+type NoteFields = Array<keyof Note>;
 type HubsFields = Array<keyof Hub>;
 
 const DEFAULT_ARTICLE_FIELDS: ArticleFields = [
@@ -27,7 +27,7 @@ const DEFAULT_ARTICLE_FIELDS: ArticleFields = [
   "tags",
 ];
 
-const DEFAULT_POST_FIELDS: BlogPostFields = [
+const DEFAULT_NOTES_FIELDS: NoteFields = [
   "title",
   "date",
   "slug",
@@ -47,19 +47,19 @@ const DEFAULT_HUB_FIELDS: HubsFields = [
 ];
 
 const ARTICLES_DIRECTORY_NAME = "_articles";
-const POSTS_DIRECTORY_NAME = "_posts";
+const NOTES_DIRECTORY_NAME = "_notes";
 const HUBS_DIRECTORY_NAME = "_hubs";
 
 const articlesDirectory = join(process.cwd(), ARTICLES_DIRECTORY_NAME);
-const postsDirectory = join(process.cwd(), POSTS_DIRECTORY_NAME);
+const notesDirectory = join(process.cwd(), NOTES_DIRECTORY_NAME);
 const hubsDirectory = join(process.cwd(), HUBS_DIRECTORY_NAME);
 
 export function getArticleSlugs() {
   return readDirectory(articlesDirectory);
 }
 
-export function getPostsSlugs() {
-  return readDirectory(postsDirectory);
+export function getNotesSlugs() {
+  return readDirectory(notesDirectory);
 }
 
 export function getHubsSlugs() {
@@ -67,7 +67,7 @@ export function getHubsSlugs() {
 }
 
 const allArticles = getArticleSlugs();
-const allPosts = getPostsSlugs();
+const allNotes = getNotesSlugs();
 const allHubs = getHubsSlugs();
 
 export function getArticleBySlug(
@@ -77,11 +77,11 @@ export function getArticleBySlug(
   return getPostFieldsBySlug(slug, articlesDirectory, fields);
 }
 
-export function getBlogPostBySlug(
+export function getNoteBySlug(
   slug: string,
-  fields: BlogPostFields = DEFAULT_POST_FIELDS
-): Partial<BlogPost> | undefined {
-  return getPostFieldsBySlug(slug, postsDirectory, fields);
+  fields: NoteFields = DEFAULT_NOTES_FIELDS
+): Partial<Note> | undefined {
+  return getPostFieldsBySlug(slug, notesDirectory, fields);
 }
 
 export function getHubBySlug(
@@ -114,11 +114,11 @@ export function getArticlesByCollection(
 
 export function getPostsByCollection(
   collectionSlug: string,
-  fields: BlogPostFields = DEFAULT_POST_FIELDS
+  fields: NoteFields = DEFAULT_NOTES_FIELDS
 ) {
   const collection = getCollectionBySlug(collectionSlug);
 
-  return getAllPosts(
+  return getAllNotes(
     fields,
     (item) =>
       item.collection?.name.toLowerCase() === collection.name.toLowerCase()
@@ -245,25 +245,25 @@ export function queryAll(collection: string, tags: string[]) {
     );
   });
 
-  const posts = getAllPosts(DEFAULT_POST_FIELDS, (post) => {
+  const notes = getAllNotes(DEFAULT_NOTES_FIELDS, (post) => {
     return (
       post.collection?.name === collection &&
       tags?.some((tag) => post?.tags?.includes(tag))
     );
   });
 
-  return { articles, posts };
+  return { articles, notes };
 }
 
-export function getAllPosts(
-  fields: BlogPostFields = DEFAULT_POST_FIELDS,
-  filterFn: (post: Partial<BlogPost>) => boolean = () => true
+export function getAllNotes(
+  fields: NoteFields = DEFAULT_NOTES_FIELDS,
+  filterFn: (post: Partial<Note>) => boolean = () => true
 ) {
-  const posts = allPosts
-    .map((slug) => getBlogPostBySlug(slug, fields))
-    .filter(Boolean) as BlogPost[];
+  const notes = allNotes
+    .map((slug) => getNoteBySlug(slug, fields))
+    .filter(Boolean) as Note[];
 
-  return _getAllPosts(posts, filterFn);
+  return _getAllPosts(notes, filterFn);
 }
 
 export function getAllHubs(

@@ -1,26 +1,26 @@
 import Head from "next/head";
 
+import Note from "../types/note";
+import { TITLE } from "../lib/constants";
 import Container from "../components/container";
-import PostsList from "../components/posts-list";
 import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
 import Hero from "../components/hero";
 import SubHeading from "../components/subheading";
 
-import { getAllPosts } from "../lib/api";
-import Post from "../types/article";
-import { TITLE } from "../lib/constants";
+import { getAllNotes } from "../lib/api";
+import PostsList from "../components/posts-list";
 
 type Props = {
-  posts: Post[];
+  notes: Note[];
 };
 
-const Blog = ({ posts }: Props) => {
+const Notes = ({ notes }: Props) => {
   return (
     <>
       <Layout>
         <Head>
-          <title key="title">{TITLE} | Blog</title>
+          <title key="title">{TITLE} - Notes</title>
 
           <meta
             key="meta:description"
@@ -34,27 +34,37 @@ const Blog = ({ posts }: Props) => {
         <Container>
           <MainHeader />
 
-          <Hero>Blog</Hero>
+          <Hero>Notes</Hero>
 
           <SubHeading>Short-form posts, notes and tips</SubHeading>
 
-          <div className="space-y-12 mt-8 md:mt-16">
-            <div className="w-full">
-              <div className="mx-auto flex flex-col space-y-8">
-                <PostsList posts={posts} />
+          {notes.length ? (
+            <>
+              <div className="space-y-12 mt-8 md:mt-16">
+                <div className="w-full">
+                  <div className="mx-auto flex flex-col space-y-8">
+                    <PostsList posts={notes} />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            <span>No note found</span>
+          )}
         </Container>
       </Layout>
     </>
   );
 };
 
-export default Blog;
+export default Notes;
 
 export const getStaticProps = async () => {
+  const notes = getAllNotes();
+
   return {
-    props: { posts: getAllPosts() },
+    props: {
+      notes,
+    },
   };
 };

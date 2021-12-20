@@ -1,6 +1,6 @@
 import PostPreview from "./post-preview";
-import Post from "../types/blog-post";
-import GridList from './grid-list';
+import Post from "../types/note";
+import GridList from "./grid-list";
 
 type Props = {
   posts: Post[];

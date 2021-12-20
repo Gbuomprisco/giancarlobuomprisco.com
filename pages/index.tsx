@@ -7,16 +7,16 @@ import Layout from "../components/layout";
 import MainHeader from "../components/main-header";
 
 import * as constants from "../lib/constants";
-import { getAllArticles, getAllPosts } from "../lib/api";
+import { getAllArticles, getAllNotes } from "../lib/api";
 import Post from "../types/article";
-import PostsList from "../components/posts-list";
+import Note from "../types/note";
 
 type Props = {
-  posts: Post[];
+  notes: Post[];
   articles: Post[];
 };
 
-const Index = ({ posts, articles }: Props) => {
+const Index = ({ articles }: Props) => {
   return (
     <>
       <Layout>
@@ -45,18 +45,8 @@ const Index = ({ posts, articles }: Props) => {
 
           <div className={""}>
             <div>
-              <h2 className="text-2xl font-bold">Latest Articles</h2>
-
               <div className="mt-4">
                 <ArticlesList posts={articles} />
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-bold">Latest Posts</h2>
-
-              <div className="mt-4">
-                <PostsList posts={posts} />
               </div>
             </div>
           </div>
@@ -79,7 +69,7 @@ export const getStaticProps = async () => {
     "series",
   ]).slice(0, 6);
 
-  const posts = getAllPosts([
+  const notes = getAllNotes([
     "title",
     "date",
     "slug",
@@ -89,6 +79,6 @@ export const getStaticProps = async () => {
   ]).slice(0, 6);
 
   return {
-    props: { articles, posts },
+    props: { articles, notes },
   };
 };

@@ -5,7 +5,7 @@
         <link>https://giancarlobuomprisco.com</link>
         <description>Learn how to build Serverless applications with web
             technologies such as React, Next.js, Angular, NestJS and Firebase</description>
-        <lastBuildDate>Sun, 19 Dec 2021 20:54:13 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 20 Dec 2021 14:19:56 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -22,6 +22,13 @@
             <guid>https://giancarlobuomprisco.com/react/connect-wallet-react-component</guid>
             <pubDate>Mon, 20 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[In this post, we are going to build a React button able to connect with a Metamask Wallet, and read the wallet's selected address.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Automatic Dark Mode with one line of CSS]]></title>
+            <link>https://giancarlobuomprisco.com/css/automatic-dark-mode-any-website</link>
+            <guid>https://giancarlobuomprisco.com/css/automatic-dark-mode-any-website</guid>
+            <pubDate>Sat, 18 Dec 2021 14:52:20 GMT</pubDate>
+            <description><![CDATA[Add dark mode to any webpage thanks to a single line of CSS, or with a simple Tailwind Class]]></description>
         </item>
         <item>
             <title><![CDATA[Announcing MakerKit - A SaaS starter for Next.js and Firebase]]></title>
@@ -45,6 +52,27 @@
             <description><![CDATA[Say no to custom banners. This post will teach you how to generate automatic banners for your articles using Next.js, SVG and Sharp]]></description>
         </item>
         <item>
+            <title><![CDATA[A conditional rendering Component for React]]></title>
+            <link>https://giancarlobuomprisco.com/react/conditional-rendering-component-for-react</link>
+            <guid>https://giancarlobuomprisco.com/react/conditional-rendering-component-for-react</guid>
+            <pubDate>Thu, 02 Dec 2021 14:52:20 GMT</pubDate>
+            <description><![CDATA[This post shows how to create a React component to render components conditionally.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Using Firestore's SDK in Next.js's SSR]]></title>
+            <link>https://giancarlobuomprisco.com/next/using-firestore-sdk-in-next.js-ssr</link>
+            <guid>https://giancarlobuomprisco.com/next/using-firestore-sdk-in-next.js-ssr</guid>
+            <pubDate>Sat, 27 Nov 2021 16:30:30 GMT</pubDate>
+            <description><![CDATA[This blog post shows how you can work around a bug in React Firebase's library so that you can render components using Firestore on the server with Next.js]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Deleting collections in Firebase's Firestore]]></title>
+            <link>https://giancarlobuomprisco.com/firebase/deleting-collections-in-firebase</link>
+            <guid>https://giancarlobuomprisco.com/firebase/deleting-collections-in-firebase</guid>
+            <pubDate>Wed, 17 Nov 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[This post shows a hidden way to delete a Firestore path with one function, and the most efficient way to delete collections.]]></description>
+        </item>
+        <item>
             <title><![CDATA[A Reactive Enum with Typescript and RxJs]]></title>
             <link>https://giancarlobuomprisco.com/rxjs/reactive-enum-typescript-rxjs</link>
             <guid>https://giancarlobuomprisco.com/rxjs/reactive-enum-typescript-rxjs</guid>
@@ -52,11 +80,32 @@
             <description><![CDATA[Typescript's template literals' types allow us to generate dynamic and typed code, together. In this article, I want to show how we can build a dynamic reactive enum with TS and RxJS]]></description>
         </item>
         <item>
+            <title><![CDATA[Testing RxJS timers with Jest]]></title>
+            <link>https://giancarlobuomprisco.com/rxjs/testing-rxjs-timers-with-jest</link>
+            <guid>https://giancarlobuomprisco.com/rxjs/testing-rxjs-timers-with-jest</guid>
+            <pubDate>Thu, 11 Nov 2021 21:49:22 GMT</pubDate>
+            <description><![CDATA[Learn how to test simple time-operators with RxJS and Jest]]></description>
+        </item>
+        <item>
             <title><![CDATA[Caching RxJS streams into Web Storage]]></title>
             <link>https://giancarlobuomprisco.com/rxjs/caching-rxjs-streams-into-web-storage</link>
             <guid>https://giancarlobuomprisco.com/rxjs/caching-rxjs-streams-into-web-storage</guid>
             <pubDate>Wed, 10 Nov 2021 23:00:00 GMT</pubDate>
             <description><![CDATA[In this article I will introduce you to a simple utility that allows you to cache RxJS streams in memory or the browser's storage]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Using Brotli with Node.js]]></title>
+            <link>https://giancarlobuomprisco.com/node/using-brotli-with-node.js</link>
+            <guid>https://giancarlobuomprisco.com/node/using-brotli-with-node.js</guid>
+            <pubDate>Mon, 01 Nov 2021 21:53:02 GMT</pubDate>
+            <description><![CDATA[This post shows how to compress large strings with Brotli using Node.js.]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Streamline your code with Typescript assertions]]></title>
+            <link>https://giancarlobuomprisco.com/typescript/streamline-your-code-with-typescript-assertions</link>
+            <guid>https://giancarlobuomprisco.com/typescript/streamline-your-code-with-typescript-assertions</guid>
+            <pubDate>Sat, 30 Oct 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[In this post we introduce Typescript assertions, which can make our Typescript code easier to read and more concise by not introducing conditions]]></description>
         </item>
         <item>
             <title><![CDATA[An Overview]]></title>
@@ -321,48 +370,6 @@
             <guid>https://giancarlobuomprisco.com/typescript/writing-scalabale-typescript</guid>
             <pubDate>Fri, 05 Apr 2019 00:00:00 GMT</pubDate>
             <description><![CDATA[Let’s explore in detail how to write clean, safe, enterprise-grade Typescript code]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Automatic Dark Mode with one line of CSS]]></title>
-            <link>https://giancarlobuomprisco.com/css/automatic-dark-mode-any-website</link>
-            <guid>https://giancarlobuomprisco.com/css/automatic-dark-mode-any-website</guid>
-            <pubDate>Sat, 18 Dec 2021 14:52:20 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[A conditional rendering Component for React]]></title>
-            <link>https://giancarlobuomprisco.com/react/conditional-rendering-component-for-react</link>
-            <guid>https://giancarlobuomprisco.com/react/conditional-rendering-component-for-react</guid>
-            <pubDate>Thu, 02 Dec 2021 14:52:20 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Using Firestore's SDK in Next.js's SSR]]></title>
-            <link>https://giancarlobuomprisco.com/next/using-firestore-sdk-in-next.js-ssr</link>
-            <guid>https://giancarlobuomprisco.com/next/using-firestore-sdk-in-next.js-ssr</guid>
-            <pubDate>Sat, 27 Nov 2021 16:30:30 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Deleting collections in Firebase's Firestore]]></title>
-            <link>https://giancarlobuomprisco.com/firebase/deleting-collections-in-firebase</link>
-            <guid>https://giancarlobuomprisco.com/firebase/deleting-collections-in-firebase</guid>
-            <pubDate>Wed, 17 Nov 2021 00:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Testing RxJS timers with Jest]]></title>
-            <link>https://giancarlobuomprisco.com/rxjs/testing-rxjs-timers-with-jest</link>
-            <guid>https://giancarlobuomprisco.com/rxjs/testing-rxjs-timers-with-jest</guid>
-            <pubDate>Thu, 11 Nov 2021 21:49:22 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Using Brotli with Node.js]]></title>
-            <link>https://giancarlobuomprisco.com/node/using-brotli-with-node.js</link>
-            <guid>https://giancarlobuomprisco.com/node/using-brotli-with-node.js</guid>
-            <pubDate>Mon, 01 Nov 2021 21:53:02 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Streamline your code with Typescript assertions]]></title>
-            <link>https://giancarlobuomprisco.com/typescript/streamline-your-code-with-typescript-assertions</link>
-            <guid>https://giancarlobuomprisco.com/typescript/streamline-your-code-with-typescript-assertions</guid>
-            <pubDate>Sat, 30 Oct 2021 00:00:00 GMT</pubDate>
         </item>
     </channel>
 </rss>

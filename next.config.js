@@ -9,6 +9,15 @@ const config = {
   images: {
     domains: ["miro.medium.com", "cdn-images-1.medium.com"],
   },
+  redirects() {
+    return [
+      {
+        source: "/blog",
+        destination: "/articles",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const configWithPlugins = withPlugins([[config]]);

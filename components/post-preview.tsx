@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import DateFormatter from "./date-formatter";
 import CollectionName from "./collection-name";
-import Post from "../types/blog-post";
+import Post from "../types/note";
 import BlogPostImageSvg from "./blog-post-image-svg";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const PostPreview = ({ post }: Props) => {
-  const { title, slug, date, collection, readingTime, excerpt } = post;
+  const { title, slug, date, collection, readingTime } = post;
 
   const collectionName = collection.name.toLowerCase();
   const href = `/${collectionName}/${slug}`;
@@ -18,30 +18,25 @@ const PostPreview = ({ post }: Props) => {
 
   return (
     <div className="border border-gray-100 rounded-md hover:shadow-xl transition-shadow duration-500">
-      <div className="mb-3">
-        <div className="h-full w-full lg:h-48 xl:h-48 rounded-t-md">
-          <Link as={href} href={hrefString} passHref>
-            <a className={"flex"}>
-              <BlogPostImageSvg
-                className={"rounded-t-md"}
-                fontSize={"3.2rem"}
-                height={"100%"}
-                width={"100%"}
-                title={title}
-                color={collection.primaryColor}
-                imageUrl={collection.logo ?? ""}
-              />
-            </a>
-          </Link>
+      <div>
+        <div className="rounded-t-md">
+          <h2>
+            <Link as={href} href={hrefString} passHref>
+              <a className={"flex"}>
+                <BlogPostImageSvg
+                  className={"rounded-t-md"}
+                  fontSize={"3.5rem"}
+                  height={"100%"}
+                  width={"100%"}
+                  viewBox="0 0 800 180"
+                  title={title}
+                  color={collection.primaryColor}
+                  imageUrl={collection.logo ?? ""}
+                />
+              </a>
+            </Link>
+          </h2>
         </div>
-      </div>
-
-      <div className="px-4 py-2">
-        <h2 className="text-xl font-bold mb-2 leading-snug">
-          <Link as={href} href={hrefString}>
-            <a className="hover:underline">{title}</a>
-          </Link>
-        </h2>
       </div>
 
       <div className="text-xs mb-6 flex flex-row space-x-2 items-center px-4">
@@ -57,8 +52,6 @@ const PostPreview = ({ post }: Props) => {
           <CollectionName collection={collection} />
         </div>
       </div>
-
-      <p className="leading-relaxed mb-4 px-4 text-sm">{excerpt}</p>
     </div>
   );
 };

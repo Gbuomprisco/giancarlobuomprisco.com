@@ -5,7 +5,7 @@ import PostTitle from "./post-title";
 import CollectionTag from "./collection-tag";
 import DraftBadge from "./draft-badge";
 import Article from "../types/article";
-import BlogPost from "../types/blog-post";
+import BlogPost from "../types/note";
 import SeriesTitle from "./series-title";
 import Author from "./author";
 import Tag from "./tag";
@@ -58,7 +58,7 @@ function PostTags({
 }) {
   return (
     <>
-      {tags
+      {(tags ?? [])
         .filter((tag) => {
           // exclude collections with the same name as the tag
           return tag.toLowerCase() !== collection.toLowerCase();

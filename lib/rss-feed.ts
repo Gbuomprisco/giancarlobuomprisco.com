@@ -2,14 +2,14 @@ import { Feed } from "feed";
 import { writeFileSync } from "fs";
 import * as constants from "./constants";
 import Article from "../types/article";
-import Post from "../types/blog-post";
-import { getAllArticles, getAllPosts } from "./api";
+import Note from "../types/note";
+import { getAllArticles, getAllNotes } from "./api";
 
 const DEFAULT_RSS_PATH = "public/rss.xml";
 
 function generateRSSFeed(
   articles: Article[],
-  posts: Post[],
+  notes: Note[],
   path = DEFAULT_RSS_PATH
 ) {
   const baseUrl = constants.SITE_URL;
@@ -60,8 +60,8 @@ function generateRSSFeed(
     });
   });
 
-  posts.forEach((post) => {
-    const { date, slug, title, content, collection, live } = post;
+  notes.forEach((note) => {
+    const { date, slug, title, content, collection, live } = note;
     const url = `${baseUrl}/${collection.slug}/${slug}`;
 
     if (!live) {
@@ -86,7 +86,7 @@ function main() {
 
   try {
     const articles = getAllArticles();
-    const posts = getAllPosts();
+    const posts = getAllNotes();
 
     generateRSSFeed(articles, posts);
 

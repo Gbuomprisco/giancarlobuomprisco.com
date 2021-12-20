@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/_posts/automatic-dark-mode-any-website.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_posts/conditional-rendering-component-for-react.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_posts/deleting-collections-in-firebase.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_posts/streamline-your-code-with-typescript-assertions.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_posts/testing-rxjs-timers-with-jest.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_posts/using-brotli-with-node.js.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_posts/using-firestore-sdk-in-next.js-ssr.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/post-header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post-header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/post-preview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post-preview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/posts-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/posts-list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/rss-feed.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rss-feed.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/[collection].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/[collection].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/[collection]/[slug].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/[collection]/[slug].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/blog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/blog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/blog-post.ts" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="4" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="1eXpjj4K6E5SWQ3Gzb2ujlLZygx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="advanced.settings" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/assets" />
+      <recent name="$PROJECT_DIR$/public/assets/images/posts" />
+      <recent name="$PROJECT_DIR$/public/assets/images/collections" />
+      <recent name="$PROJECT_DIR$/src/posts" />
+      <recent name="$PROJECT_DIR$/public" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/assets/images/collections" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.build">
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="deploy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="deploy" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="release" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="release" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="sitemap" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="sitemap" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.sitemap" />
+        <item itemvalue="npm.release" />
+        <item itemvalue="npm.dev" />
+        <item itemvalue="npm.deploy" />
+        <item itemvalue="npm.build" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="" />
+      <created>1594477928305</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594477928305</updated>
+      <workItem from="1594477929938" duration="14422000" />
+      <workItem from="1594557700744" duration="1403000" />
+      <workItem from="1610295795280" duration="3560000" />
+      <workItem from="1612114484956" duration="113000" />
+      <workItem from="1618575660192" duration="1706000" />
+      <workItem from="1638467906974" duration="36151000" />
+      <workItem from="1638558521493" duration="3222000" />
+      <workItem from="1639228153184" duration="2000" />
+      <workItem from="1639572055654" duration="599000" />
+      <workItem from="1639590625590" duration="2604000" />
+      <workItem from="1639604611523" duration="1295000" />
+      <workItem from="1639760137973" duration="702000" />
+      <workItem from="1639779071381" duration="626000" />
+      <workItem from="1639779855304" duration="4000" />
+      <workItem from="1639834632260" duration="33000" />
+      <workItem from="1640002115311" duration="62000" />
+      <workItem from="1640002204240" duration="67000" />
+      <workItem from="1640002277451" duration="2000" />
+      <workItem from="1640002286252" duration="30000" />
+      <workItem from="1640002335206" duration="9000" />
+      <workItem from="1640002372894" duration="442000" />
+      <workItem from="1640007158313" duration="96000" />
+      <workItem from="1640007278644" duration="72000" />
+      <workItem from="1640007356789" duration="155000" />
+      <workItem from="1640007520211" duration="562000" />
+    </task>
+    <task id="LOCAL-00001" summary="Initial stuff">
+      <created>1594484805500</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1594484805500</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Design Updates">
+      <created>1594487184862</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1594487184862</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Improved responsiveness">
+      <created>1594507144928</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1594507144928</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update deploy workflow">
+      <created>1594512336612</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1594512336612</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix Indent">
+      <created>1594512395426</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1594512395426</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix Indent">
+      <created>1594512551260</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1594512551260</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Design Improvements">
+      <created>1594514625862</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1594514625862</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added work to index page">
+      <created>1594557915048</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1594557915048</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Leaving London post">
+      <created>1610298931772</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1610298931772</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Small index update">
+      <created>1618575970458</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1618575970458</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added conditional rendering post">
+      <created>1638469735385</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1638469735385</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Rewrote conditional rendering article a little">
+      <created>1638474611560</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1638474611560</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Various updates">
+      <created>1638480795985</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1638480795985</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added automatic banner generator">
+      <created>1638539667055</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1638539667055</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Some updates">
+      <created>1638544139977</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1638544139977</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Only show latest 6 articles, also include blog posts on main page">
+      <created>1638544751766</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1638544751766</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Latest articles, changed my image">
+      <created>1639760306595</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1639760306595</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial stuff" />
+    <MESSAGE value="Design Updates" />
+    <MESSAGE value="Improved responsiveness" />
+    <MESSAGE value="Update deploy workflow" />
+    <MESSAGE value="Fix Indent" />
+    <MESSAGE value="Design Improvements" />
+    <MESSAGE value="Added work to index page" />
+    <MESSAGE value="Leaving London post" />
+    <MESSAGE value="Small index update" />
+    <MESSAGE value="Added conditional rendering post" />
+    <MESSAGE value="Rewrote conditional rendering article a little" />
+    <MESSAGE value="Various updates" />
+    <MESSAGE value="Added automatic banner generator" />
+    <MESSAGE value="Some updates" />
+    <MESSAGE value="Only show latest 6 articles, also include blog posts on main page" />
+    <MESSAGE value="Latest articles, changed my image" />
+    <option name="LAST_COMMIT_MESSAGE" value="Latest articles, changed my image" />
+  </component>
+</project>

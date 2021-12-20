@@ -11,7 +11,7 @@ import { getArticlesByCollection, getPostsByCollection } from "../lib/api";
 import { getCollections, getCollectionByName } from "../lib/collections";
 
 import Article from "../types/article";
-import Post from "../types/blog-post";
+import Post from "../types/note";
 
 import CollectionName from "../components/collection-name";
 import PostTitle from "../components/post-title";
