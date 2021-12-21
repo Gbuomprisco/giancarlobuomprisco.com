@@ -1,5 +1,6 @@
 import Head from "next/head";
 import type { MDXRemoteSerializeResult } from "next-mdx-remote";
+
 import { AUTHOR, SITE_NAME, SITE_URL, TWITTER_URL } from "../lib/constants";
 
 import Container from "./container";
@@ -117,9 +118,13 @@ const Post: React.FC<{
                       />
                     </>
                   )}
-                  <script type="application/ld+json">
-                    {JSON.stringify(structuredDataJson)}
-                  </script>
+
+                  <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                      __html: JSON.stringify(structuredDataJson),
+                    }}
+                  ></script>
                 </Head>
 
                 <PostHeader post={post} />

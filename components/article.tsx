@@ -116,7 +116,7 @@ const Article: React.FC<{
                   <meta property="og:image" content={fullImagePath} />
 
                   <script key="ld:json" type="application/ld+json">
-                    {JSON.stringify(JSON.stringify(structuredDataJson))}
+                    {JSON.stringify(structuredDataJson)}
                   </script>
                 </Head>
 

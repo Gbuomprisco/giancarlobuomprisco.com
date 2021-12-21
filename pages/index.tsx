@@ -17,6 +17,14 @@ type Props = {
 };
 
 const Index = ({ articles }: Props) => {
+  const structuredData = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: constants.TITLE,
+    url: constants.SITE_URL,
+    logo: `${constants.SITE_URL}/assets/images/favicon/favicon.png`,
+  });
+
   return (
     <>
       <Layout>
@@ -25,15 +33,11 @@ const Index = ({ articles }: Props) => {
             {constants.TITLE} | {constants.MISSION_STATEMENT}
           </title>
 
-          <script key="ld:json" type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: constants.TITLE,
-              url: constants.SITE_URL,
-              logo: `${constants.SITE_URL}/assets/images/favicon/favicon.png`,
-            })}
-          </script>
+          <script
+            key="ld:json"
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: structuredData }}
+          ></script>
         </Head>
 
         <Container>
