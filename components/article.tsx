@@ -115,9 +115,13 @@ const Article: React.FC<{
 
                   <meta property="og:image" content={fullImagePath} />
 
-                  <script key="ld:json" type="application/ld+json">
-                    {JSON.stringify(structuredDataJson)}
-                  </script>
+                  <script
+                    key="ld:json"
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                      __html: JSON.stringify(structuredDataJson),
+                    }}
+                  ></script>
                 </Head>
 
                 <PostHeader post={post} />

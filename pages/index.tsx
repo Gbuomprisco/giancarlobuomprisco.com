@@ -22,7 +22,6 @@ const Index = ({ articles }: Props) => {
     "@type": "Person",
     name: constants.TITLE,
     url: constants.SITE_URL,
-    logo: `${constants.SITE_URL}/assets/images/favicon/favicon.png`,
   });
 
   return (
