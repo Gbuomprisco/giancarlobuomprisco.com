@@ -58,7 +58,7 @@ const Meta = () => {
 
       <meta
         name="description"
-        content={constants.DESCRIPTION}
+        content={constants.MISSION_STATEMENT}
         key="meta:description"
       />
 
@@ -67,7 +67,7 @@ const Meta = () => {
       <meta
         property="og:description"
         key="og:description"
-        content={constants.DESCRIPTION}
+        content={constants.MISSION_STATEMENT}
       />
 
       <meta property="og:site_name" content={constants.SITE_NAME} />
@@ -81,7 +81,7 @@ const Meta = () => {
       <meta
         key="twitter:description"
         property="twitter:description"
-        content={constants.DESCRIPTION}
+        content={constants.MISSION_STATEMENT}
       />
 
       <meta property="twitter:creator" content={constants.TWITTER_HANDLE} />
