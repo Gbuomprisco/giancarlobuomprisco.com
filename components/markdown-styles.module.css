@@ -11,9 +11,11 @@
 }
 
 .markdown p {
-  @apply leading-8 text-lg font-normal md:font-thin mt-2 mb-6 font-serif;
+  @apply leading-9 text-xl font-normal mt-4 mb-8 font-serif text-gray-900;
+}
 
-  color: var(--color);
+.markdown li {
+  @apply leading-9 text-xl font-normal font-serif text-gray-900 my-2;
 }
 
 .markdown b,
@@ -38,17 +40,11 @@
 .markdown blockquote {
   border-left: 8px solid var(--accent-light);
 
-  @apply my-12 p-8 md:font-light shadow-xl text-2xl text-gray-700 !font-sans font-normal;
+  @apply my-12 p-8 shadow-xl text-2xl text-gray-700 font-sans font-normal;
 }
 
 .markdown blockquote p {
   @apply text-gray-700 !font-sans font-normal text-2xl;
-}
-
-.markdown li {
-  @apply leading-8 text-lg font-normal md:font-thin my-2 font-serif;
-
-  color: var(--color);
 }
 
 .markdown li > p {
@@ -64,7 +60,7 @@
 }
 
 .markdown pre[class*="language-"] {
-  font-size: 0.9rem;
+  @apply rounded-lg shadow-xl text-sm px-4 py-6;
 }
 
 .markdown p > code,

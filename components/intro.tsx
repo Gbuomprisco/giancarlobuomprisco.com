@@ -1,10 +1,9 @@
 import Image from "next/image";
-
 import { PROFILE_IMAGE, AUTHOR } from "../lib/constants";
 
 const Intro = () => {
   return (
-    <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12 w-full lg:w-9/12">
+    <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12 w-full lg:w-8/12">
       <div className="flex flex-col space-y-4 justify-center">
         <div className="flex-col space-y-4">
           <h2 className="flex space-x-4 items-center text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter leading-tight md:pr-8">
@@ -21,20 +20,12 @@ const Intro = () => {
         </div>
 
         <div className="flex-col space-y-6">
-          <h2 className="text-2xl font-medium">
-            I&apos;m a programmer, startup founder, teacher, sometimes
-            weightlifter
-          </h2>
-
-          <p className="text-base">
-            On this site I write about programming, the projects I&apos;m
-            working on, and my life in general
+          <p className="text-2xl font-medium">
+            Coder and Founder. I ship products, and help businesses do the same.
           </p>
 
           <p className="text-base">
-            Lately, I&apos;ve been getting more and more interested in
-            Serverless for Front-end Developers, and helping beginners to write
-            full-stack applications from scratch
+            On this website I showcase my projects, my learnings, and my life
           </p>
 
           <p>
@@ -54,10 +45,6 @@ const Intro = () => {
             >
               Formtoro
             </a>
-          </p>
-
-          <p>
-            Below you can find my latest articles and blog posts. Happy reading!
           </p>
         </div>
       </div>

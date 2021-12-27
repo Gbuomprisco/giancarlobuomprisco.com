@@ -1,0 +1,234 @@
+---
+date: '2021-12-26'
+title: Clean API with Next.js Middleware Pipes
+excerpt: ""
+collection: "next.mdx"
+live: false
+tags:
+- next
+---
+
+Next.js API routes are fun, simple and easy. However, they're also a
+little bare-bones.
+
+Next API routes are great when you're building on top of it, but it
+requires developers to write a lot of additional code to build
+functionalities that many take for granted, such as:
+
+- protecting against unsupported methods
+- gating access to signed-in users
+- any prior set-up that needs to be done before executing the business-logic
+of such route
+
+Being used to working with NestJS, a batteries-included back-end framework,
+I took a lot for granted. But Next.js does not come with opinions in this
+regard, unlike stuff built on top of it such as Blitz.js. Therefore, we'll
+have to stitch something up.
+
+Just as an example, let's assume we're writing an API handler using
+Firebase that:
+
+- initializes an admin app
+- checks that the correct method is being called
+- checks a user exists
+- responds to the user's request
+
+Normally, you could write something similar:
+
+```tsx
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  // we only like POST here
+  if (req.method !== 'POST') {
+    return res.status(405).end();
+  }
+
+  // we can initialize the admin now
+  await initializeAdminApp(req);
+
+  const user = await getSignedInUser(req.headers);
+
+  // user not logged in, no good here
+  if (!user) {
+    return res.status(401).end();
+  }
+
+  const data = await makeDatabaseRequest();
+
+  return res.send(data);
+}
+```
+
+Now, nothing wrong with what we've written above!
+
+Nevertheless, it's just a tad repetitive if we think that our application can
+have hundreds or more API endpoints. And with repetition there will
+certainly be avoidable mistakes.
+
+In case you hadn't noticed: the function above does not handle any error,
+which can happen in at least 3 situations. This would considerably increase
+the boilerplate code needed, making the function above look way more complex.
+
+A couple of points about the above:
+- we don't need to check we're calling the correct method imperatively
+- we don't need to manually log the user in imperatively too
+
+The average API route will likely have many more "set-up" steps such as the
+above: we need a better solution.
+
+### Enter Next JS pipes
+
+A middleware is a function that receives two parameters: `NextApiRequest`
+and `NextApiResponse`, and returns a function to which we will pass these
+parameters.
+
+A middleware's job can vary:
+- setting up the libraries (such as Firebase Admin)
+- connecting to the DB
+- hitting a cached result
+- authentication
+- validation of the body, query, method, etc.
+- a lot more use-case you may be aware of
+
+For example, a perfectly valid middleware could be the following function:
+
+```tsx
+export default async function authMiddleware(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  return async function (handler: NextApiHandler) {
+    try {
+      await initializeFirebaseAdminApp();
+
+      return handler(req, res);
+    } catch (e) {
+      return internalServerErrorException(res);
+    }
+  };
+}
+```
+
+With the middleware above, we could wrap a Next.js API route so that the
+code in the middleware will be executed before running the body of the API
+function.
+
+```tsx
+export default authMiddleware(
+    async function myRoute(
+      req: NextApiRequest,
+      res: NextApiResponse
+    ) {
+      // admin is now initialized!
+      // body of the function goes here
+    }
+);
+```
+
+Writing middlewares like the above does feel better as we can now
+encapsulate repetitive logic within smaller functions.
+
+The only downside to this is that when we have multiple middlewares, we will
+need to wrap them one within the other. It can get long.
+
+One other way is to apply a simple pipe function so that the middlewares get
+executed in the same order we define them: the very last function, which
+should be the API route, will be the one sending data back to the caller.
+
+The only exception to this is if we send the headers before that: for
+example, if we catch an error and want to stop the chain of middlewares, we
+should not execute them.
+
+### Middleware Piping
+
+Alright, let's create a function called `withMiddleware`. This function
+accepts an undefined number of middlewares, plus the API route which will
+send the data back to the caller.
+
+The API route logic should always be placed as the last function.
+
+It's going to look like something similar to the below:
+
+```tsx
+export default withMiddleware(
+  withAdmin,
+  withMethodsGuard(['POST']),
+  withAuthedUser,
+  myApiHandler,
+);
+
+async function myApiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const data = await getDataFromDb();
+
+  res.send(data);
+}
+```
+
+Is it just me or this looks a lot better? Hope you agree! :D
+
+Let's see how we can write our chaining function `withMiddleware`:
+
+```tsx
+type Handler = (req: NextApiRequest, res: NextApiResponse) => unknown;
+
+export function withMiddleware(
+  ...functions: Handler[]
+) {
+  return async function
+    (req: NextApiRequest, res: NextApiResponse) {
+      for (const func of functions) {
+        if (typeof func === 'function') {
+          // return early when the request has
+          // been ended by a previous middleware
+          if (res.headersSent) {
+            return;
+          }
+
+          await func(req, res);
+        }
+      }
+    };
+}
+```
+
+Nothing fancy here, we iterate our function and execute them one by one
+using the original `req` and `res` parameters.
+
+If the property `headersSent` is `true`, it means that a previous middleware
+has already called `res.send()` or `res.end()`. Therefore, we skip as it
+will throw an error.
+
+The good thing of middleware's is that we can combine them as many times as
+we like. For example, we know hat to use the authentication library, we also
+need to connect to the admin.
+
+```tsx
+export const withAuthedUser = withMiddleware(
+  withAdmin,
+  withUser,
+);
+
+export const withAdminGuard = withMiddleware(
+  withAuthedUser,
+  withRoleGuard(['admin']),
+);
+```
+
+This code may not be absolutely perfect for production-use, but it shows how
+to increase reusability and readability of our API routes with a very simple
+piping function.
+
+This is not to be confused with the concept of Next.js Middleware introduced
+in Next.js 12, which while they achieve the same thing, thy are limited by
+the fact that they're not running on Node (which is also what makes them so
+fast).
+
+In our example, we could not use it because Firebase needs to run in
+a Node environment.
+
+Do you like this pattern? Do let me know if you have any comment or suggestions!

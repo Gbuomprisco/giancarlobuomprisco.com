@@ -29,7 +29,7 @@ const Index = ({ articles }: Props) => {
       <Layout>
         <Head>
           <title key="title">
-            {constants.TITLE} | {constants.MISSION_STATEMENT}
+            {constants.MISSION_STATEMENT}
           </title>
 
           <script
@@ -42,12 +42,16 @@ const Index = ({ articles }: Props) => {
         <Container>
           <MainHeader />
 
-          <div className={"my-12 md:my-24"}>
+          <div className={"my-12 md:my-18"}>
             <Intro />
           </div>
 
           <div className={""}>
             <div>
+              <h2 className={'text-xl font-bold my-1'}>
+                Latest Writings
+              </h2>
+
               <div className="mt-4">
                 <ArticlesList posts={articles} />
               </div>

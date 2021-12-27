@@ -5,25 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/_posts/automatic-dark-mode-any-website.mdx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/conditional-rendering-component-for-react.mdx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/deleting-collections-in-firebase.mdx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/streamline-your-code-with-typescript-assertions.mdx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/testing-rxjs-timers-with-jest.mdx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/using-brotli-with-node.js.mdx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/using-firestore-sdk-in-next.js-ssr.mdx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/post-header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post-header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/post-preview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post-preview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/posts-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/posts-list.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/rss-feed.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rss-feed.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/[collection].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/[collection].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/[collection]/[slug].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/[collection]/[slug].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/blog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/blog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_articles/middleware-pipes-nextjs.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_collections/react.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_collections/react.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/codesandbox-snippet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/codesandbox-snippet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/hero.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/intro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/intro.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/markdown-styles.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/components/markdown-styles.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/blog-post.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +69,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
     <property name="settings.editor.selected.configurable" value="advanced.settings" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -92,17 +84,7 @@
       <recent name="$PROJECT_DIR$/public/assets/images/collections" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.build">
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="npm.deploy">
     <configuration name="deploy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -143,13 +125,23 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.dev" />
+        <item itemvalue="npm.start" />
         <item itemvalue="npm.sitemap" />
         <item itemvalue="npm.release" />
-        <item itemvalue="npm.dev" />
         <item itemvalue="npm.deploy" />
-        <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
   </component>
@@ -189,6 +181,8 @@
       <workItem from="1640007278644" duration="72000" />
       <workItem from="1640007356789" duration="155000" />
       <workItem from="1640007520211" duration="562000" />
+      <workItem from="1640171442168" duration="2438000" />
+      <workItem from="1640548051648" duration="6334000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>

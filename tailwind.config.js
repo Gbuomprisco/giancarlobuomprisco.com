@@ -6,8 +6,8 @@ module.exports = {
   },
   theme: {
     fontFamily: {
-      serif: ["Merriweather"],
-      sans: ["-apple-system", "BlinkMacSystemFont", "Inter"],
+      serif: ["Bitter", 'serif'],
+      sans: ["-apple-system", "BlinkMacSystemFont", "Inter", "Helvetica", "Arial", "sans-serif"],
     },
     extend: {
       screens: {

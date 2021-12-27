@@ -17,7 +17,7 @@ const CodeSandboxSnippet = ({
         <span
           style={{
             backgroundColor: "var(--accent)",
-            color: "var(--accent-contrast",
+            color: "var(--accent-contrast)",
           }}
           className={
             "font-bold text-sm font-sans p-2 pb-4 rounded-tr-md rounded-tl-md"
