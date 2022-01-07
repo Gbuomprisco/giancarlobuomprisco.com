@@ -164,6 +164,8 @@ function getPostItemBySlug(slug: string) {
       "content",
       "tags",
       "excerpt",
+      "coverImage",
+      "ogImage",
     ]) as BlogPost,
     type: Types.BlogPost,
   };

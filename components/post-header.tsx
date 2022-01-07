@@ -24,25 +24,28 @@ const PostHeader = ({ post }: Props) => {
 
       <PostTitle>{title}</PostTitle>
 
-      <div className="mb-8 flex space-x-3 items-center justify-center">
-        <CollectionTag logoSize="22px" collection={collection} />
-        <PostTags tags={post.tags} collection={collection.name} />
-      </div>
-
       <div className="max-w-2xl mx-auto">
-        <div className="flex flex-row space-x-2 items-center justify-center">
-          {live ? null : <DraftBadge>Draft</DraftBadge>}
+        <div className="flex flex-col md:space-x-3 space-y-8 md:space-y-0 md:flex-row space-x-0 items-center justify-center">
+          <div className="flex flex-row space-x-3 items-center justify-center">
+            {live ? null : <DraftBadge>Draft</DraftBadge>}
 
-          <Author />
+            <Author />
 
-          <span className="text-gray-600">·</span>
+            <span className="text-gray-300">·</span>
 
-          <div className="text-sm text-center text-gray-600">
-            <DateFormatter dateString={date} />
+            <div className="text-sm text-center text-gray-500">
+              <DateFormatter dateString={date} />
+            </div>
+
+            <span className="text-gray-300">·</span>
+            <span className="text-gray-500 text-sm">{readingTime}</span>
+            <span className="text-gray-300 hidden md:flex">·</span>
           </div>
 
-          <span className="text-gray-600">·</span>
-          <span className="text-gray-600 text-sm">{readingTime}</span>
+          <div className="flex space-x-3 items-center justify-center">
+            <CollectionTag logoSize="22px" collection={collection} />
+            <PostTags tags={post.tags} collection={collection.name} />
+          </div>
         </div>
       </div>
     </>

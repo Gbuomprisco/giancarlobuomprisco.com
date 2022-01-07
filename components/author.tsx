@@ -14,20 +14,11 @@ const Author = () => {
         <Image
           className="hover:shadow-xl"
           layout="fixed"
-          width="50px"
-          height="50px"
+          width="40px"
+          height="40px"
           src={PROFILE_IMAGE}
           alt={AUTHOR}
         />
-      </a>
-
-      <a
-        className="text-sm text-gray-600"
-        target="_blank"
-        rel="noreferrer noopened"
-        href={TWITTER_URL}
-      >
-        {TWITTER_HANDLE}
       </a>
     </div>
   );
