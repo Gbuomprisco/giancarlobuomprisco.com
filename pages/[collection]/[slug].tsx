@@ -74,7 +74,7 @@ export async function getStaticProps({ params }: Params) {
   const { slug, collection } = params;
   const maxReadMorePosts = 6;
 
-  const { post, type } = getPostItemBySlug(slug);
+  const { post } = getPostItemBySlug(slug);
 
   const moreArticles = getArticlesByCollection(collection)
     .filter((item) => item.slug !== slug)
@@ -90,7 +90,9 @@ export async function getStaticProps({ params }: Params) {
   const series = seriesName ? getPostsBySeries(seriesName) : [];
   const content = await markdownToHtml(post.content || "");
 
-  if (!("coverImage" in post)) {
+  const image = post.coverImage || post.ogImage?.url;
+
+  if (!image) {
     await generateCoverImage(post);
 
     post.ogImage = {

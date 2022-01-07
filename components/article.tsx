@@ -78,11 +78,13 @@ const Article: React.FC<{
                     property="twitter:title"
                     content={title}
                   />
+
                   <meta
                     key="twitter:description"
                     property="twitter:description"
                     content={post.excerpt}
                   />
+
                   <meta
                     key="twitter:image"
                     property="twitter:image"
@@ -98,7 +100,7 @@ const Article: React.FC<{
                       />
 
                       <meta
-                        name="description"
+                        property="description"
                         content={post.excerpt}
                         key="meta:description"
                       />
