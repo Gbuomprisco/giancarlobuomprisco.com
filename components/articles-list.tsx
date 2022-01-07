@@ -9,9 +9,17 @@ type Props = {
 const ArticlesList = ({ posts }: Props) => {
   return (
     <GridList>
-      {posts.map((post) => (
-        <ArticlePreview key={post.slug} post={post} />
-      ))}
+      {posts.map((post, index) => {
+        const preloadImage = index < 6;
+
+        return (
+          <ArticlePreview
+            preloadImage={preloadImage}
+            key={post.slug}
+            post={post}
+          />
+        );
+      })}
     </GridList>
   );
 };

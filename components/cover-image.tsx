@@ -10,9 +10,17 @@ type Props = {
   width?: string;
   height?: string;
   slug?: string;
+  preloadImage?: boolean;
 };
 
-const CoverImage = ({ title, src, slug, href, className }: Props) => {
+const CoverImage = ({
+  title,
+  src,
+  slug,
+  href,
+  className,
+  preloadImage,
+}: Props) => {
   const image = (
     <Image
       unoptimized={process.env.NODE_ENV !== "production"}
@@ -24,6 +32,7 @@ const CoverImage = ({ title, src, slug, href, className }: Props) => {
       })}
       src={src}
       alt={`Cover Image for ${title}`}
+      priority={preloadImage}
     />
   );
 

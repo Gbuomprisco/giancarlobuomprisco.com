@@ -8,9 +8,10 @@ import BlogPostImageSvg from "./blog-post-image-svg";
 
 type Props = {
   post: Article;
+  preloadImage?: boolean;
 };
 
-const ArticlePreview = ({ post }: Props) => {
+const ArticlePreview = ({ post, preloadImage }: Props) => {
   const {
     series,
     title,
@@ -35,6 +36,7 @@ const ArticlePreview = ({ post }: Props) => {
             title={postTitle}
             src={coverImage}
             href={href}
+            preloadImage={preloadImage}
           />
         ) : (
           <Link href="/[collection]/[slug]" as={href} passHref>
