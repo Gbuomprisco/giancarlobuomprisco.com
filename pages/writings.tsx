@@ -1,6 +1,5 @@
 import Head from "next/head";
 
-import Note from "../types/note";
 import { TITLE } from "../lib/constants";
 import Container from "../components/container";
 import Layout from "../components/layout";
@@ -9,47 +8,46 @@ import Hero from "../components/hero";
 import SubHeading from "../components/subheading";
 
 import { getAllNotes } from "../lib/api";
-import PostsList from "../components/posts-list";
+import ArticlesList from "../components/articles-list";
+import Article from "../types/article";
 
 type Props = {
-  notes: Note[];
+  posts: Article[];
 };
 
-const Notes = ({ notes }: Props) => {
+const Writings = ({ posts }: Props) => {
   return (
     <>
       <Layout>
         <Head>
-          <title key="title">{TITLE} - Notes</title>
+          <title key="title">{TITLE} - Writings</title>
 
           <meta
             key="meta:description"
             name="description"
-            content={
-              "Short-form posts, notes and tips about Angular, React, Next, Firebase, NestJS, StencilJS"
-            }
+            content={"Writings, Retrospectives, and Thoughts"}
           />
         </Head>
 
         <Container>
           <MainHeader />
 
-          <Hero>Notes</Hero>
+          <Hero>Writings</Hero>
 
-          <SubHeading>Short-form posts, notes and tips</SubHeading>
+          <SubHeading>Retrospectives, Thoughts, and Life</SubHeading>
 
-          {notes.length ? (
+          {posts.length ? (
             <>
               <div className="space-y-12 mt-8 md:mt-16">
                 <div className="w-full">
                   <div className="mx-auto flex flex-col space-y-8">
-                    <PostsList posts={notes} />
+                    <ArticlesList posts={posts} />
                   </div>
                 </div>
               </div>
             </>
           ) : (
-            <span>No note found</span>
+            <span>No post found</span>
           )}
         </Container>
       </Layout>
@@ -57,14 +55,14 @@ const Notes = ({ notes }: Props) => {
   );
 };
 
-export default Notes;
+export default Writings;
 
 export const getStaticProps = async () => {
-  const notes = getAllNotes();
+  const posts = getAllNotes();
 
   return {
     props: {
-      notes,
+      posts,
     },
   };
 };

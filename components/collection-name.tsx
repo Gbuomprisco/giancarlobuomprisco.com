@@ -27,7 +27,7 @@ function CollectionName({
       >
         <CollectionImage collection={collection} size={size} />
 
-        <span className="hover:underline">{collection.name}</span>
+        <span>{collection.name}</span>
       </div>
     </Link>
   );

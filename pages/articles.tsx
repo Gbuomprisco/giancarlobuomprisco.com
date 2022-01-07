@@ -36,7 +36,9 @@ const Articles = ({ posts }: Props) => {
 
           <Hero>Articles</Hero>
 
-          <SubHeading>Long-form Articles and Guides</SubHeading>
+          <SubHeading>
+            Long-form Articles and Guides, mostly on software
+          </SubHeading>
 
           <div className="flex-col space-y-12 mt-8 md:mt-16">
             <ArticlesList posts={posts} />

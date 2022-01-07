@@ -35,6 +35,7 @@ const DEFAULT_NOTES_FIELDS: NoteFields = [
   "collection",
   "live",
   "excerpt",
+  "coverImage",
 ];
 
 const DEFAULT_HUB_FIELDS: HubsFields = [
@@ -47,7 +48,7 @@ const DEFAULT_HUB_FIELDS: HubsFields = [
 ];
 
 const ARTICLES_DIRECTORY_NAME = "_articles";
-const NOTES_DIRECTORY_NAME = "_notes";
+const NOTES_DIRECTORY_NAME = "_writings";
 const HUBS_DIRECTORY_NAME = "_hubs";
 
 const articlesDirectory = join(process.cwd(), ARTICLES_DIRECTORY_NAME);

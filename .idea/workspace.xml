@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/_articles/middleware-pipes-nextjs.mdx" afterDir="false" />
+    <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="Fix build">
+      <change afterPath="$PROJECT_DIR$/_notes/christmas-in-rome.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_collections/react.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_collections/react.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/codesandbox-snippet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/codesandbox-snippet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/hero.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/intro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/intro.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/markdown-styles.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/components/markdown-styles.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_notes/note.mdx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,17 +76,7 @@
       <recent name="$PROJECT_DIR$/public/assets/images/collections" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.deploy">
-    <configuration name="deploy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="deploy" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="npm.dev">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -135,13 +117,23 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="typecheck" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="typecheck" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.typecheck" />
         <item itemvalue="npm.start" />
         <item itemvalue="npm.sitemap" />
         <item itemvalue="npm.release" />
-        <item itemvalue="npm.deploy" />
       </list>
     </recent_temporary>
   </component>
@@ -182,7 +174,10 @@
       <workItem from="1640007356789" duration="155000" />
       <workItem from="1640007520211" duration="562000" />
       <workItem from="1640171442168" duration="2438000" />
-      <workItem from="1640548051648" duration="6334000" />
+      <workItem from="1640548051648" duration="8032000" />
+      <workItem from="1640897645016" duration="1995000" />
+      <workItem from="1641392724185" duration="512000" />
+      <workItem from="1641466445167" duration="589000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -303,7 +298,28 @@
       <option name="project" value="LOCAL" />
       <updated>1639760306595</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Added article about Next.js middlwares">
+      <created>1640604831126</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1640604831126</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added excerpt">
+      <created>1640605162818</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1640605162818</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Fix build">
+      <created>1640606471877</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1640606471877</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,6 +342,9 @@
     <MESSAGE value="Some updates" />
     <MESSAGE value="Only show latest 6 articles, also include blog posts on main page" />
     <MESSAGE value="Latest articles, changed my image" />
-    <option name="LAST_COMMIT_MESSAGE" value="Latest articles, changed my image" />
+    <MESSAGE value="Added article about Next.js middlwares" />
+    <MESSAGE value="Added excerpt" />
+    <MESSAGE value="Fix build" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix build" />
   </component>
 </project>

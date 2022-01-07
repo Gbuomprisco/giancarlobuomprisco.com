@@ -17,6 +17,10 @@ const Navigation = () => {
       label: "Articles",
       path: "/articles",
     },
+    Writings: {
+      label: "Writings",
+      path: "/writings",
+    },
     About: {
       label: "About",
       path: "/about",
@@ -110,6 +114,7 @@ const Navigation = () => {
         </li>
 
         <Item link={links.Articles} />
+        <Item link={links.Writings} />
         <Item link={links.Consulting} />
         <Item link={links.About} />
         <Item link={links.Contact} />

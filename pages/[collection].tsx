@@ -16,7 +16,7 @@ import Post from "../types/note";
 import CollectionName from "../components/collection-name";
 import PostTitle from "../components/post-title";
 import Collection from "../types/collection";
-import PostsList from "../components/posts-list";
+import Hero from "../components/hero";
 
 type Props = {
   articles: Article[];
@@ -38,23 +38,21 @@ const CollectionPosts = ({ posts, articles, collection, preview }: Props) => {
         <MainHeader />
 
         <div className="flex justify-center">
-          <PostTitle>
+          <Hero>
             <CollectionName logoSize="90px" collection={collection} />
-          </PostTitle>
+          </Hero>
         </div>
 
         <div className="mt-8 md:mt-12 flex flex-col">
           {articles.length ? (
             <div className="flex flex-col space-y-4">
-              <h2 className="text-xl font-bold">Latest Articles</h2>
               <ArticlesList posts={articles} />
             </div>
           ) : null}
 
           {posts.length ? (
             <div className="flex flex-col space-y-4">
-              <h2 className="text-xl font-bold">Latest Posts</h2>
-              <PostsList posts={posts} />
+              <ArticlesList posts={posts} />
             </div>
           ) : null}
         </div>
