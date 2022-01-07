@@ -4,7 +4,6 @@ import ErrorPage from "next/error";
 import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 import Article from "../../components/article";
-import Post from "../../components/post";
 
 import {
   getArticleBySlug,
@@ -44,37 +43,18 @@ type Props = {
   content: MDXRemoteSerializeResult;
 };
 
-const PostPage = ({
-  post,
-  type,
-  morePosts,
-  moreArticles,
-  series,
-  content,
-}: Props) => {
+const PostPage = ({ post, moreArticles, series, content }: Props) => {
   const router = useRouter();
 
   if (!router.isFallback && (!post?.slug || !post.collection)) {
     return <ErrorPage statusCode={404} />;
   }
 
-  if (type === Types.Article) {
-    return (
-      <Article
-        post={post as ArticleType}
-        morePosts={moreArticles}
-        series={series}
-        content={content}
-        isFallback={router.isFallback}
-      />
-    );
-  }
-
   return (
-    <Post
-      post={post as PostType}
-      morePosts={morePosts}
-      moreArticles={moreArticles}
+    <Article
+      post={post as ArticleType}
+      morePosts={moreArticles}
+      series={series}
       content={content}
       isFallback={router.isFallback}
     />
@@ -125,7 +105,6 @@ export async function getStaticProps({ params }: Params) {
       series,
       morePosts,
       moreArticles,
-      type,
     },
   };
 }
