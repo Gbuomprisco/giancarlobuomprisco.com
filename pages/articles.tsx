@@ -36,7 +36,7 @@ const Articles = ({ posts }: Props) => {
 
           <Hero>Articles</Hero>
 
-          <SubHeading>
+          <SubHeading className={'text-center'}>
             Long-form Articles and Guides, mostly on software
           </SubHeading>
 

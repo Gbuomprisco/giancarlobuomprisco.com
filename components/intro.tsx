@@ -1,31 +1,20 @@
-import Image from "next/image";
-import { PROFILE_IMAGE, AUTHOR } from "../lib/constants";
+import SubHeading from "./subheading";
 
 const Intro = () => {
   return (
-    <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12 w-full lg:w-8/12">
-      <div className="flex flex-col space-y-4 justify-center">
-        <div className="flex-col space-y-4">
-          <h2 className="flex space-x-4 items-center text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter leading-tight md:pr-8">
-            <Image
-              layout="intrinsic"
-              width={60}
-              height={60}
-              src={PROFILE_IMAGE}
-              alt={AUTHOR}
-            />
+    <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12">
+      <div className="flex flex-col space-y-4">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-loose">
+          <span>Ciao! This is Giancarlo 👋</span>
+        </h2>
 
-            <span>Ciao! This is Giancarlo 👋</span>
-          </h2>
-        </div>
+        <SubHeading>
+          Coder and Founder. I ship products, and help others do the same.
+        </SubHeading>
 
-        <div className="flex-col space-y-6">
-          <p className="text-2xl font-medium">
-            Coder and Founder. I ship products, and help businesses do the same.
-          </p>
-
+        <div className="flex-col space-y-2">
           <p className="text-base">
-            On this website I showcase my projects, my learnings, and my life
+            On this website I showcase my projects, my learnings, and my life.
           </p>
 
           <p>
@@ -44,7 +33,7 @@ const Intro = () => {
               href="https://formtoro.com"
             >
               Formtoro
-            </a>
+            </a>.
           </p>
         </div>
       </div>

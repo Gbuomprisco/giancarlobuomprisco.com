@@ -34,7 +34,7 @@ const Writings = ({ posts }: Props) => {
 
           <Hero>Writings</Hero>
 
-          <SubHeading>Retrospectives, Thoughts, and Life</SubHeading>
+          <SubHeading className={'text-center'}>Retrospectives, Thoughts, and Life</SubHeading>
 
           {posts.length ? (
             <>

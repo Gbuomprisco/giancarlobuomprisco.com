@@ -22,7 +22,7 @@ const About = () => {
             content={
               "Specialized consulting about Angular, React, Next, Firebase, NestJS, StencilJS"
             }
-          ></meta>
+          />
         </Head>
 
         <Container>
@@ -32,13 +32,17 @@ const About = () => {
             <Hero>Consulting</Hero>
 
             <div className="mt-4">
-              <SubHeading>
+              <SubHeading className={'text-center'}>
                 <span className=" flex flex-row space-x-4 justify-center items-center">
                   <span
                     style={{ minWidth: "26px", minHeight: "26px" }}
-                    className="block rounded-full bg-green-300"
-                  ></span>
-                  <span>I am currently available for consulting services</span>
+                    className="block rounded-full bg-yellow-300"
+                  />
+
+                  <span>
+                    I am <span className="text-yellow-400">partially</span>{" "}
+                    available for consulting services
+                  </span>
                 </span>
               </SubHeading>
             </div>

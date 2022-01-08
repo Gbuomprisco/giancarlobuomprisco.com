@@ -45,7 +45,7 @@ const Contact = () => {
 
           <Hero>Contact Me</Hero>
 
-          <SubHeading>
+          <SubHeading className={'text-center'}>
             Want a consultation or just a chat? Get in touch!
           </SubHeading>
 

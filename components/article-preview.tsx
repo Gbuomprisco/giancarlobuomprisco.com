@@ -77,7 +77,13 @@ const ArticlePreview = ({ post, preloadImage }: Props) => {
         </div>
       </div>
 
-      <p className="leading-relaxed mb-4 px-4 text-sm">{excerpt}</p>
+      <p className="leading-relaxed mb-4 px-4 text-sm hover:underline">
+        <Link href="/[collection]/[slug]" as={href} passHref>
+          <a>
+            {excerpt}
+          </a>
+        </Link>
+      </p>
     </div>
   );
 };

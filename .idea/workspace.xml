@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="Fix build">
-      <change afterPath="$PROJECT_DIR$/_notes/christmas-in-rome.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/projects.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_notes/note.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/article-preview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/article-preview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/intro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/intro.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/subheading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/subheading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/about.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/about.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/articles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/articles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/consulting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/consulting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/contact.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/contact.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/writings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/writings.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -178,6 +187,7 @@
       <workItem from="1640897645016" duration="1995000" />
       <workItem from="1641392724185" duration="512000" />
       <workItem from="1641466445167" duration="589000" />
+      <workItem from="1641639538118" duration="1433000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>

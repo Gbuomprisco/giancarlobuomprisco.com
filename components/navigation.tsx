@@ -26,7 +26,7 @@ const Navigation = () => {
       path: "/about",
     },
     Contact: {
-      label: "Contact me",
+      label: "Get in touch",
       path: "/contact",
     },
     Consulting: {

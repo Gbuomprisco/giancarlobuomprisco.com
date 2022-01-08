@@ -24,7 +24,8 @@ const About = () => {
           <MainHeader />
 
           <Hero>About Me</Hero>
-          <SubHeading>The past decade of my life in a web-page</SubHeading>
+
+          <SubHeading className={'text-center'}>The past decade of my life in a web-page</SubHeading>
 
           <div className="max-w-2xl mx-auto leading-loose text-lg mt-12">
             <div className="flex-col space-y-8 pb-12">

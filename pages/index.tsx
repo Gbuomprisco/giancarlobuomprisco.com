@@ -9,7 +9,6 @@ import MainHeader from "../components/main-header";
 import * as constants from "../lib/constants";
 import { getAllArticles, getAllNotes } from "../lib/api";
 import Post from "../types/article";
-import Note from "../types/note";
 
 type Props = {
   notes: Post[];
@@ -36,20 +35,18 @@ const Index = ({ articles }: Props) => {
             key="ld:json"
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: structuredData }}
-          ></script>
+          />
         </Head>
 
         <Container>
           <MainHeader />
 
-          <div className={"my-12 md:my-18"}>
-            <Intro />
-          </div>
+          <Intro />
 
-          <div className={""}>
+          <div>
             <div>
               <h2 className={'text-xl font-bold my-1'}>
-                Latest Writings
+                Latest Articles
               </h2>
 
               <div className="mt-4">

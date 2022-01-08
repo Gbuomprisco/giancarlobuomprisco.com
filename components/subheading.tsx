@@ -1,6 +1,8 @@
-const SubHeading: React.FC = ({ children }) => {
+const SubHeading: React.FC<{
+  className?: string
+}> = ({ children, className }) => {
   return (
-    <h2 className="text-xl md:text-2xl text-gray-500 text-center">
+    <h2 className={`text-xl md:text-2xl text-gray-500 ${className}`}>
       {children}
     </h2>
   );
