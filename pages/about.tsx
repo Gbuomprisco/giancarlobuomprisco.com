@@ -32,7 +32,7 @@ const About = () => {
               <div>
                 <Heading>TDLR;</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
+                <p className="flex-col space-y-6">
                   <p>
                     My name is Giancarlo, and work as a Software Engineer,
                     specialized in writing client-side apps with Typescript,
@@ -55,7 +55,7 @@ const About = () => {
               <div>
                 <Heading>2021</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
+                <p className="flex-col space-y-6">
                   <p>
                     After finalizing my project at Tradeweb at the end of the
                     year, I decided to take a break from full-time consulting.
@@ -86,7 +86,7 @@ const About = () => {
               <div>
                 <Heading>2020</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
+                <p className="flex-col space-y-6">
                   <p>
                     At the beginning of the year, I left Barclays Bank due to a
                     change in regulations that made working there less appealing
@@ -118,7 +118,7 @@ const About = () => {
               <div>
                 <Heading>2019</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
+                <p className="flex-col space-y-6">
                   <p>
                     At the beginning of the year, I joined <b>OneTrust</b>, a
                     unicorn in the Privacy space, and likely one of the highest
@@ -160,7 +160,7 @@ const About = () => {
               <div>
                 <Heading>2017-2018</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
+                <p className="flex-col space-y-6">
                   <p>
                     In 2017 I finally joined my first financial institution:{" "}
                     <b>Societe Generale</b>, one of the largest banks in Europe.
@@ -188,7 +188,7 @@ const About = () => {
               <div>
                 <Heading>2015-2016</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
+                <p className="flex-col space-y-6">
                   <p>
                     After I left eFinancialCareers, I went to work for Klood, a
                     social-media planner and analytics company, then turned
@@ -207,7 +207,7 @@ const About = () => {
               <div>
                 <Heading>2013-2014</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
+                <p className="flex-col space-y-6">
                   <p>
                     After my graduation I went to work for King&apos;s College
                     London, in the Digital Humanities Department. Funded by the
@@ -238,13 +238,11 @@ const About = () => {
               <div>
                 <Heading>2010-2013</Heading>
 
-                <p className="font-serif md:font-light flex-col space-y-6">
-                  <p className="font-serif">
-                    I studied Digital Humanties at University of Pisa, a subject
-                    which taught me both Computer Science and literary studies
-                    notions, such as writing, linguistics, and some much less
-                    useful (but still super-interesting) subjects.
-                  </p>
+                <p className="flex-col space-y-6">
+                  I studied Digital Humanties at University of Pisa, a subject
+                  which taught me both Computer Science and literary studies
+                  notions, such as writing, linguistics, and some much less
+                  useful (but still super-interesting) subjects.
                 </p>
               </div>
             </div>

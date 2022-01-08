@@ -1,21 +1,21 @@
 .markdown h2 {
-  @apply font-bold text-3xl md:text-4xl pb-2 mt-10 font-sans;
+  @apply font-bold text-3xl md:text-4xl mt-10 font-sans;
 }
 
 .markdown h3 {
-  @apply font-semibold text-2xl md:text-3xl mt-8 pb-2 font-sans;
+  @apply font-semibold text-2xl md:text-3xl mt-8 font-sans;
 }
 
 .markdown h4 {
-  @apply font-semibold text-xl md:text-2xl mt-4 pb-1 font-sans;
+  @apply font-semibold text-xl md:text-2xl mt-4 font-sans;
 }
 
 .markdown p {
-  @apply text-xl leading-8 font-normal mt-4 mb-8 font-serif text-gray-900;
+  @apply text-xl leading-8 my-6 text-gray-800;
 }
 
 .markdown li {
-  @apply text-xl leading-8 font-normal font-serif text-gray-900 my-2;
+  @apply text-xl leading-8 text-gray-800;
 }
 
 .markdown b,
@@ -25,6 +25,10 @@
 
 .markdown pre {
   @apply my-8 shadow-xl;
+}
+
+.markdown img {
+  @apply rounded-lg;
 }
 
 .markdown img:not([data-shadowless]) {

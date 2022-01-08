@@ -123,12 +123,12 @@ const Article: React.FC<{
                     dangerouslySetInnerHTML={{
                       __html: JSON.stringify(structuredDataJson),
                     }}
-                  ></script>
+                  />
                 </Head>
 
                 <PostHeader post={post} />
 
-                <div className="mb-6 max-w-2xl mx-auto">
+                <div className="mb-10 max-w-2xl mx-auto">
                   <SeriesList posts={series} series={post.series} />
                 </div>
 

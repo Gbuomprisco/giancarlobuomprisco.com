@@ -4,7 +4,7 @@ const Intro = () => {
   return (
     <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12">
       <div className="flex flex-col space-y-4">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-loose">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter">
           <span>Ciao! This is Giancarlo 👋</span>
         </h2>
 
