@@ -61,6 +61,8 @@
   margin: 2rem 0.15rem;
   overflow: auto;
   border-radius: 0.3em;
+
+  @apply font-monospace;
 }
 
 .markdown pre[class*="language-"] {

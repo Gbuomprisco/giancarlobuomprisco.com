@@ -6,6 +6,7 @@ module.exports = {
   },
   theme: {
     fontFamily: {
+      monospace: ['ui-monospace', 'Monaco', 'monospace'],
       serif: ["Bitter", 'serif'],
       sans: ["-apple-system", "BlinkMacSystemFont", "Inter", "Helvetica", "Arial", "sans-serif"],
     },

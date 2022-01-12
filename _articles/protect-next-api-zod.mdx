@@ -1,0 +1,279 @@
+---
+date: '2022-01-12'
+title: Protect your Next.js API with Zod
+excerpt: "Zod is a Typescript-first validation library for parsing
+data-structures and validate they respect your schema. In this blog post, we
+show how to validate a Next.js API's body payload with Zod."
+tags:
+  - next
+  - react
+
+collection: "next.mdx"
+live: true
+---
+
+The first step towards writing security API endpoints with Next.js should be
+making sure that the server receives the expected data structure from the
+clients.
+
+There are various libraries that help us validate the clients' payloads
+reasonably well, such as *Joi* and *class-validator* which I have used
+extensively in the past.
+
+The library that impressed me the most lately has been [Zod](https://github.com/colinhacks/zod), a great
+validation library for working with Typescript written by
+[colinhacks](https://twitter.com/colinhacks).
+
+Let's take a look at how we can use Zod for validating the payloads coming
+from a client, improving the security of your application, and help you
+strong-typing your apps without `as` hacks.
+
+## Getting to Know Zod
+
+### Installing Zod using NPM
+
+You can install Zod using `npm`:
+
+    npm i zod --save
+
+### Basic Usage
+
+Zod allows us to validate any data-type you can think of, such as complex
+objects, promises, or simple values.
+
+Thanks to the `z` object imported from `zod`, we can define the expected
+schemas.
+
+From the Zod readme:
+
+```tsx
+const stringSchema = z.string();
+stringSchema.parse("fish"); // => returns "fish"
+stringSchema.parse(12); // throws Error('Non-string type: number');
+```
+
+If you need to validate more complex objects, then we can use `z.object()`.
+
+This time around, though, you may want to simple return the validation
+status instead of throwing an error. You can do so by calling `safeParse`
+rather than `parse`:
+
+```tsx
+const schema = z.object({
+  displayName: z.string(),
+  email: z.string().email(),
+});
+
+const isValid = z.safeParse(payload); // boolean
+```
+
+This is useful if you want to return a custom error.
+
+## Using Zod with Next.js
+
+We can access the client's request in a Next API using the `request
+parameter, which is the first argument of an API handler.
+
+The `req.body` object which you receive in your API handler is, for good
+reason, typed with `any`. If you access the `body` object without validating
+your object, then **you are blindly trusting the client** to return what you'd
+expect. As you may well know, this is rarely the case.
+
+As you run Next.js in a serverless environment, any uncaught errors may
+cause your API instances to shut down, which **will also increase the amount
+of cold starts**.
+
+This is not ideal nor for you, nor for your application's users.
+
+By using Zod, we can safely access the data received or return the correct
+error back to the client.
+
+### Validating a Next.js API Endpoint
+
+Let's assume our endpoint is expecting to receive the following interface:
+
+```tsx
+interface Body {
+  userId: string;
+
+  newOrganization: {
+    name: string;
+    users: string[];
+  }
+}
+```
+
+The above could easily be represented with the following Zod schema:
+
+```tsx
+const schema = z.object({
+  userId: z.string().min(1),
+  newOrganization: z.object({
+    name: z.string().min(1),
+    users: z.array(
+      z.object({
+        email: z.string().email(),
+      })
+    ).min(1),
+  })
+});
+```
+
+Let's break this down. We expect our payload to receive:
+
+- a string `userId`, which cannot be empty `min(1)`
+- an object `newOrganization`, containing:
+  - a string `name`, which cannot be empty `min(1)`
+  - an array `users`, containing a list of objects:
+    - with a property `email` accepting strings with a valid email format
+
+We will now run a few tests against some payloads to see how it behaves.
+
+### Parsing Objects with the Zod schema
+
+It's very important to notice that `Zod` returns a different payload when we
+call it with `.safeParse`.
+
+- if we validate payloads with `.parse`, `Zod` will either resolve or throw an
+error, which you should make sure to catch in some way
+
+- if we validate payloads with `.safeParse`, `Zod` will return the following
+interface:
+
+  ```tsx
+  {
+    data: T;
+    success: true;
+  } | {
+    success: false;
+  }
+  ```
+
+What does that mean for you?
+
+If you plan on catching errors and have a good mechanism in place (for
+example, using a [middleware](/next/handling-api-errors-in-nextjs)), then
+you can use `.parse`:
+
+```tsx
+export default function apiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  try {
+    const data = schema.parse(req.body);
+
+    // we can safely use data with the shape provided
+    console.log(data.organizationId);
+  } catch(e) {
+    return res.status(400).send({
+      message: `Yo, bad payload!`
+    });
+  }
+}
+```
+
+<Image
+  width={'1192'}
+  height={'638'}
+  src={'/assets/images/posts/zod-test-1.png'}
+/>
+
+As you can see in the image above, the object returned by `parse` **is
+correctly inferred by Typescript** as
+having the shape we validated. Neat and
+powerful 🔥
+
+If you plan on using `.safeParse`, instead, we don't need to wrap our API
+around a `try/catch` block because it won't throw an error.
+
+Instead, we need to check that the response contains `success=true`, which
+correctly discriminates the union and means we can safely access our payload.
+
+```tsx
+import { NextApiRequest, NextApiResponse } from "next";
+
+export default function apiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const response = schema.safeParse(req.body);
+
+  if (!response.success) {
+    return res.status(400).send({
+      message: `Yo, bad payload!`
+    });
+  }
+
+  console.log(response.data.organizationId) // works, and TS is happy
+}
+```
+
+### What does a Zod error look like?
+
+When Zod parses the payload nad fails to validate it, it will return us the
+reasons why the validation failed.
+
+Let's assume our payload looks like the below. Clearly, it will throw an
+error because the array `users` is empty, but we declared we want it to have
+a minimum length of `1`:
+
+```tsx
+const test = schema.safeParse({
+  userId: "123",
+  newOrganization: {
+    name: "My Organization",
+    users: []
+  }
+});
+
+console.log(`Test 1: expect an error`, JSON.stringify(test, null, 2));
+```
+
+This is the payload returned:
+
+```json
+{
+  "success": false,
+  "error": {
+    "issues": [
+      {
+        "code": "too_small",
+        "minimum": 1,
+        "type": "array",
+        "inclusive": true,
+        "message": "Should have at least 1 items",
+        "path": [
+          "newOrganization",
+          "users"
+        ]
+      }
+    ],
+    "name": "ZodError"
+  }
+}
+```
+
+It's not great to expose this data to your clients, so you may not want to
+return it straight as is.
+
+## Codesandbox Demo
+
+You can play with Zod using the CodeSandbox snippet below. Please drag the
+sidebar on the left-hand side to see the code, and open the console to see
+the output, otherwise it will show you a blank screen.
+
+<CodeSandboxSnippet
+  src={'https://codesandbox.io/embed/ts-zod-validation-czrej?fontsize=14&hidenavigation=1&theme=dark'}
+/>
+
+## Final Words
+
+`Zod` isn't the only library that can do this, but has become my favourite one.
+
+`Joi` doesn't play as well with typescript, `class-validator` has always been
+kind of weird with arrays and only works using classes with decorators
+(which is not what you may be doing).
+
+You can get started using it and read all the validations option it provides
+[on Github](https://github.com/colinhacks/zod).

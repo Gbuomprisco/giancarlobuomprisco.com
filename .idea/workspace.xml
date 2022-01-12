@@ -4,19 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="Fix build">
-      <change afterPath="$PROJECT_DIR$/pages/projects.tsx" afterDir="false" />
+    <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/_articles/protect-next-api-zod.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_collections/health.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_writings/getting-healthier-tips-for-developers.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/article-preview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/article-preview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/intro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/intro.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/subheading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/subheading.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/about.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/about.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/articles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/articles.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/consulting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/consulting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/contact.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/contact.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/writings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/writings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/markdown-styles.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/components/markdown-styles.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next-env.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +182,7 @@
       <workItem from="1640897645016" duration="1995000" />
       <workItem from="1641392724185" duration="512000" />
       <workItem from="1641466445167" duration="589000" />
-      <workItem from="1641639538118" duration="1433000" />
+      <workItem from="1641639538118" duration="11198000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -329,7 +324,21 @@
       <option name="project" value="LOCAL" />
       <updated>1640606471877</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Minor text updates">
+      <created>1641641158172</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1641641158172</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Changed font">
+      <created>1641652443200</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1641652443200</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -355,6 +364,8 @@
     <MESSAGE value="Added article about Next.js middlwares" />
     <MESSAGE value="Added excerpt" />
     <MESSAGE value="Fix build" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix build" />
+    <MESSAGE value="Minor text updates" />
+    <MESSAGE value="Changed font" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed font" />
   </component>
 </project>
