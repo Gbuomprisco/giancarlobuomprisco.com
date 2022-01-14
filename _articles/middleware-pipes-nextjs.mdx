@@ -11,28 +11,28 @@ tags:
 - react
 ---
 
-Next.js API routes are fun, simple and easy. However, they're also a
+Next.js API routes are fun, simple, and straightforward. However, they're also a
 little bare-bones.
 
-Next API routes are great when you're building on top of it, but it
-requires developers to write a lot of additional code to build
+Next's API routes are great when you're building on top of it, but it
+requires developers to write much additional code to build
 functionalities that many take for granted, such as:
 
 - protecting against unsupported methods
 - gating access to signed-in users
-- any prior set-up that needs to be done before executing the business-logic
+- any prior set-up that needs to be done before executing the business logic
 of such route
 
 Being used to working with NestJS, a batteries-included back-end framework,
 I took a lot for granted. But Next.js does not come with opinions in this
-regard, unlike stuff built on top of it such as Blitz.js. Therefore, we'll
+regard, unlike stuff built on top of it, such as `Blitz.js`. Therefore, we'll
 have to stitch something up.
 
 Just as an example, let's assume we're writing an API handler using
 Firebase that:
 
 - initializes an admin app
-- checks that the correct method is being called
+- checks that the it's calling the correct method
 - checks a user exists
 - responds to the user's request
 
@@ -66,25 +66,26 @@ export default async function handler(
 
 Now, nothing wrong with what we've written above!
 
-Nevertheless, it's just a tad repetitive if we think that our application can
-have hundreds or more API endpoints. And with repetition there will
-certainly be avoidable mistakes.
+Nevertheless, it's just a tad repetitive if we think our application can
+have hundreds or more API endpoints. And with repetition, there can
+undoubtedly be avoidable mistakes.
 
-In case you hadn't noticed: the function above does not handle any error,
-which can happen in at least 3 situations. This would considerably increase
-the boilerplate code needed, making the function above look way more complex.
+If you hadn't noticed: the function above does not handle any error,
+which can happen in at least 3 situations. 
+
+Doing the above would considerably increase the boilerplate code needed, making the function above looking way more complex.
 
 A couple of points about the above:
 - we don't need to check we're calling the correct method imperatively
-- we don't need to manually log the user in imperatively too
+- we don't need to log the user in imperatively too manually
 
-The average API route will likely have many more "set-up" steps such as the
+The average API route can likely have many more "set-up" steps, such as the
 above: we need a better solution.
 
 ### Enter Next JS pipes
 
 A middleware is a function that receives two parameters: `NextApiRequest`
-and `NextApiResponse`, and returns a function to which we will pass these
+and `NextApiResponse` and returns a function to which we can pass these
 parameters.
 
 A middleware's job can vary:
@@ -133,11 +134,11 @@ export default authMiddleware(
 Writing middlewares like the above does feel better as we can now
 encapsulate repetitive logic within smaller functions.
 
-The only downside to this is that when we have multiple middlewares, we will
+The only downside to this is that when we have multiple middlewares, we
 need to wrap them one within the other. It can get long.
 
 One other way is to apply a simple pipe function so that the middlewares get
-executed in the same order we define them: the very last function, which
+executed in the same order, we define them: the very last function, which
 should be the API route, will be the one sending data back to the caller.
 
 The only exception to this is if we send the headers before that: for
@@ -146,11 +147,12 @@ should not execute them.
 
 ### Middleware Piping
 
-Alright, let's create a function called `withMiddleware`. This function
-accepts an undefined number of middlewares, plus the API route which will
+Okay, let's create a new function called `withMiddleware`. 
+
+This function accepts an undefined number of middlewares, plus the API route, which will
 send the data back to the caller.
 
-The API route logic should always be placed as the last function.
+We should place the API route logic as the last function in the pipe.
 
 It's going to look like something similar to the below:
 
@@ -172,7 +174,7 @@ async function myApiHandler(
 }
 ```
 
-Is it just me or this looks a lot better? Hope you agree! :D
+Is it just I, or this looks a lot better? I hope you agree! :D
 
 Let's see how we can write our chaining function `withMiddleware`:
 
@@ -199,15 +201,14 @@ export function withMiddleware(
 }
 ```
 
-Nothing fancy here, we iterate our function and execute them one by one
+Nothing fancy here; we iterate our function and execute them one by one
 using the original `req` and `res` parameters.
 
 If the property `headersSent` is `true`, it means that a previous middleware
-has already called `res.send()` or `res.end()`. Therefore, we skip as it
-will throw an error.
+has already called `res.send()` or `res.end()`. Therefore, we skip as it throws an error.
 
 The good thing of middleware's is that we can combine them as many times as
-we like. For example, we know hat to use the authentication library, we also
+we like. For example, we know that to use the authentication library, we also
 need to connect to the admin.
 
 ```tsx
@@ -222,16 +223,15 @@ export const withAdminGuard = withMiddleware(
 );
 ```
 
-This code may not be absolutely perfect for production-use, but it shows how
-to increase reusability and readability of our API routes with a very simple
+This code may not be production-grade, but it shows how
+to increase the reusability and readability of our API routes with a very simple
 piping function.
 
-This is not to be confused with the concept of Next.js Middleware introduced
-in Next.js 12, which while they achieve the same thing, thy are limited by
+The middleware's concept in this article is not to be confused with the concept of Next.js `Middleware` introduced in Next.js 12, which while they achieve the same thing, they are limited by
 the fact that they're not running on Node (which is also what makes them so
 fast).
 
 In our example, we could not use it because Firebase needs to run in
 a Node environment.
 
-Do you like this pattern? Do let me know if you have any comment or suggestions!
+Do you like this pattern? Do let me know if you have any comments or suggestions!

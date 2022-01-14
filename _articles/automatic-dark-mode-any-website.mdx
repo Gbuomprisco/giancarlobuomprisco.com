@@ -9,9 +9,9 @@ excerpt: Add dark mode to any webpage thanks to a single line of CSS, or with a 
 live: true
 ---
 
-CSS is magic. Fact.
+CSS is magic.
 
-No, seriously, though. I recently incorporated Cal.com's embed in one of my websites for booking appointments. 
+No, seriously. I recently incorporated Cal.com's embed in one of my websites for booking appointments. 
 
 The iframe's content looks great, with one downside: my website has a dark theme, and Cal.com's dark themes are only on paid plans (which I'm hoping to upgrade to as soon as I can).
 
@@ -35,13 +35,13 @@ html {
 
 And magic! All the page's colors are inverted. In some cases, the results are spectacular.
 
-If you wanted to use it on an `iframe` so that you could apply the dark theme to the content within, simply add the CSS to the iframe's element:
+If you wanted to use it on an `iframe` so that you could apply the dark theme to the content within, add the CSS to the iframe's element:
 
 ```html
 <iframe style='filter: invert(1);' src='https://anexternalservice.com/' />
 ```
 
-If you are using Tailwind CSS, you could simply add the class `dark:invert` which will invert the colors only if the selected theme is `dark`:
+If you are using Tailwind CSS, you could add the class `dark:invert`, which inverts the colors only if the selected theme is `dark`:
 
 ```html
 <iframe class='dark:invert' src='https://anexternalservice.com/' />

@@ -9,7 +9,7 @@ collection: "next.mdx"
 live: true
 ---
 
-API routes in Next.js are fun and easy to write, but this can lead to some excessive duplicate code.
+API routes in Next.js are fun and easy to write, but this can lead to excessive duplicate code.
 
 If you read my post about [Next.js Middlewares](/next/middleware-pipes-nextjs), you know how I feel about reducing duplicate code and reusing middlewares across your API by piping your API handlers.
 
@@ -17,15 +17,15 @@ In this blog post, I want to describe how I use an API middleware for handling m
 
 This blog post comes from a particular need, inspired by Nest.js, a different server-side framework: Nest.js has a built-in functionality called `Filters`. 
 
-By using a filter, you can hook into an API call and execute some code when they start, and when they end.
+Using a filter, you can hook into an API call and execute some code when they start and end.
 
-This is incredibly handy for automating very common tasks: 
+This is incredibly handy for automating quite repetitive tasks: 
 - logging your requests
 - handling errors
 - validating the body
 - etc.
 
-In this specific case, we use the API handler to catch our API's exceptions, which allows us to log detailed information about the request, send it to your favourite Error Tracker (for example, Sentry), and respond with the most appropriate status code.
+In this case, we use the API handler to catch our API's exceptions, which allows us to log detailed information about the request, send it to your favorite Error Tracker (for example, Sentry), and respond with the most appropriate status code.
 
 ## A basic Next.js API request without error handling
 
@@ -46,9 +46,9 @@ As you can see in the code above:
 - we do not catch the error
 - we don't log anything
 
-This is not ideal: debugging becomes incredibly hard; at the same time, you may not want to try/catch every single API route.
+The example above is certainly not ideal: debugging becomes incredibly hard; simultaneously, you may not want to try/catch every single API route.
 
-From both a practical and eastethical reasons, I don't think it's a best practice (with that said, there may be instances where you want to).
+For practical and aesthetical reasons, I don't think it's a best practice (with that said, there may be instances where you want to).
 
 Let's rewrite the above in a better way:
 
@@ -72,12 +72,12 @@ export default function myApiHandler(
 ```
 
 Better, but not perfect. We may want to:
-- log a specific message, and the correct status code
+- log a specific message and the correct status code
 - send to the client more information (but not too much, as you may leak data)
 
 ## A middleware for catching exceptions
 
-First of all, let's see what the end result will look like. 
+First of all, let's see what the result looks like. 
 
 Assuming we have an API handler, we decorate it by using the middleware we're going to write:
 
@@ -88,7 +88,7 @@ export default withMiddleware(
 );
 ```
 
-Whenever `myApiHandler` throws an exception, we will log the following object:
+Whenever `myApiHandler` throws an exception, we log the following object:
 
 ```tsx
 {
@@ -100,7 +100,7 @@ Whenever `myApiHandler` throws an exception, we will log the following object:
 }
 ```
 
-Furthermore, the API will respond with the following object:
+Furthermore, the API responds with the following object:
 
 ```tsx
 {
@@ -110,9 +110,9 @@ Furthermore, the API will respond with the following object:
 }
 ```
 
-Why status code? No reason, it's just an example. You cold use a more application-specific status code which you can then map to an error message on the client.
+Why status code? No reason; it's just an example. You could use a more application-specific status code which you can then map to an error message on the client.
 
-What's important here is not to leak any data, so do be strict about what you're sending back.
+What's important here is not to leak any data, so be strict about what you're sending back.
 
 ### Building the Middleware
 
@@ -155,7 +155,7 @@ try {
 }
 ```
 
-The msost important thing to do is wrapping our `handler` function in a try/catch block. This allows us to catch errors from handler and then do something with it.
+The most important thing is to wrap our `handler` function in a try/catch block. Wrapping the block allows us to catch errors from the handler and then do something with it.
 
 Now let's write some useful functions to extract the error code and the message we want to use:
 
@@ -189,13 +189,13 @@ function isError(
 }
 ```
 
-In case you haven't noticed, we use a sort-of-internal class from Next.js called `ApiError`. This class is imported in the following way:
+If you haven't noticed, we use a sort-of-internal class from Next.js called `ApiError.` We import this class in the following way:
 
 ```tsx
 import { ApiError } from 'next/dist/server/api-utils';
 ```
 
-It's a class used by Next (for some reason not exposed, but I with it was) that decorates an `Error` with a status code:
+It's a class used by Next (for some reason not exposed, but I wish it were) that decorates an `Error` with a status code:
 
 ```tsx
 export declare class ApiError extends Error {
@@ -208,8 +208,8 @@ export declare class ApiError extends Error {
 ```
 
 Therefore, whenever you're throwing an error from within an API function, I would suggest to:
-- use this, or another class created by yourself
-- use this and this alone whenever you wan to throw errors for server-side code
+- use this or another class created by yourself
+- use this and this alone whenever you want to throw errors for server-side code
 
 By using `ApiError` you can make sure to return the most appropriate status code for your request errors:
 
@@ -229,9 +229,9 @@ export function anApiFunction() {
 }
 ```
 
-Because we extract the `statusCode` property from the `ApiError` class, our request will respond with the correct status code: `HttpStatusCode.Forbidden`.
+Because we extract the `statusCode` property from the `ApiError` class, our request responds with the correct status code: `HttpStatusCode.Forbidden`.
 
-And now can finally we put it all together. The below will be the `catch` block's branch:
+And now can finally we put it all together. The below is the `catch` block's branch:
 
 ```tsx
 const { url, headers } = req;
@@ -256,7 +256,7 @@ const requestContext = {
   message,
 };
 
-// edit the message according your preferences
+// edit the message according to your preferences
 const exceptionMessage 
   = `An unhandled exception occurred.`;
 
@@ -281,4 +281,4 @@ return res.status(statusCode).send(responseBody);
 
 The exceptions filter is now complete and ready to use!
 
-Do you have any comment about the above? [Feel free to contact me](/contact). Ciao!
+Do you have any comments about the above? [Feel free to contact me](/contact). Ciao!

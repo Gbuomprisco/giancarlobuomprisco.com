@@ -19,7 +19,7 @@ While monorepos exist and are used by some, it's clear that the trend is nowhere
 
 Having an instantly recognizable codebase is more important to me than having it the way I'm used to.
 
-That's why I'm trying to get out of my comfort zone and embrace something in the middle. With that said, I still think using a monorepo is the best decision for an enterprise team, using any technology. I'll talk more about that in another article.
+That's why I'm trying to get out of my comfort zone and embrace something in the middle.  With that said, I still think using a monorepo is the best decision for an enterprise team, using any technology.  I'll talk more about that in another article.
 
 In this article, I want to show a **neat, scalable folder structure for *solo-developers* or small teams using Next.js** ideal for medium-sized web apps. 
 
@@ -29,9 +29,13 @@ A simple structure that is:
 
 ## Where is the domain?
 
-Something that has left me slightly perplexed is the blurry line between the domain and the core of a project in most projects I've seen. I don't mean this in an antagonistic way: it's simply a bit foreign to me.
+Something that has left me slightly perplexed is the blurry line between the domain and the core of a project in most projects I've seen.
 
-But what is a **business domain**? The business domain is the group of entities, their relationships, and behaviors of the **business model**, implemented as code.
+I don't mean this in an antagonistic way: it's simply a bit foreign to me.
+
+But what's a **business domain**?
+
+The business domain is the group of entities, relationships, and behaviors of the **business model**, implemented as code.
 
 Let's assume we are building an application about booking events; here are some entities that are part of our domain:
 
@@ -40,11 +44,13 @@ Let's assume we are building an application about booking events; here are some 
 - Place
 - ...and more
 
-The core and the domain of a project, in my view, should be kept well separate.  Let's see how.
+The core and the domain of a project, in my view, should be kept well separate. Let's see how.
 
 ## The structure
 
-First, I recommend using the `src` folder (which Next.js supports without additional configuration), bu not for a specific reason. I prefer to keep code at a different level than configurations and miscellaneous files.
+First, I recommend using the `src` folder (which Next.js supports without additional configuration) but not for a specific reason. 
+
+I prefer to keep code at a different level than configurations and miscellaneous files.
 
 Below, you can find the onion-shaped structure I use for my Next.js projects:
 
@@ -82,31 +88,34 @@ If something within the core layer needs something from the domain, it probably 
 
 The `core` part of any project is, typically, something you can abstract into external libraries. 
 
-It's harder to define a restricted public API when the only separation is a folder. This is why I would recommend setting up `eslint` to prevent such imports, as we will see below.
+It's harder to define a restricted public API when the only separation is a folder.
+
+This is why I recommend setting up `eslint` to prevent wrong imports within our codebase: we will see how below.
 
 What are examples of code that belongs to `core`?
 
-Let's assume you use Firebase and need to connect to `Firestore` to fetch data: initializing the database, connecting to it, etc. is what I would regard as being the core of the application. The way the database is used is entirely independent.
+Let's assume you use Firebase and need to connect to `Firestore` to fetch data: initializing the database, connecting to it, etc. is what I would regard as being the core of the application. The way the consumer uses the database is entirely independent.
 
 By following a core/domain approach, you **also improve the reusability of your utilities and make it pretty easy to reuse across projects**.
 
 ### Lib
 I have to be honest: I do not know why I'm calling this `lib.` In Angular-land, it would be `modules.`
 
-But every codebase I've seen had `lib` for business-logic code. So I stuck with it. As I said, familiarity is essential.
+But every codebase I've seen had `lib` for business-logic code. Therefore, I stuck with it: as I said, familiarity is essential.
 
 What should we add to this library? Anything about the domain that isn't a component, like:
+
 - queries
 - mutations
 - custom hooks
 - contexts
 - props functions (getServerSideProps, getInitialProps)
 
-These utilities are normally used within `Components` (for the most part) and partly within the pages for functions such as `getServerSideProps`.
+These utilities are typically used within `components` (for the most part) and partly within the pages for functions such as `getServerSideProps`.
 
-For example, `lib` could expose the props `user/with-user-props.ts` which is a function returning the current session to the page where it's used.
+For example, `lib` could expose the props `user/with-user-props.ts`, a function returning the current session to the page props.
 
-The `lib` and `components` folders can be further splitted by `entities`. 
+The `lib` and `components` folders can be further split by `entities`. 
 
 We could develop our folder structure in this way:
 
@@ -137,21 +146,21 @@ We could develop our folder structure in this way:
 
 This folder is logically speaking on the same layer as `lib`. 
 
-Why not place them in the same folder, you say? It is to avoid excessive nesting, which can become nasty.
+Why not place them in the same folder, you say? To avoid excessive nesting, which can become nasty.
 
-As you may have imagined, here we can place the components that make up our pages. These components are highly tied to the domain and are not supposed to be that reusable across projects. 
+As you may have imagined, here we can place the components that make up our pages. Furthermore, these components are highly tied to the domain and are not supposed to be highly reusable across projects. 
 
-They're business-logic rich and are built using the UI components from `core`.
+They're business-logic rich, and we can build them using the reusable UI components from `core`.
 
-The business-logic side of things, such as queries, or functions that mutate data, are all imported from `lib`, so that they can be reusable across components.
+The business-logic side of things, such as queries, or functions that mutate data, are all imported from `lib` so that they can be reusable across components.
 
 For example, the component `CreateEventForm` knows about the domain and uses a `mutation` to create an event. 
 
-This component is domain-dependent, and as such, we place it in the `components` folder, rather than `core`.
+This component is domain-dependent, and as such, we place it in the `components` folder rather than `core`.
 
 ### Pages
 
-If you know Next.js, you may not need an explanation for this. `Pages` is a Next-specific folder where we place our routes or pages. 
+If you know Next.js, you may not need an explanation for this. The folder `pages` is a Next-specific directory to place our routes or pages.
 
 Next.js's router is file-system based: so, yes, no configurations. It's all driven by how we structure the pages in this folder.
 
@@ -181,11 +190,11 @@ I know first-hand how messy it can get when your imports have no rules at all.
 
 ### Linting import paths with EsLint
 
-That's cool. But how can we make sure that we're using the rules above correctly when importing files in our application?
+That's cool, but how can we ensure that we're using the rules above correctly when importing files in our application?
 
 EsLint can help us by adding a rule to lint our imports. 
 
-By adding the following configuration to yours, you are automatically warned when you're importing from the wrong paths:
+By adding the following configuration to yours, `eslint` can automatically warn you that you're importing from the wrong paths:
 
 ```json
 "rules": {
@@ -219,7 +228,7 @@ By adding the following configuration to yours, you are automatically warned whe
 }
 ```
 
-Assuming I was importing a page from `pages` into any file within `lib`, `components` or `core`, I would see an error such as the below:
+Assuming I was importing a page from `pages` into any file within `lib` or `components` or `core`, then I would see an error such as the below:
 
 <Image data-shadowless src='/assets/images/posts/eslint-import-error-next.png' /> 
 
@@ -238,10 +247,12 @@ If you think this through with your team and agree on a couple of rules, it can 
 
 #### Small, but ambitious apps
 
-This post is a simple take on a complex subject: don't use it for overly complex projects, but also not for hello-world-sized apps. It's for small but still ambitious apps. 
+This post is a simple take on a complex subject: don't use it for overly complex projects, but also not for hello-world-sized apps. Instead, it's for **small but still ambitious apps**. 
 
-For larger enterprise apps, I still think that a monorepo would be more beneficial (especially for teams who maintain more apps). 
+However, if you build a more extensive enterprise app, I still think that a monorepo would be more beneficial (especially for teams who maintain more apps). 
 
 But most apps aren't enterprise: if your goal is to get started with the right foot, ship quickly and well, give this a try.
 
-For any comments or suggestions, please send me an email. Ciao!
+For any comments or suggestions, please send me an email. 
+
+Ciao!
