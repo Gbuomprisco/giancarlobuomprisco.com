@@ -71,7 +71,7 @@ have hundreds or more API endpoints. And with repetition, there can
 undoubtedly be avoidable mistakes.
 
 If you hadn't noticed: the function above does not handle any error,
-which can happen in at least 3 situations. 
+which can happen in at least 3 situations.
 
 Doing the above would considerably increase the boilerplate code needed, making the function above looking way more complex.
 
@@ -147,7 +147,7 @@ should not execute them.
 
 ### Middleware Piping
 
-Okay, let's create a new function called `withMiddleware`. 
+Okay, let's create a new function called `withMiddleware`.
 
 This function accepts an undefined number of middlewares, plus the API route, which will
 send the data back to the caller.
@@ -179,37 +179,71 @@ Is it just I, or this looks a lot better? I hope you agree! :D
 Let's see how we can write our chaining function `withMiddleware`:
 
 ```tsx
-type Handler = (req: NextApiRequest, res: NextApiResponse) => unknown;
+import { NextApiRequest, NextApiResponse } from 'next';
+type Middleware = (req: NextApiRequest, res: NextApiResponse) => unknown;
 
-export function withMiddleware(
-  ...functions: Handler[]
-) {
-  return async function
-    (req: NextApiRequest, res: NextApiResponse) {
-      for (const func of functions) {
-        if (typeof func === 'function') {
-          // return early when the request has
-          // been ended by a previous middleware
-          if (res.headersSent) {
-            return;
+/**
+ * @name withMiddleware
+ * @description combine multiple middleware before handling your API endpoint
+ * @param middlewares
+ */
+export function withMiddleware(...middlewares: Middleware[]) {
+  return async function withMiddlewareHandler(
+    req: NextApiRequest,
+    res: NextApiResponse
+  ) {
+    async function evaluateHandler(
+      middleware: Middleware,
+      innerMiddleware?: Maybe<Middleware>
+    ) {
+      // return early when the request has
+      // been ended by a previous middleware
+      if (res.headersSent) {
+        return;
+      }
+
+      if (typeof middleware === 'function') {
+        const handler = await middleware(req, res);
+
+        if (typeof handler === 'function') {
+          if (innerMiddleware) {
+            await handler(innerMiddleware);
+
+            const index = middlewares.indexOf(innerMiddleware);
+
+            // remove inner middleware
+            if (index >= 0) {
+              middlewares.splice(index, 1);
+            }
+          } else {
+            await handler();
           }
-
-          await func(req, res);
         }
       }
-    };
+    }
+
+    for (let index = 0; index < middlewares.length; index++) {
+      const middleware = middlewares[index];
+      const nextMiddleware = middlewares[index + 1];
+
+      await evaluateHandler(middleware, nextMiddleware);
+    }
+  };
 }
 ```
 
-Nothing fancy here; we iterate our function and execute them one by one
-using the original `req` and `res` parameters.
+We iterate over the functions and execute them one by one
+using the original `req` and `res` parameters, unless one of the functions
+returns an handler: in which case, the handler gets executed as the callback
+to the previous middleware, and gets removed from the middlewares list,
+because we already executed it.
 
 If the property `headersSent` is `true`, it means that a previous middleware
 has already called `res.send()` or `res.end()`. Therefore, we skip as it throws an error.
 
-The good thing of middleware's is that we can combine them as many times as
-we like. For example, we know that to use the authentication library, we also
-need to connect to the admin.
+One of the  good thing of middlewares is that we can combine them as many
+times as we like. For example, we know that to use the authentication
+library, we also need to connect to the admin.
 
 ```tsx
 export const withAuthedUser = withMiddleware(
