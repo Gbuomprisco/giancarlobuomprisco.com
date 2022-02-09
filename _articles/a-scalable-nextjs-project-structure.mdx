@@ -21,7 +21,7 @@ Having an instantly recognizable codebase is more important to me than having it
 
 That's why I'm trying to get out of my comfort zone and embrace something in the middle.  With that said, I still think using a monorepo is the best decision for an enterprise team, using any technology.  I'll talk more about that in another article.
 
-In this article, I want to show a **neat, scalable folder structure for *solo-developers* or small teams using Next.js** ideal for medium-sized web apps. 
+In this article, I want to show a **neat, scalable folder structure for *solo-developers* or small teams using Next.js** ideal for medium-sized web apps.
 
 A simple structure that is:
 - simple enough not to cause analysis-paralysis
@@ -48,13 +48,14 @@ The core and the domain of a project, in my view, should be kept well separate. 
 
 ## The structure
 
-First, I recommend using the `src` folder (which Next.js supports without additional configuration) but not for a specific reason. 
+First, I recommend using the `src` folder (which Next.js supports without additional configuration) but not for a specific reason.
 
 I prefer to keep code at a different level than configurations and miscellaneous files.
 
 Below, you can find the onion-shaped structure I use for my Next.js projects:
 
-<Image data-shadowless width='1' height='1' src='/assets/images/posts/nextjs-folder-structure-onion.png' /> 
+<Image data-shadowless width='1' height='1'
+       src='/assets/images/posts/nextjs-folder-structure-onion.png' />
 
 We can express the above image with the following project structure:
 
@@ -78,15 +79,15 @@ For example:
 - the reusable UI components not related to any domain (ex. Dropdown, Button, TextInput)
 - and more.
 
-As you can see, there is very little about these concepts that scream "domain". 
+As you can see, there is very little about these concepts that scream "domain".
 
 The `core layer` provides the domain with the necessary tools for the application to work, for example, authenticating, querying the DB, or sending emails. But does not know how the consumer uses these tools.
 
-Hard rule: **the core layer can never import anything from the domain layer**`. 
+Hard rule: **the core layer can never import anything from the domain layer**`.
 
 If something within the core layer needs something from the domain, it probably does not belong to the core layer.
 
-The `core` part of any project is, typically, something you can abstract into external libraries. 
+The `core` part of any project is, typically, something you can abstract into external libraries.
 
 It's harder to define a restricted public API when the only separation is a folder.
 
@@ -115,7 +116,7 @@ These utilities are typically used within `components` (for the most part) and p
 
 For example, `lib` could expose the props `user/with-user-props.ts`, a function returning the current session to the page props.
 
-The `lib` and `components` folders can be further split by `entities`. 
+The `lib` and `components` folders can be further split by `entities`.
 
 We could develop our folder structure in this way:
 
@@ -144,17 +145,17 @@ We could develop our folder structure in this way:
 
 ### Components
 
-This folder is logically speaking on the same layer as `lib`. 
+This folder is logically speaking on the same layer as `lib`.
 
 Why not place them in the same folder, you say? To avoid excessive nesting, which can become nasty.
 
-As you may have imagined, here we can place the components that make up our pages. Furthermore, these components are highly tied to the domain and are not supposed to be highly reusable across projects. 
+As you may have imagined, here we can place the components that make up our pages. Furthermore, these components are highly tied to the domain and are not supposed to be highly reusable across projects.
 
 They're business-logic rich, and we can build them using the reusable UI components from `core`.
 
 The business-logic side of things, such as queries, or functions that mutate data, are all imported from `lib` so that they can be reusable across components.
 
-For example, the component `CreateEventForm` knows about the domain and uses a `mutation` to create an event. 
+For example, the component `CreateEventForm` knows about the domain and uses a `mutation` to create an event.
 
 This component is domain-dependent, and as such, we place it in the `components` folder rather than `core`.
 
@@ -177,12 +178,23 @@ Of course, this is highly dependent on the domain of your application.
 
 ## Imports between Layers
 
-Something important to clarify is the rules I have around importing between layers. 
+Something important to clarify is the rules I have around importing between layers.
 
 Typically, an inner layer cannot import from an outer layer: that means that `core` cannot import from `lib` and `components`, and the latter cannot import from `pages`.
 
-<Image data-shadowless src='/assets/images/posts/next-structure-imports-wrong.png' /> 
-<Image data-shadowless src='/assets/images/posts/next-structure-imports.png' /> 
+<Image
+  data-shadowless
+  width={1433}
+  height={218}
+  src='/assets/images/posts/next-structure-imports-wrong.png'
+/>
+
+<Image
+  data-shadowless
+  width={1433}
+  height={205}
+  src='/assets/images/posts/next-structure-imports.png'
+/>
 
 This rule can ensure your `core` is decoupled from the domain to avoid cyclical dependencies and keep your architecture untangled.
 
@@ -192,7 +204,7 @@ I know first-hand how messy it can get when your imports have no rules at all.
 
 That's cool, but how can we ensure that we're using the rules above correctly when importing files in our application?
 
-EsLint can help us by adding a rule to lint our imports. 
+EsLint can help us by adding a rule to lint our imports.
 
 By adding the following configuration to yours, `eslint` can automatically warn you that you're importing from the wrong paths:
 
@@ -230,29 +242,31 @@ By adding the following configuration to yours, `eslint` can automatically warn 
 
 Assuming I was importing a page from `pages` into any file within `lib` or `components` or `core`, then I would see an error such as the below:
 
-<Image data-shadowless src='/assets/images/posts/eslint-import-error-next.png' /> 
+<Image data-shadowless
+  width={1604} height={296}
+       src='/assets/images/posts/eslint-import-error-next.png' />
 
 If you find the rule too verbose, replace `error` with `warning`.
 
 ## Final Words
 
-Whether you use this or another approach, remember that the critical part of setting up a folder structure is that **it needs to work well for you and your use case**: it shouldn't be a simple mess, nor should it be so complex that you spend an hour to decide where to place a file. 
+Whether you use this or another approach, remember that the critical part of setting up a folder structure is that **it needs to work well for you and your use case**: it shouldn't be a simple mess, nor should it be so complex that you spend an hour to decide where to place a file.
 
 That's simply detrimental to your productivity, and it usually means you either have placed no rules at all, or your rules are way too strict.
 
-If you think this through with your team and agree on a couple of rules, it can help with: 
+If you think this through with your team and agree on a couple of rules, it can help with:
 - keeping the codebase familiar to everyone
 - avoid needless (but sometimes unavoidable) team arguments
 - and ultimately **keep you and the codebase as sane as possible**
 
 #### Small, but ambitious apps
 
-This post is a simple take on a complex subject: don't use it for overly complex projects, but also not for hello-world-sized apps. Instead, it's for **small but still ambitious apps**. 
+This post is a simple take on a complex subject: don't use it for overly complex projects, but also not for hello-world-sized apps. Instead, it's for **small but still ambitious apps**.
 
-However, if you build a more extensive enterprise app, I still think that a monorepo would be more beneficial (especially for teams who maintain more apps). 
+However, if you build a more extensive enterprise app, I still think that a monorepo would be more beneficial (especially for teams who maintain more apps).
 
 But most apps aren't enterprise: if your goal is to get started with the right foot, ship quickly and well, give this a try.
 
-For any comments or suggestions, please send me an email. 
+For any comments or suggestions, please send me an email.
 
 Ciao!

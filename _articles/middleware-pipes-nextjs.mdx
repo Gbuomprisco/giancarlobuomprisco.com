@@ -23,10 +23,42 @@ functionalities that many take for granted, such as:
 - any prior set-up that needs to be done before executing the business logic
 of such route
 
-Being used to working with NestJS, a batteries-included back-end framework,
-I took a lot for granted. But Next.js does not come with opinions in this
-regard, unlike stuff built on top of it, such as `Blitz.js`. Therefore, we'll
-have to stitch something up.
+### What is a Middleware?
+
+NB: the concept of *middleware* in this post is not to be confused with the
+recently released [*Next.js Middlewares*](https://nextjs.org/docs/middleware).
+Instead, the concept outlined in this article is more akin to *ExpressJS*'s
+middlewares.
+
+A middleware can be defined as a function that has access to the `request`
+and `response` objects parameters of an API function. Much of our logic has
+to rely on these two parameters for reading data (such as the body object,
+headers, cookies) and respond appropriately to the caller of the API.
+
+Much of the logic behind very common checks and actions is often duplicated
+across API routes and controllers, such as checking if the user is
+authenticated, if the method being called is correct, validating the user
+input, and so on. **It doesn't have to be so hard**.
+
+Being used to working with *NestJS*, a batteries-included back-end framework,
+middlewares were a utility I took for granted. Next.js does not come
+with many opinions, unlike stuff built on top of it such as
+`Blitz.js`. Therefore, we'll have to stitch something up.
+
+#### Why Middlewares?
+
+First of all, why use a middleware at all, as described in thi article?
+While Next.js's new middleware set out to solve the exact specific issue,
+there's a small thing to consider: **they run at the edge**. What does that
+mean? Running on Cloudflare Workers, a V8 environment which **is not**
+NodeJS, means we don't have access to a range of libraries and API that, as
+of today, still rely on NodeJS.
+
+While many libraries are converging towards an environment-agnostic approach
+towards Server-Side Javascript, we're nowehere near the state where we can
+migrate a codebase by simply shuffling code around. In my case, by using
+Firebase Auth, means I am constrained to running my code within a NodeJS
+environment.
 
 Just as an example, let's assume we're writing an API handler using
 Firebase that:

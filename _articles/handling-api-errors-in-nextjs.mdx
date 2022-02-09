@@ -15,11 +15,11 @@ If you read my post about [Next.js Middlewares](/next/middleware-pipes-nextjs), 
 
 In this blog post, I want to describe how I use an API middleware for handling my Next.js API exceptions.
 
-This blog post comes from a particular need, inspired by Nest.js, a different server-side framework: Nest.js has a built-in functionality called `Filters`. 
+This blog post comes from a particular need, inspired by Nest.js, a different server-side framework: Nest.js has a built-in functionality called `Filters`.
 
 Using a filter, you can hook into an API call and execute some code when they start and end.
 
-This is incredibly handy for automating quite repetitive tasks: 
+This is incredibly handy for automating quite repetitive tasks:
 - logging your requests
 - handling errors
 - validating the body
@@ -37,7 +37,7 @@ export default function myApiHandler(
   res: NextApiResponse,
 ) {
   const data = await getData();
-  
+
   return res.send(data);
 }
 ```
@@ -59,7 +59,7 @@ export default function myApiHandler(
 ) {
   try {
     const data = await getData();
-  
+
     return res.send(data);
   } catch(e) {
     logger.error(e);
@@ -77,15 +77,22 @@ Better, but not perfect. We may want to:
 
 ## A middleware for catching exceptions
 
-First of all, let's see what the result looks like. 
+First of all, let's see what the result looks like.
 
 Assuming we have an API handler, we decorate it by using the middleware we're going to write:
 
 ```tsx
-export default withMiddleware(
-  withExceptionFilter,
-  myApiHandler,
-);
+export default function myApiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const handler = withMiddleware(
+    withMethodsGuard(SUPPORTED_HTTP_METHODS),
+    withAuthedUser,
+  );
+
+  return withExceptionFilter(req, res)(handler);
+}
 ```
 
 Whenever `myApiHandler` throws an exception, we log the following object:
@@ -116,7 +123,7 @@ What's important here is not to leak any data, so be strict about what you're se
 
 ### Building the Middleware
 
-If you haven't read my previous article about Next.js API handlers, let me give you a quick recap. 
+If you haven't read my previous article about Next.js API handlers, let me give you a quick recap.
 
 API middlewares allow us to pipe handlers in this way:
 
@@ -137,11 +144,15 @@ export function withExceptionFilter(
 This allows us to combine multiple handlers:
 
 ```tsx
-export default useMiddleware(
-  withExceptionFilter,
-  someOtherHandler,
-  apiHandler,
-);
+export default function myApiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  return withMiddleware(
+    withMethodsGuard(SUPPORTED_HTTP_METHODS),
+    withAuthedUser,
+  );
+}
 ```
 
 Now, let's write the exception filter:
@@ -150,7 +161,7 @@ Now, let's write the exception filter:
 try {
     await handler(req, res);
   } catch (exception) {
-    // now we can do 
+    // now we can do
     // something with "exception"
 }
 ```
@@ -178,7 +189,7 @@ function getExceptionMessage(
 function getExceptionStack(
   exception: unknown
 ) {
-  return isError(exception) ? 
+  return isError(exception) ?
     exception.stack : undefined;
 }
 
@@ -217,12 +228,12 @@ By using `ApiError` you can make sure to return the most appropriate status code
 export function anApiFunction() {
   const user = userService.getUser();
 
-  const hasPermissions = 
+  const hasPermissions =
     await checkPermissions(user);
 
   if (!hasPermissions) {
     throw new ApiError(
-      HttpStatusCode.Forbidden, 
+      HttpStatusCode.Forbidden,
       `User does not have the permissions to perform some action`
     );
   }
@@ -257,7 +268,7 @@ const requestContext = {
 };
 
 // edit the message according to your preferences
-const exceptionMessage 
+const exceptionMessage
   = `An unhandled exception occurred.`;
 
 logger.error(requestContext, exceptionMessage);

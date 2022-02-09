@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/_articles/using-tailwind-with-nextjs.mdx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_collections/health.mdx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_writings/getting-healthier-tips-for-developers.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/subheading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/subheading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_articles/a-scalable-nextjs-project-structure.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/a-scalable-nextjs-project-structure.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_articles/handling-api-errors-in-nextjs.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/handling-api-errors-in-nextjs.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_articles/middleware-pipes-nextjs.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/middleware-pipes-nextjs.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,21 +78,21 @@
     </key>
   </component>
   <component name="RunManager" selected="npm.dev">
-    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="dev" />
+        <script value="build" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="release" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="release" />
+        <script value="dev" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -132,10 +131,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.dev" />
-        <item itemvalue="npm.typecheck" />
+        <item itemvalue="npm.build" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.typecheck" />
         <item itemvalue="npm.sitemap" />
-        <item itemvalue="npm.release" />
       </list>
     </recent_temporary>
   </component>
@@ -181,6 +180,12 @@
       <workItem from="1641392724185" duration="512000" />
       <workItem from="1641466445167" duration="589000" />
       <workItem from="1641639538118" duration="14437000" />
+      <workItem from="1642502022274" duration="1251000" />
+      <workItem from="1642528705160" duration="1203000" />
+      <workItem from="1642544355346" duration="1181000" />
+      <workItem from="1642629250572" duration="631000" />
+      <workItem from="1642684470695" duration="598000" />
+      <workItem from="1644430241391" duration="2547000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -343,7 +348,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641987622015</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Updated article">
+      <created>1642509026903</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1642509026904</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,6 +384,7 @@
     <MESSAGE value="Minor text updates" />
     <MESSAGE value="Changed font" />
     <MESSAGE value="Added Zod article" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Zod article" />
+    <MESSAGE value="Updated article" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated article" />
   </component>
 </project>
