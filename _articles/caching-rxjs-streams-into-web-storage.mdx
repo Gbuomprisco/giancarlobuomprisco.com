@@ -1,28 +1,40 @@
 ---
 collection: rxjs.mdx
 title: Caching RxJS streams into Web Storage
-excerpt: In this article I will introduce you to a simple utility that allows you
-  to cache RxJS streams in memory or the browser's storage
+excerpt: Learn how to cache RxJS streams in your browser's storage
 date: 2021-11-11T00:00:00+01:00
 coverImage: "/assets/caching-rxjs-streams.webp"
-series: ''
 tags:
 - rxjs
 live: true
-canonical: ''
 
 ---
-Frameworks such as Nest and Angular (among others) use RxJS as an async API for handling HTTP requests. 
+RxJS is a powerful Reactive Functional Programming library that helps us
+tame asynchronous programming with Javascript and Typescript.
 
-If you're a user of any of these, it may be common that you need to cache some requests; for example, fetching from your expensive endpoint only if the latest request sent by the client was over 1 minute ago - or store data locally forever if this never really changes.
+Important frameworks such as Nest and Angular (among others) use RxJS as the
+tool to handle asynchronous communication, such as for handling HTTP requests.
 
-In this article, I want to introduce you to the library [cached-observable](https://github.com/Gbuomprisco/cached-observable), and walk through the steps to build it from scratch. I use this library in all my Angular/Nest projects.
+As a user, it can be very common having to cache some requests (or
+computationally heavy calculations) in memory or in
+the user's browsers (using `LocalStorage` or `SessionStorage`): for
+example, fetching from your expensive endpoint only if the latest request sent by the client was over 1 minute ago - or store data locally forever if this never really changes.
 
-The library allows you to cache streams, assign a maximum age (so that the caching expires after a certain amount of time), and store your data in either: memory, Session Storage, or Local Storage.
+In this article, I want to introduce you a library I wrote to handle this
+sort of situations named
+[cached-observable](https://github.com/Gbuomprisco/cached-observable).
+
+I will walk through the steps to build it from scratch.
+
+The library allows you to cache streams, assign a maximum age (so that the caching expires after a certain amount of time), and store your data in either: memory, `SessionStorage`, or `LocalStorage`.
+
+I personally use this library in all my Rx-powered codebases.
 
 ## Cache Providers
 
-As we've said, we're going to be using three different types of "storage" types. To make this simple, we're going to define a unified interface `CacheProvider<T>` with `T` being the type of the value we're caching, and `CachePayload` being the data structure of the entry into the cache.
+As we've said, we're going to be using three different types of "storage" types.
+
+To make this simple, we're going to define a unified interface `CacheProvider<T>` with `T` being the type of the value we're caching, and `CachePayload` being the data structure of the entry into the cache.
 
 We want to store the following information:
 
@@ -36,11 +48,12 @@ export interface CachePayload<T> {
 
 Let's explain the above:
 
-* `value` is the original observable
+* `value` is the original `Observable`
 * `expiry` is the value, in milliseconds, of the timestamp when the cache will expire
 * `lastUpdated` is there for convenience
 
-Now, we want to define what a provider looks like. It will have three methods:
+Now, we want to define what a cache provider looks like. It will have three
+methods:
 
 ```typescript
 import { CachePayload } from './cache-payload.interface';
@@ -56,7 +69,19 @@ export interface CacheProvider<T> {
 
 We can now write the implementations; let's start with the `in-memory` provider.
 
-We can use a `Map` data structure to store our data by its key. NB: it's not a great idea to make a global cache like in this example, but it's best if it's injected into this function by its consumer. For simplicity, we'll use a global cache.
+The `in-memory` provider helps us cache data in memory, until one of the
+following events happen:
+
+- in a browser, when the page is refreshed
+- in NodeJS, when the process restarts
+- when it's manually cleared by the user
+
+To store the data locally, can use a `Map` data structure to store our data
+indexed by a unique key provided by the consumer.
+
+NB: we're going to make a global cache, but it's not a great idea. It's
+best if it's injected into this function by its consumer. For simplicity's
+sake, we use a global cache.
 
 ```typescript
 import { CachePayload } from './cache-payload.interface';
@@ -70,7 +95,10 @@ export function memoryCacheProvider<T>(): CacheProvider<T> {
     get(key: string) {
       return cache.get(key) as CachePayload<T> | undefined;
     },
-    set(key: string, value: CachePayload<T>) {
+    set(
+      key: string,
+      value: CachePayload<T>
+    ) {
       cache.set(key, value);
     },
     unset(key: string) {
@@ -80,23 +108,33 @@ export function memoryCacheProvider<T>(): CacheProvider<T> {
 }
 ```
 
-The above is very simple - we implement the native `Map` methods using the `CacheProvider` interface, and some Typescript on top.
+The above is very simple: we implement the native `Map` methods using the
+`CacheProvider` interface, and some Typescript on top. We do it such that
+our implementation adheres to the `CacheProvider` interfaces.
 
 ### Web Storage Providers
 
-The following is going to be slightly more difficult. We need to store our data using Web Storage (Session and Local), but our data needs to serializable, and therefore, to be extracted from the Observable and stored as JSON.
+Storing our streams' data in Web Storage is going to be slightly harder.
 
-#### Setter
+Problem: the data needs to serializable, and therefore, to be extracted from
+the Observable and stored as stringified JSON.
 
-Let's start from the setter function. We need to subscribe to the `Observable`, extract its value, and then replace the `Observable` with the original JSON.
+#### Caching our Observable's data into Web Storage using a Setter
+
+Let's start from the setter function.
+
+We need to:
+- subscribe to the `Observable`
+- extract its value
+- replace the `Observable` with the original JSON
 
 ```typescript
 set(
-  key: string, 
+  key: string,
   payload: CachePayload<T>
 ) {
   payload.value.pipe(
-    take(1), 
+    take(1),
     filter(Boolean)
   ).subscribe((value) => {
     storage.setItem(
@@ -109,14 +147,20 @@ set(
   });
 }
 ```
-#### Getter
 
-Okay, this is not too hard. 
+#### Getting data from Web Storage to an Observable's Stream
 
-* We get the value, if it exists, parse it from a string to a JSON, we wrap the value in an `Observable` using the `of` creational operator, and return it
-* If it does not exist, we return undefined
+Okay, this is not too hard.
 
-Of course, it's wrapped in a `try/catch` because JSON.parse can go wrong.
+- we get the value from Local Storage using the provided unique key
+- we parse it from a string to a JSON
+- we wrap the value in an `Observable`
+using the `of` creational operator
+- we return the resulting observable
+- if it does not exist, we return undefined
+
+Of course, we wrap the code block in a `try/catch` because `JSON.parse` can go
+very wrong.
 
 ```typescript
 try {
@@ -138,11 +182,9 @@ try {
 }
 ```
 
-#### Unset
+#### Removing a value from the cache
 
-Nothing special to see; we simply remove the item from the storage:
-
-And this is the complete snippet:
+We simply remove the item from the storage. This is the complete snippet:
 
 ```typescript
 import { of, filter, take } from 'rxjs';
@@ -178,11 +220,11 @@ export function storageCacheProvider<T>(
       }
     },
     set(
-      key: string, 
+      key: string,
       payload: CachePayload<T>
     ) {
       payload.value.pipe(
-        take(1), 
+        take(1),
         filter(Boolean)
       ).subscribe((value) => {
         storage.setItem(
@@ -201,7 +243,7 @@ export function storageCacheProvider<T>(
 }
 ```
 
-Now that we're done defining the methods for Web Storage, we need to create the providers for the actual implementations of WebStorage:
+Now that we're done defining the methods for Web Storage, we need to create the providers for the actual implementations of `WebStorage`:
 
 ```typescript
 import { CacheProvider } from './cache-provider';
@@ -214,23 +256,23 @@ declare const window: any;
 export function sessionCacheProvider<T>(): CacheProvider<T> {
   const storage = window?.sessionStorage;
 
-  return storage ? 
-    storageCacheProvider(storage) : 
+  return storage ?
+    storageCacheProvider(storage) :
     memoryCacheProvider();
 }
 
 export function localCacheProvider<T>(): CacheProvider<T> {
   const storage = window?.localStorage;
 
-  return storage ? 
-    storageCacheProvider(storage) : 
+  return storage ?
+    storageCacheProvider(storage) :
     memoryCacheProvider();
 }
 ```
 
-You can find below some magic at the top to avoid errors if this somehow gets compiled by the Node runtime; please don't use these providers in Node. 
+You can find below some magic at the top to avoid errors if this somehow gets compiled by the Node runtime; please don't use these providers in Node.
 
-It can be pretty simple to extend it to other "providers", such as Redis.
+It can be pretty simple to extend it to other "providers", such as `Redis`.
 
 #### Provider Factory
 
@@ -280,8 +322,9 @@ function cachedObservable<T = unknown>(
 * `key` - is a unique identifier for each stream; yep, it needs to be **unique**
 * `maxAge` this is an optional parameter; if we want the cache to expire after 10 seconds, we would pass `10_000`
 * `cacheProviderType` - also optional; it's the provider type we want to use
-  
+
 We start our function by:
+
 - instantiating the provider type we want to use to store/retrieve the data from
 - checking if the value exists in the cache
 
@@ -292,7 +335,7 @@ const cached = cache.get(key);
 
 if (cached) {
   if (
-    cached.expiry !== undefined 
+    cached.expiry !== undefined
       && isKeyExpired(cached.expiry)
   ) {
     invalidateCachedObservable(cacheProviderType, key);
@@ -308,10 +351,13 @@ function isKeyExpired(expirationDate: number) {
   return currentTimestamp >= expirationDate;
 }
 ```
+
 As you can see above:
 
-* if the cached value exists, AND if it is not expired, we return it
-* otherwise, we clean up the value from memory/storage, and continue with storing the value
+* if the cached value exists, AND if it is not expired, we return it to the
+consumer
+* if it does not exist, we remove the value from memory and
+continue with storing the value
 
 Let's go on:
 
@@ -322,7 +368,8 @@ const value = observable$.pipe(
 
 // setting expiry
 const lastUpdated = +new Date();
-const expiry = 
+
+const expiry =
   maxAge ? lastUpdated + maxAge : undefined;
 
 // caching value
@@ -332,10 +379,10 @@ cache.set(key, {
   lastUpdated,
 });
 
-// return 
+// return
 return value;
 ```
-We use the operator `shareReplay` such that new subscription will reuse the same subscription. 
+We use the operator `shareReplay` such that new subscription will reuse the same subscription.
 
 That means, if we have an in-flight request (hence, our cache is still missing the value) and another request gets made, instead of executing it, the consumer will receive the cached stream even if it hasn't yet emitted a value. The subject will *multicast* the resolved value to all its observers.
 
@@ -343,7 +390,7 @@ Aferwards, we set the `CachePayload` data structure and return the value we just
 
 ### Invalidation
 
-Of course, we also want to offer the ability to invalidate an entry. 
+Of course, we also want to offer the ability to invalidate an entry.
 
 It's simple, but we need the consumer to provide which cache provider type to use.
 
@@ -385,13 +432,13 @@ const createStream = (key: string) => {
 };
 ```
 
-And now, on to the test:
+Now, let's write a Jest test to check our implementation works correctly:
 
 ```typescript
-describe('cachedObservable', () => 
+describe('cachedObservable', () =>
   // tell Jest to use fake timers,
   jest.useFakeTimers();
-  
+
   // advance virtual time by <ms> milliseconds
   const tick = (ms = 0) => {
     jest.advanceTimersByTime(ms);
@@ -403,23 +450,23 @@ describe('cachedObservable', () =>
 
     const createStream = () => {
       return cachedObservable(
-        stream(), 
+        stream(),
         key
       );
     };
-  
+
     expect(createStream()).toBe(createStream());
   });
 
   it('should no longer store the value', async () => {
     const key = '4';
 
-    // we define a spy which is going to 
+    // we define a spy which is going to
     // be called whenever a new stream
     // ges created
     // if the instance is cached, it won't call it
     const spy = jest.fn(() => 1);
-    
+
     // cache a stream, for only 500 ms
     const createStream = () => {
       const stream$ = of(1).pipe(
@@ -435,18 +482,18 @@ describe('cachedObservable', () =>
         cachedObservable(stream$, key, 500)
       );
     };
-  
+
     // create the first stream and advance by 250ms
     await createStream();
     await tick(250);
-  
+
     // create another stream and advance by 250ms
     await createStream();
     await tick(250);
-  
+
     // create another stream after 500ms have passed
     await createStream();
-  
+
     // we expect spy was called only twice
     expect(spy).toHaveBeenCalledTimes(2);
 
@@ -472,7 +519,7 @@ Let's assume we're making an HTTP requests, and the HTTP client returns an Obser
 function getTodos() {
   const request$ = this.http.get(url);
   const maxAge = 60_000;
-  
+
   return cachedObservable(request$, url, maxAge, CacheProviderType.Persistent);
 }
 ```

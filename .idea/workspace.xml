@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_articles/angular-where-to-put-models.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/angular-where-to-put-models.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_articles/caching-rxjs-streams-into-web-storage.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/caching-rxjs-streams-into-web-storage.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +183,7 @@
       <workItem from="1642544355346" duration="1181000" />
       <workItem from="1642629250572" duration="631000" />
       <workItem from="1642684470695" duration="598000" />
-      <workItem from="1644430241391" duration="5731000" />
+      <workItem from="1644430241391" duration="6915000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -360,7 +360,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644434937887</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Enriched Angular Models article">
+      <created>1644441250253</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1644441250253</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -391,6 +398,7 @@
     <MESSAGE value="Added Zod article" />
     <MESSAGE value="Updated article" />
     <MESSAGE value="Updated articles" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated articles" />
+    <MESSAGE value="Enriched Angular Models article" />
+    <option name="LAST_COMMIT_MESSAGE" value="Enriched Angular Models article" />
   </component>
 </project>
