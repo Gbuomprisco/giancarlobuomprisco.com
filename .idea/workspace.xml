@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/google-analytics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/google-analytics.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/_document.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_document.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_articles/how-to-build-production-grade-nextjs-projects.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/how-to-build-production-grade-nextjs-projects.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/article.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/article.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +43,6 @@
   </component>
   <component name="ProjectId" id="1eXpjj4K6E5SWQ3Gzb2ujlLZygx" />
   <component name="ProjectViewState">
-    <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
@@ -57,7 +57,7 @@
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/giancarlo/Lab/giancarlobuomprisco.com/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -127,8 +127,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.partytown" />
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.partytown" />
         <item itemvalue="npm.build" />
         <item itemvalue="npm.start" />
         <item itemvalue="npm.typecheck" />
@@ -193,7 +193,12 @@
       <workItem from="1653904113956" duration="2990000" />
       <workItem from="1653921012010" duration="424000" />
       <workItem from="1653921559010" duration="427000" />
-      <workItem from="1653922526765" duration="1331000" />
+      <workItem from="1653922526765" duration="5842000" />
+      <workItem from="1653947725041" duration="11000" />
+      <workItem from="1653947783428" duration="26000" />
+      <workItem from="1653948035475" duration="182000" />
+      <workItem from="1653948297746" duration="1414000" />
+      <workItem from="1653954502914" duration="17000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -405,14 +410,20 @@
       <option name="project" value="LOCAL" />
       <updated>1653923085031</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Removed Partytown not to lose UA">
+      <created>1653924102973</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1653924102973</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix Indent" />
     <MESSAGE value="Design Improvements" />
     <MESSAGE value="Added work to index page" />
     <MESSAGE value="Leaving London post" />
@@ -437,6 +448,11 @@
     <MESSAGE value="Added cal widget; added partytown" />
     <MESSAGE value="Added GA4" />
     <MESSAGE value="Try fix GA4" />
-    <option name="LAST_COMMIT_MESSAGE" value="Try fix GA4" />
+    <MESSAGE value="Removed Partytown not to lose UA" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed Partytown not to lose UA" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

@@ -129,7 +129,11 @@ const Article: React.FC<{
                 <div className="mb-10 mt-4 max-w-2xl mx-auto flex flex-col space-y-4">
                   <PostHeader post={post} />
 
-                  <SeriesList posts={series} series={post.series} />
+                  {series ? (
+                    <div className={"my-8"}>
+                      <SeriesList posts={series} series={post.series} />
+                    </div>
+                  ) : null}
                 </div>
 
                 <PostBody content={content} />

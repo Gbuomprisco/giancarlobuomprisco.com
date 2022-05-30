@@ -66,5 +66,16 @@
                 ]
             }
         }
+    ],
+    "grammarly.selectors": [
+        {
+            "language": "mdx",
+            "scheme": "file",
+            "pattern": "_articles/building-an-enterprise-grade-angular-project-structure.mdx"
+        },
+        {
+            "language": "mdx",
+            "scheme": "file"
+        }
     ]
 }
