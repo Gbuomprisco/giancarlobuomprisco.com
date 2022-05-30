@@ -14,8 +14,8 @@ const Author = () => {
         <Image
           className="hover:shadow-xl"
           layout="fixed"
-          width="40px"
-          height="40px"
+          width="42px"
+          height="42px"
           src={PROFILE_IMAGE}
           alt={AUTHOR}
         />

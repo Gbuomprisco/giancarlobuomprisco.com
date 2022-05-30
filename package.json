@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build",
+    "build": "npm run partytown && next build",
+    "partytown": "partytown copylib public/~partytown",
     "postbuild": "npm run rss && npm run sitemap",
     "sitemap": "next-sitemap",
     "rss": "npx ts-node -O '{\"module\": \"commonjs\"}' -P tsconfig.json ./lib/rss-feed",
@@ -15,6 +16,7 @@
     "export": "next export"
   },
   "dependencies": {
+    "@builder.io/partytown": "^0.6.0",
     "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^12.0.0",
     "classnames": "2.3.1",

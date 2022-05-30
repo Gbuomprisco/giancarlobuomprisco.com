@@ -6,15 +6,17 @@ const GoogleAnalyticsScript: React.FC<{ accountId: string }> = ({
   return (
     <>
       <script
+        type="text/partytown"
         async
         defer
         src="https://www.googletagmanager.com/gtag/js"
-      ></script>
+      />
 
       <script
+        type="text/partytown"
         id="gtmDataLayer"
         dangerouslySetInnerHTML={{ __html: script }}
-      ></script>
+      />
     </>
   );
 };
@@ -24,11 +26,9 @@ export default GoogleAnalyticsScript;
 function getAnalyticsScript(id: string) {
   return `
     window.dataLayer = window.dataLayer || [];
-
     function gtag() {
-        dataLayer.push(arguments);
+      dataLayer.push(arguments);
     }
-
     gtag('js', new Date());
     gtag('config', '${id}');
 `;

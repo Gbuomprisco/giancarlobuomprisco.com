@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Script from "next/script";
-import { useEffect, useState } from 'react';
 
 import Container from "../components/container";
 import Layout from "../components/layout";
@@ -9,29 +7,10 @@ import Hero from "../components/hero";
 import SubHeading from "../components/subheading";
 
 import { EMAIL, TITLE } from "../lib/constants";
-
-declare global {
-  interface Window {
-    Calendly: any;
-  }
-}
+import CalWidget from "../components/cal-widget";
 
 const Contact = () => {
-  const [text, setText] = useState("Loading Calendly. Please wait...");
-
-  const onScriptLoaded = () => setText("");
   const emailHref = `mailto:${EMAIL}`;
-
-  useEffect(() => {
-    if (window.Calendly) {
-      window.Calendly.initInlineWidget({
-        'url': 'https://calendly.com/gcpsk',
-        parentElement: document.getElementById('calendly'),
-      });
-
-      onScriptLoaded();
-    }
-  }, []);
 
   return (
     <>
@@ -58,24 +37,11 @@ const Contact = () => {
                 >
                   Send me an email
                 </a>{" "}
-                <span>or use the Calendly meeting below:</span>
+                <span>or use the widget below:</span>
               </p>
             </div>
 
-            <div>
-              <p className="text-xl font-semibold">{text}</p>
-
-              <div
-                id={'calendly'}
-                className="calendly-inline-widget flex items-center justify-center"
-                style={{ minWidth: "320px", height: "650px" }}
-              />
-
-              <Script
-                type="text/javascript"
-                src={"https://assets.calendly.com/assets/external/widget.js"}
-              />
-            </div>
+            <CalWidget />
           </div>
         </Container>
       </Layout>

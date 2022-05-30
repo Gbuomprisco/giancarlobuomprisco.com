@@ -11,16 +11,16 @@
 }
 
 .markdown p {
-  @apply text-xl leading-8 my-6 text-gray-800;
+  @apply text-lg my-6 text-gray-800 font-serif;
 }
 
 .markdown li {
-  @apply text-xl leading-8 text-gray-800;
+  @apply text-lg text-gray-800 font-serif my-2;
 }
 
 .markdown b,
 .markdown strong {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .markdown pre {
@@ -37,6 +37,12 @@
 
 .markdown ul {
   list-style: circle;
+
+  @apply pl-10 pb-3 mb-3;
+}
+
+.markdown ol {
+  list-style: decimal;
 
   @apply pl-10 pb-3 mb-3;
 }

@@ -126,9 +126,9 @@ const Article: React.FC<{
                   />
                 </Head>
 
-                <PostHeader post={post} />
+                <div className="mb-10 mt-4 max-w-2xl mx-auto flex flex-col space-y-4">
+                  <PostHeader post={post} />
 
-                <div className="mb-10 max-w-2xl mx-auto">
                   <SeriesList posts={series} series={post.series} />
                 </div>
 
