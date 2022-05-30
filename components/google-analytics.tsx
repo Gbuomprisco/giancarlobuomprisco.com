@@ -6,14 +6,12 @@ const GoogleAnalyticsScript: React.FC<{ accountId: string }> = ({
   return (
     <>
       <script
-        type="text/partytown"
         async
         defer
         src={`https://www.googletagmanager.com/gtag/js?id=${accountId}`}
       />
 
       <script
-        type="text/partytown"
         id="gtmDataLayer"
         dangerouslySetInnerHTML={{ __html: script }}
       />
