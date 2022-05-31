@@ -3,6 +3,7 @@ import Link from "next/link";
 import DateFormatter from "./date-formatter";
 import CollectionName from "./collection-name";
 import Post from "../types/note";
+import ArticleType from "../types/article";
 import BlogPostImageSvg from "./blog-post-image-svg";
 
 type Props = {
@@ -10,11 +11,13 @@ type Props = {
 };
 
 const PostPreview = ({ post }: Props) => {
-  const { title, slug, date, collection, readingTime } = post;
+  const { slug, date, collection, readingTime } = post;
 
   const collectionName = collection.name.toLowerCase();
   const href = `/${collectionName}/${slug}`;
   const hrefString = "/[collection]/[slug]";
+
+  const postTitle = getTitle(post);
 
   return (
     <div className="border border-gray-100 rounded-md hover:shadow-xl transition-shadow duration-500">
@@ -29,7 +32,7 @@ const PostPreview = ({ post }: Props) => {
                   height={"100%"}
                   width={"100%"}
                   viewBox="0 0 800 180"
-                  title={title}
+                  title={postTitle}
                   color={collection.primaryColor}
                   imageUrl={collection.logo ?? ""}
                 />
@@ -57,3 +60,11 @@ const PostPreview = ({ post }: Props) => {
 };
 
 export default PostPreview;
+
+function getTitle(post: ArticleType) {
+  if (post.series) {
+    return `${post.series}: ${post.title}`;
+  }
+
+  return post.title;
+}

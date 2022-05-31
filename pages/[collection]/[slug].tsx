@@ -171,7 +171,7 @@ function getPostItemBySlug(slug: string) {
   };
 }
 
-async function generateCoverImage(note: BlogPost) {
+async function generateCoverImage(note: PostType) {
   const outputFile = `${note.slug}.webp`;
 
   try {
@@ -188,11 +188,13 @@ async function generateCoverImage(note: BlogPost) {
       ? Buffer.from(imageBuffer).toString("base64")
       : undefined;
 
+    const title = getTitle(note);
+
     const svg = renderToStaticMarkup(
       <BlogPostImageSvg
         imageData={imageData}
         color={color}
-        title={note.title}
+        title={title}
         width={"800"}
         height={"418"}
         fontSize={"4em"}
@@ -202,4 +204,12 @@ async function generateCoverImage(note: BlogPost) {
 
     await createBannerImage(svg, outputFile);
   }
+}
+
+function getTitle(post: ArticleType) {
+  if (post.series) {
+    return `${post.series}: ${post.title}`;
+  }
+
+  return post.title;
 }

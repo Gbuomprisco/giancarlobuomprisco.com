@@ -1,9 +1,9 @@
+import React from "react";
 import Collection from "../types/collection";
 
-const SeriesTitle: React.FC<{ collection: Collection }> = ({
-  children,
-  collection,
-}) => {
+const SeriesTitle: React.FC<
+  React.PropsWithChildren<{ collection: Collection }>
+> = ({ children, collection }) => {
   const style: Record<string, string> = {
     color: collection.primaryColor,
     lineHeight: "1.2",

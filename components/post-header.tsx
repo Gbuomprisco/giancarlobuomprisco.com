@@ -21,17 +21,23 @@ const PostHeader = ({ post }: Props) => {
 
   return (
     <>
-      {live ? null : <DraftBar />}
+      {live ? null : (
+        <DraftBar readingTime={readingTime} content={post.content} />
+      )}
 
-      <div className={'flex flex-col space-y-8 md:space-y-12'}>
+      <div className={"flex flex-col space-y-8 md:space-y-12"}>
         <div className="flex flex-col md:flex-row md:items-center md:space-y-0 space-y-4 justify-center">
           <div className="flex flex-row space-x-2 items-center">
-            <div className={'flex flex-row space-x-4'}>
+            <div className={"flex flex-row space-x-4"}>
               <Author />
 
               <div>
                 <p>
-                  <a target={'_blank'} rel={'noopener noreferrer'} href={TWITTER_URL}>
+                  <a
+                    target={"_blank"}
+                    rel={"noopener noreferrer"}
+                    href={TWITTER_URL}
+                  >
                     Giancarlo Buomprisco
                   </a>
                 </p>
@@ -51,9 +57,11 @@ const PostHeader = ({ post }: Props) => {
           </div>
         </div>
 
-        {series ? <SeriesTitle collection={collection}>{series}</SeriesTitle> : null}
+        {series ? (
+          <SeriesTitle collection={collection}>{series}</SeriesTitle>
+        ) : null}
 
-        <div className={'flex flex-col space-y-2'}>
+        <div className={"flex flex-col space-y-2"}>
           <PostTitle>{title}</PostTitle>
           <SubHeading>{excerpt}</SubHeading>
         </div>
@@ -91,10 +99,25 @@ function PostTags({
   );
 }
 
-function DraftBar() {
-  return <div className={'fixed top-0 left-0 w-full h-5' +
-    ' bg-yellow-300 text-xs font-bold text-center flex items-center' +
-    ' justify-center'}>Draft</div>;
+function DraftBar(
+  props: React.PropsWithChildren<{
+    readingTime: string;
+    content: string;
+  }>
+) {
+  const words = props.content.replaceAll("#", "").split(" ").length;
+
+  return (
+    <div
+      className={
+        "fixed bottom-0 left-0 w-full h-8" +
+        " bg-yellow-300 text-sm font-semibold text-center flex items-center" +
+        " justify-center"
+      }
+    >
+      Draft - {props.readingTime} - {words} words
+    </div>
+  );
 }
 
 export default PostHeader;

@@ -46,7 +46,7 @@ const ArticlePreview = ({ post, preloadImage }: Props) => {
                 fontSize={"3.2rem"}
                 height={"100%"}
                 width={"100%"}
-                title={title}
+                title={postTitle}
                 color={collection.primaryColor}
                 imageUrl={collection.logo ?? ""}
               />
@@ -79,9 +79,7 @@ const ArticlePreview = ({ post, preloadImage }: Props) => {
 
       <p className="leading-relaxed mb-4 px-4 text-sm hover:underline">
         <Link href="/[collection]/[slug]" as={href} passHref>
-          <a>
-            {excerpt}
-          </a>
+          <a>{excerpt}</a>
         </Link>
       </p>
     </div>
