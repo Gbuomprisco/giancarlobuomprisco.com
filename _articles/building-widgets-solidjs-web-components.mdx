@@ -1,0 +1,86 @@
+---
+date: '2022-06-01'
+title: Building Widgets with Solid.js Web Components
+excerpt: "Solid.js is a small, familiar and super-fast library for building User Interfaces. In this post, we build a lightweight third-party widget as a Web Component using Solid and TailwindCSS."
+tags:
+  - solid
+  - web-components
+collection: "solid.mdx"
+live: false
+---
+
+[SolidJS](https://www.solidjs.com/) is a small library for building User Interfaces. It compiles JSX into **highly optimized and efficient Javascript code**: fast, small, and reactive. Its creator is [Ryan Carniato](https://twitter.com/RyanCarniato), a brilliant developer at Netlify and previous at EBay.
+
+Being a JSX-based UI library, it's naturally very similar to *React*; nonetheless, it has some peculiar differences and, more importantly, exciting strengths over React.
+
+This blog post explains why Solid.js is a good choice for building third-party widgets and how I set it up for maximum developer experience so that you can do the same. Additionally, we'll leverage Tailwind CSS using a couple of workarounds.
+
+NB: this is not an introduction to learning Solid - it's an explanation of how to use it for building third-party widgets; don't worry: if you know JSX, it's all you need to understand the contents of this blog post.
+
+## Why Solid.js?
+
+Solid doesn't have the backing of a vast corporation and does not have a community as large as React's. So, you ask, why choose Solid over rock-solid libraries such as React?
+
+It comes down not only to personal preferences but also to what is the goal you're trying to achieve. In this post, I won't go into detail about choosing one over the other. Still, I will explain why **choosing Solid.js for building Javascript widgets is the better choice**.
+
+### What is a Javascript widget?
+
+Typically, any Javascript code that web pages inject from a third party. For example, a Chatbot widget, a popup, a calendar widget, etc.
+
+These scripts are one of the main issues affecting modern web pages. Plenty of eCommerce businesses have dozens of widgets, and **each of them downloads hundreds of KBs**; in some cases, they bring whole frameworks, such as React (Ehm Ehm, isn't that right, Typeform?) with them. 
+
+It doesn't take a genius to understand that this is incredibly detrimental to certain businesses' revenue, especially because much of the traffic comes from mobile devices.
+
+### Why is Solid.js ideal for writing Javascript widgets?
+
+If you're building a JavaScript widget, you want to ensure it minimally impacts your users' websites. And that's why Solid is an incredible choice for this use case: it is **one of the fastest libraries** out there, but it is also **one of the smallest ones**. 
+
+The best part? No compromise on your DX (developer experience): Solid supports Typescript, *hooks*, Suspense-like features, SSR, SSG, and you can easily bundle it with modern tools (such as Rollup). 
+
+It's everything you love about React, but smaller and faster.
+
+#### Compiling Solid.js components to Web Components
+
+Additionally, Solid.js allows compiling Solid components to Web Components. 
+
+What does it mean? We can use all the goodies of the Solid compiler and bundle our code as standard and compliant Web Components, reusable from other frameworks and libraries as standard HTML components.
+
+To do so, we will use the `solid-element` library, built by the Solid.js team.
+
+## Building Widgets with Solid.js
+
+If I have convinced you to give Solid.js a try for building your widgets, read on. We're getting to the practical part of this blog post.
+
+### Installing the dependencies
+
+First of all, we have to install the dependencies to be able to build our widgets:
+
+```
+npm i --save solid-js solid-element rollup babel-preset-solid rollup-plugin-terser rollup-plugin-babel rollup-plugin-postcss autoprefixer tailwindcss
+```
+
+The above include:
+- Solid, Solid Element, and Solid's Babel preset
+- Rollup and the plugins to bundle our code (Babel, PostCSS)
+- Tailwind CSS, autoprefixer
+
+### Writing our first Solid.js Component
+
+### Using CSS Modules with Solid.js
+
+### Using Tailwind CSS with Solid's Web Components
+
+### Converting a Solid.js component to a Web Component
+
+### Bundling a Web Component with Rollup
+
+#### "Hello World" size of a Solid.js Web Component
+
+### Using a Web Components with React.js
+
+### Using a Web Component Widget using a script tag
+
+### Deploying a Web Component Widget to a CDN
+
+## Final Words
+
