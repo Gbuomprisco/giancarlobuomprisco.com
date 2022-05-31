@@ -6,20 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/client-only.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/client-only.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/container.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/container.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/draft-badge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/draft-badge.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/grid-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/grid-list.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/hero.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/intro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/intro.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/lazy-render.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/lazy-render.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/post-title.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post-title.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/subheading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/subheading.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/tag.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/tag.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/tweet-embed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/tweet-embed.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/typings.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/typings.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/cal-widget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cal-widget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,7 +197,7 @@
       <workItem from="1653947783428" duration="26000" />
       <workItem from="1653948035475" duration="182000" />
       <workItem from="1653948297746" duration="1414000" />
-      <workItem from="1653954502914" duration="2827000" />
+      <workItem from="1653954502914" duration="4918000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -442,14 +430,20 @@
       <option name="project" value="LOCAL" />
       <updated>1653955854574</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Updated to React 18">
+      <created>1653994039789</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1653994039789</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Leaving London post" />
     <MESSAGE value="Small index update" />
     <MESSAGE value="Added conditional rendering post" />
     <MESSAGE value="Rewrote conditional rendering article a little" />
@@ -474,7 +468,8 @@
     <MESSAGE value="Removed Partytown not to lose UA" />
     <MESSAGE value="Published article" />
     <MESSAGE value="Minor design changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor design changes" />
+    <MESSAGE value="Updated to React 18" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated to React 18" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
