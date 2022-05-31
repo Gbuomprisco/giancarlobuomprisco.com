@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cal-widget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cal-widget.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +195,7 @@
       <workItem from="1653947783428" duration="26000" />
       <workItem from="1653948035475" duration="182000" />
       <workItem from="1653948297746" duration="1414000" />
-      <workItem from="1653954502914" duration="4918000" />
+      <workItem from="1653954502914" duration="5915000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -437,14 +435,20 @@
       <option name="project" value="LOCAL" />
       <updated>1653994039789</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Fixed Cal Widget">
+      <created>1653997184274</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1653997184274</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Small index update" />
     <MESSAGE value="Added conditional rendering post" />
     <MESSAGE value="Rewrote conditional rendering article a little" />
     <MESSAGE value="Various updates" />
@@ -469,7 +473,8 @@
     <MESSAGE value="Published article" />
     <MESSAGE value="Minor design changes" />
     <MESSAGE value="Updated to React 18" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated to React 18" />
+    <MESSAGE value="Fixed Cal Widget" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Cal Widget" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
