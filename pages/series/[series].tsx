@@ -7,19 +7,16 @@ import MainHeader from "../../components/main-header";
 import Layout from "../../components/layout";
 import ArticlesList from "../../components/articles-list";
 import PostTitle from "../../components/post-title";
-import CollectionBrandingBar from "../../components/collection-branding-bar";
 
 import { getPostsBySeriesSlug, getAllSeries, slugify } from "../../lib/api";
 import Article from "../../types/article";
-import Collection from "../../types/collection";
 
 type Props = {
-  collection: Collection;
   series: string;
   posts: Article[];
 };
 
-const Series = ({ posts, collection, series }: Props) => {
+const Series = ({ posts, series }: Props) => {
   const router = useRouter();
 
   if (!router.isFallback && !posts.length) {
@@ -31,8 +28,6 @@ const Series = ({ posts, collection, series }: Props) => {
       <Head>
         <title key="title">{series}</title>
       </Head>
-
-      <CollectionBrandingBar collection={collection} />
 
       <Container>
         <MainHeader />

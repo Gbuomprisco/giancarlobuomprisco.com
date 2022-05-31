@@ -9,32 +9,34 @@ const Intro = () => {
         </h2>
 
         <SubHeading>
-          Coder and Founder. I ship products, and help others do the same.
+          Coder and Founder. I love building digital products and sharing my learnings.
         </SubHeading>
 
         <div className="flex-col space-y-2">
-          <p className="text-base">
-            On this website I showcase my projects, my learnings, and my life.
+          <p>
+            Currently, I&apos;m busy building and running two projects:
           </p>
 
-          <p>
-            I founded{" "}
-            <a
-              target={"_blank noreferrer"}
-              className="border-b-2 font-semibold pb-1 border-[#efee00]"
-              href="https://makerkit.dev"
-            >
-              MakerKit
-            </a>{" "}
-            and co-founded{" "}
-            <a
-              target={"_blank noreferrer"}
-              className="border-b-2 font-semibold pb-1 border-[#1e88e5]"
-              href="https://formtoro.com"
-            >
-              Formtoro
-            </a>.
-          </p>
+          <ul className={'flex flex-col space-y-2 list-disc pl-4'}>
+            <li>I founded{" "}
+              <a
+                target={"_blank noreferrer"}
+                className="border-b-2 font-semibold pb-0.5 border-[#efee00]"
+                href="https://makerkit.dev"
+              >
+                MakerKit
+              </a>, a SaaS Starter for Next.js and Firebase</li>
+            <li>
+              I co-founded{" "}
+              <a
+                target={"_blank noreferrer"}
+                className="border-b-2 font-semibold pb-0.5 border-[#1e88e5]"
+                href="https://formtoro.com"
+              >
+                Formtoro
+              </a> - a premier form builder for eCommerce
+            </li>
+          </ul>
         </div>
       </div>
     </section>

@@ -52,7 +52,8 @@ const Navigation = () => {
       <li
         style={style}
         className={
-          "text-lg lg:text-base text-gray-700 border-b-4 pb-1 border-b-transparent transition:border " +
+          "text-lg lg:text-sm text-gray-600 border-b-4 pb-1" +
+          " border-b-transparent transition:border " +
           (active
             ? "font-bold  border-b-yellow-200"
             : "hover:text-gray-900 font-medium border-b-transparent hover:border-b-yellow-200")

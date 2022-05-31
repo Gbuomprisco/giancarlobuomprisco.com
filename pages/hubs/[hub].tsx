@@ -8,7 +8,6 @@ import Container from "../../components/container";
 import MDXRenderer from "../../components/mdx-renderer";
 
 import ConvertKitPostSignup from "../../components/convertkit-post-signup";
-import CollectionBrandingBar from "../../components/collection-branding-bar";
 import CollectionName from "../../components/collection-name";
 
 import { getHubBySlug, getAllHubs, queryAll } from "../../lib/api";
@@ -36,8 +35,6 @@ const HubPage = ({ hub, content }: Props) => {
 
   return (
     <Layout>
-      <CollectionBrandingBar collection={hub.collection} />
-
       <Container>
         <MainHeader />
 

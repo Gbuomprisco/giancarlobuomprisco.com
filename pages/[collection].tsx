@@ -4,7 +4,6 @@ import Container from "../components/container";
 import MainHeader from "../components/main-header";
 import ArticlesList from "../components/articles-list";
 import Layout from "../components/layout";
-import CollectionBrandingBar from "../components/collection-branding-bar";
 import ConvertKitPostSignup from "../components/convertkit-post-signup";
 
 import { getArticlesByCollection, getPostsByCollection } from "../lib/api";
@@ -14,7 +13,6 @@ import Article from "../types/article";
 import Post from "../types/note";
 
 import CollectionName from "../components/collection-name";
-import PostTitle from "../components/post-title";
 import Collection from "../types/collection";
 import Hero from "../components/hero";
 
@@ -31,8 +29,6 @@ const CollectionPosts = ({ posts, articles, collection, preview }: Props) => {
       <Head>
         <title key="title">{collection.name}</title>
       </Head>
-
-      <CollectionBrandingBar collection={collection} />
 
       <Container>
         <MainHeader />

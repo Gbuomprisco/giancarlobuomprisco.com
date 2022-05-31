@@ -7,7 +7,6 @@ import MainHeader from "./main-header";
 import PostHeader from "./post-header";
 import Layout from "./layout";
 import ArticlesList from "./articles-list";
-import CollectionBrandingBar from "./collection-branding-bar";
 import SectionSeparator from "./section-separator";
 import ConvertKitPostSignup from "./convertkit-post-signup";
 import SeriesList from "./series-list";
@@ -56,8 +55,6 @@ const Article: React.FC<{
   return (
     <Layout>
       <div style={style}>
-        <CollectionBrandingBar collection={post.collection} />
-
         <Container>
           <MainHeader />
 
@@ -129,7 +126,7 @@ const Article: React.FC<{
                 <div className="mb-10 mt-4 max-w-2xl mx-auto flex flex-col space-y-4">
                   <PostHeader post={post} />
 
-                  {series ? (
+                  {post.series ? (
                     <div className={"my-8"}>
                       <SeriesList posts={series} series={post.series} />
                     </div>

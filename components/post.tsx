@@ -8,7 +8,6 @@ import PostBody from "./post-body";
 import MainHeader from "./main-header";
 import PostHeader from "./post-header";
 import Layout from "./layout";
-import CollectionBrandingBar from "./collection-branding-bar";
 import SectionSeparator from "./section-separator";
 import ConvertKitPostSignup from "./convertkit-post-signup";
 import PostTitle from "./post-title";
@@ -59,8 +58,6 @@ const Post: React.FC<{
   return (
     <Layout>
       <div style={style}>
-        <CollectionBrandingBar collection={collection} />
-
         <Container>
           <MainHeader />
 
