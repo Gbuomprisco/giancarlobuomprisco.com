@@ -1,6 +1,6 @@
 import { isBrowser } from "../lib/is-browser";
 
-const ClientOnly: React.FC = ({ children }) => {
+const ClientOnly = ({ children }: React.PropsWithChildren<{}>) => {
   return isBrowser() ? <>{children}</> : null;
 };
 

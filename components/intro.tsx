@@ -20,7 +20,7 @@ const Intro = () => {
           <ul className={'flex flex-col space-y-2 list-disc pl-4'}>
             <li>I founded{" "}
               <a
-                target={"_blank noreferrer"}
+                target={"_blank noopener"}
                 className="border-b-2 font-semibold pb-0.5 border-[#efee00]"
                 href="https://makerkit.dev"
               >
@@ -29,7 +29,7 @@ const Intro = () => {
             <li>
               I co-founded{" "}
               <a
-                target={"_blank noreferrer"}
+                target={"_blank noopener noreferrer"}
                 className="border-b-2 font-semibold pb-0.5 border-[#1e88e5]"
                 href="https://formtoro.com"
               >

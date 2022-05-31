@@ -4,6 +4,8 @@ const LazyRender: React.FC<{
   threshold?: number;
   rootMargin?: string;
   onVisible?: () => void;
+} & {
+  children: React.ReactNode
 }> = ({ children, threshold, rootMargin, onVisible }) => {
   const ref = useMemo(() => createRef<HTMLDivElement>(), []);
   const [isVisible, setIsVisible] = useState(false);

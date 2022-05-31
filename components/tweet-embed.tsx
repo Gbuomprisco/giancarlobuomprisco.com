@@ -1,6 +1,6 @@
 import Script from "next/script";
 
-const TweetEmbed: React.FC = ({ children }) => {
+const TweetEmbed = ({ children }: React.PropsWithChildren<{}>) => {
   return (
     <>
       <div>{children}</div>

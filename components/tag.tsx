@@ -1,7 +1,7 @@
 import cn from "classnames";
 import classes from "./tag.module.css";
 
-const Tag: React.FC<{ style?: Record<string, unknown> }> = ({
+const Tag: React.FC<React.PropsWithChildren<{ style?: Record<string, unknown> }>> = ({
   children,
   style,
 }) => {
