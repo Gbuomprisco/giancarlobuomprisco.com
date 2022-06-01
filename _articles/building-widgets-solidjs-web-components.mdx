@@ -6,7 +6,7 @@ tags:
   - solid
   - web-components
 collection: "solid.mdx"
-live: false
+live: true
 ---
 
 [SolidJS](https://www.solidjs.com/) is a small library for building User Interfaces. It compiles JSX into **highly optimized and efficient Javascript code**: fast, small, and reactive. Its creator is [Ryan Carniato](https://twitter.com/RyanCarniato), a brilliant developer at Netlify and previous at EBay.
@@ -27,36 +27,58 @@ It comes down not only to personal preferences but also to what is the goal you'
 
 Typically, any Javascript code that web pages inject from a third party. For example, a Chatbot widget, a popup, a calendar widget, etc.
 
-These scripts are one of the main issues affecting modern web pages. Plenty of eCommerce businesses have dozens of widgets, and **each of them downloads hundreds of KBs**; in some cases, they bring whole frameworks, such as React (Ehm Ehm, isn't that right, Typeform?) with them. 
+These scripts are one of the main issues affecting modern web pages. Plenty of eCommerce businesses have dozens of widgets, and **each of them downloads hundreds of KBs**; in some cases, they bring whole frameworks, such as React (Ehm Ehm, isn't that right, Typeform?) with them.
 
 It doesn't take a genius to understand that this is incredibly detrimental to certain businesses' revenue, especially because much of the traffic comes from mobile devices.
 
 ### Why is Solid.js ideal for writing Javascript widgets?
 
-If you're building a JavaScript widget, you want to ensure it minimally impacts your users' websites. And that's why Solid is an incredible choice for this use case: it is **one of the fastest libraries** out there, but it is also **one of the smallest ones**. 
+If you're building a JavaScript widget, you want to ensure it minimally impacts your users' websites. And that's why Solid is an incredible choice for this use case: it is **one of the fastest libraries** out there, but it is also **one of the smallest ones**.
 
-The best part? No compromise on your DX (developer experience): Solid supports Typescript, *hooks*, Suspense-like features, SSR, SSG, and you can easily bundle it with modern tools (such as Rollup). 
+The best part? No compromise on your DX (developer experience): Solid supports Typescript, *hooks*, Suspense-like features, SSR, SSG, and you can easily bundle it with modern tools (such as Rollup).
 
 It's everything you love about React, but smaller and faster.
 
 #### Compiling Solid.js components to Web Components
 
-Additionally, Solid.js allows compiling Solid components to Web Components. 
+Additionally, Solid.js allows compiling Solid components to Web Components.
 
 What does it mean? We can use all the goodies of the Solid compiler and bundle our code as standard and compliant Web Components, reusable from other frameworks and libraries as standard HTML components.
 
 To do so, we will use the `solid-element` library, built by the Solid.js team.
 
-## Building Widgets with Solid.js
+## Building Widgets with Solid.js - a Crypto Price ticker widget
 
 If I have convinced you to give Solid.js a try for building your widgets, read on. We're getting to the practical part of this blog post.
 
+By the end of the post, we will have built a **price ticker widget that
+                                               displays the selected
+                                               cryptocurrency price** using
+                                               the [Coincap.io API](https://coincap.io).
+
+Sounds fun? Let's go!
+
 ### Installing the dependencies
 
-First of all, we have to install the dependencies to be able to build our widgets:
+First of all, let's create an empty folder, and initialize it with a basic
+`package.json`. Fire up your terminal, and run the commands (in order):
 
 ```
-npm i --save solid-js solid-element rollup babel-preset-solid rollup-plugin-terser rollup-plugin-babel rollup-plugin-postcss autoprefixer tailwindcss
+mkdir solidjs-web-component-widget
+cd solidjs-web-component-widget
+touch package.json
+```
+
+Now we can install the dependencies to be able to build our
+widgets.
+
+Below are the packages I recommend installing using the following
+command:
+
+```
+npm i --save solid-js solid-element rollup babel-preset-solid rollup-plugin-terser
+ rollup-plugin-babel rollup-plugin-postcss autoprefixer tailwindcss @babel/preset-typescript
+ @rollup/plugin-node-resolve @rollup/plugin-replace
 ```
 
 The above include:
@@ -66,21 +88,386 @@ The above include:
 
 ### Writing our first Solid.js Component
 
-### Using CSS Modules with Solid.js
+As you may know, writing Solid.js components is similar to writing React
+components (with a few, significant differences).
+
+First, let's create our component `PriceTicker` at
+`src/components/PriceTicker.tsx` and some content as a placeholder:
+
+```tsx
+function PriceTicker() {
+  return (
+    <div>
+      Hello World
+    </div>
+  );
+}
+
+export default PriceTicker;
+```
+
+Congrats! We have written a valid Solid.js component.
+
+#### Creating a service to fetch the ticker's prices
+
+Let's proceed with
+creating a small service to fetch cryptocurrency prices from Coincap:
+
+```tsx
+const BASE_URL = `wss://ws.coincap.io/prices?assets=`;
+
+namespace CoincapService {
+  export function createPricesStreamSocket(assets: AssetName[]) {
+    const endpoint = [BASE_URL, assets.toString()].join('');
+
+    return new WebSocket(endpoint);
+  }
+
+  export type Prices = Record<AssetName, number>;
+  export type AssetName = string;
+}
+
+export default CoincapService;
+```
+
+The above really is a dead-simple service to fetch prices from the WebSocket.
+ The prices have the following interface:
+
+ ```tsx
+ {
+    [assetName: string]: number;
+ }
+ ```
+
+ #### Creating an effect to stream prices
+
+ And now, we can create an effect, something akin to a React hook which fetches
+  prices from the WebSocket, and updates a `signal`:
+
+```tsx
+import CoincapService from "./coincap.service";
+import { createSignal, onCleanup } from "solid-js";
+
+export function usePrices(assets: string[]) {
+  const [prices, setPrices] = createSignal<CoincapService.Prices>({});
+  const socket = CoincapService.createPricesStreamSocket(assets);
+
+  socket.onmessage = (message) => {
+    const data = JSON.parse(message.data);
+    setPrices(data as CoincapService.Prices);
+  };
+
+  onCleanup(() => socket.close());
+
+  return prices;
+}
+```
+
+Let's recap the above:
+
+1) We create a signal for storing the current price; in `React`, we could use
+ `useState`:
+
+ ```tsx
+ const [prices, setPrices] = createSignal<CoincapService.Prices>({});
+ ```
+
+2) Then, we initialize the socket and listen to each message. On arrival, we
+store the prices with `setPrices`:
+
+```tsx
+const socket = CoincapService.createPricesStreamSocket(assets);
+
+socket.onmessage = (message) => {
+  const data = JSON.parse(message.data);
+  setPrices(data as CoincapService.Prices);
+};
+```
+
+3) Using the `onCleanup` hook, we can close the socket when the component is
+unmounted:
+
+```tsx
+const socket = CoincapService.createPricesStreamSocket(assets);
+
+socket.onmessage = (message) => {
+  const data = JSON.parse(message.data);
+  setPrices(data as CoincapService.Prices);
+};
+```
+
+4) We simply return the prices that the component will display.
+
+#### Displaying prices in our Widget
+
+It's time to display the prices in our widget. To do so, we import the
+`usePrices` effect we created:
+
+```tsx
+import { usePrices } from "../lib/prices/price-effects";
+import { createMemo } from "solid-js";
+
+interface Props {
+  asset: string;
+}
+
+function PriceTicker(props: Props) {
+  const prices = usePrices([props.asset]);
+
+  const price = createMemo(() => {
+    return prices()[props.asset];
+  });
+
+  return (
+    <div>
+      <p>
+        <span>
+          {price()}
+        </span>
+      </p>
+    </div>
+  );
+}
+
+export default PriceTicker;
+```
+
+1) First, we call `usePrices` with a single asset (for simplicity):
+
+```tsx
+const prices = usePrices([props.asset]);
+```
+
+2) Secondly, we fetch the specific price for the asset specified in our
+component's `asset` property:
+
+```tsx
+const price = createMemo(() => {
+  return prices()[props.asset];
+});
+```
+
+3) Finally, we display the price. NB: we have to call `price`, because it's a
+ function!
+
+This is a pretty significant difference between Solid and React: in React, the
+whole component re-executes the function block. In Solid, it's only the
+render function that gets re-executed.
+
+And that's it! We have prices streaming.
+
+It's basic, but hey, it works!
+
+<Video src='/assets/images/posts/basic-price-streaming.mp4' />
 
 ### Using Tailwind CSS with Solid's Web Components
 
+Now that the functionality is nearly complete, we want to make it look better
+. To do so, we can use Tailwind CSS. To configure Tailwind, wait
+until we get to write our Rollup configuration.
+
+Then, we create a CSS file named `PriceTicker.css` and we import it from the
+ component `PriceTicker.tsx`; also, we create a style tag, and we inject the
+ style:
+
+ ```css
+ .PriceTicker {
+    @apply p-4;
+ }
+ ```
+
+```tsx
+import styles from './PriceTicker.css';
+
+// component code
+return (
+  <>
+    <style>{styles}</style>
+
+    <div class={'PriceTicker'}>
+      <p>
+        <span>
+          {price()}
+        </span>
+      </p>
+    </div>
+  </>
+);
+```
+
+🎉 Finally, we can now write Tailwind CSS with our Solid Web components. Yay!
+
 ### Converting a Solid.js component to a Web Component
+
+Before bundling our code, we want to convert a Solid component into a Web
+Component, which we can then call from a simple HTML file.
+
+We create a `register.tsx` file with the following content:
+
+```tsx
+import { customElement } from 'solid-element';
+import PriceTicker from "./components/PriceTicker";
+
+export function registerWebComponents() {
+  customElement('price-ticker', getInitialProps(), PriceTicker);
+}
+
+function getInitialProps() {
+  return {
+    asset: ''
+  };
+}
+```
+
+Then, we import the function we defined above in our entrypoint file, which
+we call `index.tsx`:
+
+```tsx
+import { registerWebComponents } from './register';
+// add some global styles here
+import './index.css';
+
+registerWebComponents();
+```
 
 ### Bundling a Web Component with Rollup
 
-#### "Hello World" size of a Solid.js Web Component
+To put everything together, we have to bundle our entry-point. To do so, we
+use Rollup.
+
+Create a file `rollup.config.mjs` in the root folder, and copy the content
+below:
+
+```js
+import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import { terser } from 'rollup-plugin-terser';
+import babel from 'rollup-plugin-babel';
+import postcss from 'rollup-plugin-postcss';
+import autoprefixer from 'autoprefixer';
+import tailwindcss from 'tailwindcss';
+
+const extensions = ['.ts', '.tsx'];
+
+export default {
+    input: './src/index.tsx',
+    output: {
+        file: 'dist/widget.mjs',
+        format: 'es',
+    },
+    external: [],
+    plugins: [
+        replace({
+            'process.env.NODE_ENV': JSON.stringify('production'),
+        }),
+        resolve({ extensions }),
+        babel({
+            exclude: 'node_modules/**',
+            presets: ["solid", "@babel/preset-typescript"],
+            extensions,
+        }),
+        postcss({
+            plugins: [autoprefixer(), tailwindcss({
+                content: ["./src/**/*.tsx"],
+            })],
+            extract: false,
+            modules: false,
+            autoModules: false,
+            minimize: true,
+            inject: false,
+        }),
+        terser({ output: { comments: false } }),
+    ],
+};
+```
+
+To bundle our code, we add an `npm` script to the `package.json`:
+
+```json
+{
+    "scripts": {
+        "bundle:widget": "rollup --config rollup.config.mjs"
+    }
+}
+```
+
+You can now bundle your Web Component by running the following command:
+
+```bash
+npm run bundle:widget
+```
+
+After running the command, you can find the compiled code at `dist/widget
+.mjs`; of course, rename it as you prefer using the Rollup configuration.
+
+#### How big is our Web Component bundle?
+
+After gzipping, our component weights only 3.9K. Lovely.
 
 ### Using a Web Components with React.js
 
+If you want to use a Solid Web Component from your React codebase, you can
+dynamically import a component:
+
+```tsx
+import { useEffect, useState } from 'react';
+
+const Widget: React.FC<{
+  data: WidgetProp;
+}> = ({ data }) => {
+  const [, setLoaded] = useState(false);
+  const id = performance.now.toString();
+
+  useEffect(() => {
+    (async () => {
+      // @ts-ignore
+      import('~/path/to/compiled/widget.js');
+      setLoaded(true);
+    })();
+  }, []);
+
+  return <my-widget key={id} data={JSON.stringify(data)} />;
+};
+
+export default Widget;
+```
+
+Now, import the component above anywhere, and use it as a standard React
+Component. Well, it is a standard React component, after all!
+
 ### Using a Web Component Widget using a script tag
 
-### Deploying a Web Component Widget to a CDN
+Now that we have bundled our component, we can import it from an HTML file
+and use it as a normal HTML element:
+
+```html
+<html>
+    <head>
+        <script src="dist/widget.mjs" type="module"></script>
+    </head>
+
+    <body>
+        <price-ticker asset="bitcoin"></price-ticker>
+    </body>
+</html>
+```
+
+And that's it. Our Web Component widget is ready!
+
+Deploy the widget to any CDN (Firebase, CloudFlare, Vercel, etc.), and then
+import it on your web pages.
 
 ## Final Words
 
+In this blog post, we have learned how to leverage Solid.js to create small
+and fast Web Components.
+
+Because of the small size, speed, and DX (Developer
+Experience) that Solid.js unlocks, building third-party widgets is a natural
+fit for this small yet powerful library.
+
+I hope you enjoyed the article. If you need any help or have any questions,
+please reach out! Ciao!
+
+NB: a Github repository with the source code will be added to this article very
+soon.
