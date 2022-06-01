@@ -47,6 +47,13 @@ const Meta = () => {
         crossOrigin={"true"}
       />
 
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+      <link
+        href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet"
+      />
+
       <link rel="canonical" href={canonical} key="canonical" />
 
       <meta name="msapplication-TileColor" content="#ffffff" />

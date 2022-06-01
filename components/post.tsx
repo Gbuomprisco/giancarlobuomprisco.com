@@ -109,7 +109,7 @@ const Post: React.FC<{
                       />
 
                       <meta
-                        name="description"
+                        name="name"
                         content={excerpt}
                         key="meta:description"
                       />

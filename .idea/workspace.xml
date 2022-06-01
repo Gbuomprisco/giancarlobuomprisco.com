@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/article.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/article.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/convertkit-post-signup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/convertkit-post-signup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/meta.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/meta.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/post.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -196,7 +201,8 @@
       <workItem from="1653947783428" duration="26000" />
       <workItem from="1653948035475" duration="182000" />
       <workItem from="1653948297746" duration="1414000" />
-      <workItem from="1653954502914" duration="9624000" />
+      <workItem from="1653954502914" duration="10139000" />
+      <workItem from="1654071933228" duration="1858000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -485,14 +491,20 @@
       <option name="project" value="LOCAL" />
       <updated>1654044422010</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Fonts broken?">
+      <created>1654044769140</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1654044769140</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Latest articles, changed my image" />
     <MESSAGE value="Added article about Next.js middlwares" />
     <MESSAGE value="Added excerpt" />
     <MESSAGE value="Fix build" />
@@ -517,7 +529,8 @@
     <MESSAGE value="Fixed types" />
     <MESSAGE value="Fixed buggy article" />
     <MESSAGE value="Minor perf imporovements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor perf imporovements" />
+    <MESSAGE value="Fonts broken?" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fonts broken?" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

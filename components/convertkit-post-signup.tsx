@@ -3,7 +3,11 @@ const ConvertKitPostSignup: React.FC<{
 }> = ({ collection }) => {
   const env = process.env.NODE_ENV;
 
-  if (env !== "production") return null;
+  if (env !== "production") {
+    console.log('Sign up forms would load now...');
+
+    return null;
+  }
 
   return getScriptByCollection(collection);
 };
@@ -16,46 +20,31 @@ function getScriptByCollection(collection: string) {
     case "typescript":
       return (
         <>
-          <script
-            async
-            data-uid="8a0ab85c1e"
-            src="https://thoughtful-inventor-7842.ck.page/8a0ab85c1e/index.js"
-          />
-          <script
-            async
-            data-uid="a9bf816709"
-            src={"https://thoughtful-inventor-7842.ck.page/a9bf816709/index.js"}
-          />
-          ;
+          <Script id="8a0ab85c1e" />
+          <Script id="a9bf816709" />
         </>
       );
 
     case "firebase":
-      return (
-        <script
-          async
-          data-uid="232868bc4a"
-          src={"https://thoughtful-inventor-7842.ck.page/232868bc4a/index.js"}
-        />
-      );
+      return (<Script id="232868bc4a" />);
 
     default:
       return (
         <>
-          <script
-            async
-            data-uid="da0d688ec8"
-            src="https://thoughtful-inventor-7842.ck.page/da0d688ec8/index.js"
-          />
-
-          <script
-            async
-            data-uid="3e3126f064"
-            src={"https://thoughtful-inventor-7842.ck.page/3e3126f064/index.js"}
-          />
+          <Script id="da0d688ec8" />
+          <Script id="3e3126f064" />
         </>
       );
   }
+}
+
+function Script({id}: {id: string}) {
+  return <script
+    async
+    defer
+    data-uid={id}
+    src={`https://thoughtful-inventor-7842.ck.page/${id}/index.js`}
+  />
 }
 
 export default ConvertKitPostSignup;

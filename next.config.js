@@ -9,6 +9,10 @@ const config = {
   images: {
     domains: ["miro.medium.com", "cdn-images-1.medium.com"],
   },
+  experimental: {
+    reactMode: 'concurrent',
+    concurrentFeatures: true,
+  },
   redirects() {
     return [
       {
