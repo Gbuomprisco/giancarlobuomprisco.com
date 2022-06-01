@@ -131,8 +131,10 @@ const Article: React.FC<{
                   <PostHeader post={post} />
 
                   {post.series ? (
-                    <div className={"my-8"}>
-                      <SeriesList posts={series} series={post.series} />
+                    <div>
+                      <div className={"my-2 md:my-4"}>
+                        <SeriesList posts={series} series={post.series} />
+                      </div>
                     </div>
                   ) : null}
                 </div>
