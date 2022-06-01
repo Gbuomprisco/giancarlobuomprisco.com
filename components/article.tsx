@@ -1,5 +1,4 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
 import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 
@@ -16,9 +15,7 @@ import CollectionName from "./collection-name";
 
 import Article from "../types/article";
 import { AUTHOR, SITE_URL, TWITTER_URL } from "../lib/constants";
-import LazyRender from "./lazy-render";
-
-const ConvertKitPostSignup = dynamic(() => import ("./convertkit-post-signup"));
+import ConvertKitPostSignup from "./convertkit-post-signup";
 
 const Article: React.FC<{
   post: Article;
@@ -147,9 +144,7 @@ const Article: React.FC<{
               </div>
 
               <div className="w-full md:w-8/12 mx-auto my-4">
-                <LazyRender rootMargin={'1200px'}>
-                  <ConvertKitPostSignup collection={post.collection.name} />
-                </LazyRender>
+                <ConvertKitPostSignup collection={post.collection.name} />
               </div>
 
               {Boolean(morePosts.length) && (
