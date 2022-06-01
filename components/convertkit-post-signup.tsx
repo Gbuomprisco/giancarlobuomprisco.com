@@ -4,8 +4,6 @@ const ConvertKitPostSignup: React.FC<{
   const env = process.env.NODE_ENV;
 
   if (env !== "production") {
-    console.log('Sign up forms would load now...');
-
     return null;
   }
 
@@ -26,7 +24,7 @@ function getScriptByCollection(collection: string) {
       );
 
     case "firebase":
-      return (<Script id="232868bc4a" />);
+      return <Script id="232868bc4a" />;
 
     default:
       return (
@@ -41,7 +39,6 @@ function getScriptByCollection(collection: string) {
 function Script({id}: {id: string}) {
   return <script
     async
-    defer
     data-uid={id}
     src={`https://thoughtful-inventor-7842.ck.page/${id}/index.js`}
   />
