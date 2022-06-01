@@ -12,6 +12,7 @@ const Author = () => {
     <div className="flex flex-row space-x-3 items-center">
       <a target="_blank" rel="noreferrer noopened" href={TWITTER_URL}>
         <Image
+          priority={true}
           className="hover:shadow-xl"
           layout="fixed"
           width="42px"

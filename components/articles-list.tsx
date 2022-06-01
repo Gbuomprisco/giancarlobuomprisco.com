@@ -4,13 +4,16 @@ import GridList from "./grid-list";
 
 type Props = {
   posts: Post[];
+  shouldPreload?: boolean;
 };
 
-const ArticlesList = ({ posts }: Props) => {
+const ArticlesList = ({ posts, shouldPreload }: Props) => {
+  const useShouldPreload = shouldPreload ?? true;
+
   return (
     <GridList>
       {posts.map((post, index) => {
-        const preloadImage = index < 6;
+        const preloadImage = useShouldPreload ? index < 6 : false;
 
         return (
           <ArticlePreview

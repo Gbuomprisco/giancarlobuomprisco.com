@@ -153,7 +153,7 @@ const Article: React.FC<{
                     <CollectionName logoSize="28px" collection={collection} />
                   </h3>
 
-                  <ArticlesList posts={morePosts} />
+                  <ArticlesList shouldPreload={false} posts={morePosts} />
                 </div>
               )}
             </>

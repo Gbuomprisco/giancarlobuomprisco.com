@@ -142,7 +142,7 @@ const Post: React.FC<{
                     <CollectionName logoSize="28px" collection={collection} />
                   </h3>
 
-                  <ArticlesList posts={moreArticles} />
+                  <ArticlesList shouldPreload={false} posts={moreArticles} />
                 </div>
               )}
 
