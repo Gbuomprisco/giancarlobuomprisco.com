@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4e31c29c-f7da-4b5b-b17e-1b61da8e3607" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_articles/debugging-javascript-like-a-pro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/debugging-javascript-like-a-pro.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/mdx-components.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/mdx-components.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/about.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/about.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,10 +126,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.build" />
         <item itemvalue="npm.dev" />
         <item itemvalue="npm.typecheck" />
         <item itemvalue="npm.partytown" />
-        <item itemvalue="npm.build" />
         <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
@@ -198,7 +197,7 @@
       <workItem from="1653947783428" duration="26000" />
       <workItem from="1653948035475" duration="182000" />
       <workItem from="1653948297746" duration="1414000" />
-      <workItem from="1653954502914" duration="6736000" />
+      <workItem from="1653954502914" duration="7638000" />
     </task>
     <task id="LOCAL-00001" summary="Initial stuff">
       <created>1594484805500</created>
@@ -466,14 +465,20 @@
       <option name="project" value="LOCAL" />
       <updated>1654041108418</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Fixed types">
+      <created>1654041670239</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1654041670239</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added automatic banner generator" />
     <MESSAGE value="Some updates" />
     <MESSAGE value="Only show latest 6 articles, also include blog posts on main page" />
     <MESSAGE value="Latest articles, changed my image" />
@@ -498,7 +503,8 @@
     <MESSAGE value="Added more popups" />
     <MESSAGE value="Added current drafts" />
     <MESSAGE value="Various bug fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Various bug fixes" />
+    <MESSAGE value="Fixed types" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed types" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

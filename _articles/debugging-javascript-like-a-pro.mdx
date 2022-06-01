@@ -1,17 +1,17 @@
 ---
-date: '2019-09-16'
+date: "2019-09-16"
 title: "Debugging Javascript Like a Pro"
 coverImage: "https://cdn-images-1.medium.com/max/12000/0*7UocdWX7aZYDkNtP"
 excerpt: "Discover the best debugging tools Chrome has to offer"
 collection: "javascript.mdx"
 live: true
-canonical: https://blog.bitsrc.io/debugging-javascript-like-a-pro-a2e0f6c53c2e
+canonical: "https://blog.bitsrc.io/debugging-javascript-like-a-pro-a2e0f6c53c2e"
 tags:
   - javascript
   - debugging
 ---
 
-This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io) blog
+*This post was originally published, by myself, on the [Bit](https://blog.bitsrc.io) blog*
 
 Are you one of those who are console logging your way to a solution when your code is not behaving the way you expect? If yes, read on.
 
@@ -30,7 +30,6 @@ This is a summary of what we’re going to go through:
 * setting watch expressions
 
 * productivity tips and tricks for the Dev Tools
-
 
 ### Debugging Runtime Code
 
@@ -132,7 +131,7 @@ See the image below:
 In order to fully take advantage of the Dev Tools, it’s worth spending a little bit of time and learn how the Dev Tools helps us to quickly step through the code without setting breakpoints at each line.
 
 * **Step
-**The simplest navigator in the Dev Tools, allows you to step through your code line by line, based on execution order. 
+**The simplest navigator in the Dev Tools, allows you to step through your code line by line, based on execution order.
 It’s important to notice that **Step **has been recently introduced due to a change to **Step Into next function call**. When debugging asynchronous code, *Step* will move to the next line chronologically
 
 ![Step](https://cdn-images-1.medium.com/max/4504/1*lnLSkTfTPgoZnH09TzPOJQ.gif)
@@ -172,11 +171,14 @@ Adding these values to the global scope while debugging can be a huge time-saver
 
 ![Setting a Global Variable from the current scope](https://cdn-images-1.medium.com/max/3964/1*datD6XsMhv__QA0eF2HjeA.gif)
 
-In the image above, I save the array [previous, current] as a global variable. The Dev Tools automatically assign a name to the variable, which is temp{n} with n based on the number of previously saved variables.
+In the image above, I save the array [previous, current] as a global variable
+. The Dev Tools automatically assign a name to the variable, which is temp[n]
+with n based on the number of previously saved variables.
 
 As you can see in the image above, the variable gets named temp2 and I can use it in the console as it is now defined globally!
 
-Thanks to **Eager Evaluation, **a feature ****released in Chrome 68, the Dev Tools allows the evaluation of statements in the console as you write them and also displays the signature of the method.
+Thanks to **Eager Evaluation**, a feature released in Chrome 68, the Dev
+Tools allows the evaluation of statements in the console as you write them and also displays the signature of the method.
 
 If you pay attention to the image above, when I map the saved variable to an array of strings, the result is immediately visible without me having to press Enter.
 

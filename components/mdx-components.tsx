@@ -50,6 +50,7 @@ const NextImage: React.FC<Record<string, string>> = (props) => {
 
   return (
     <Image
+      unoptimized
       width={width}
       height={height}
       layout={layout as ImageLayout}
