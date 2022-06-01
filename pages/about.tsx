@@ -8,7 +8,7 @@ import SubHeading from "../components/subheading";
 
 import { TITLE } from "../lib/constants";
 
-const Heading: React.FC = ({ children }) => {
+const Heading = ({ children }: React.PropsWithChildren<{}>) => {
   return <h3 className="font-bold text-3xl leading-loose">{children}</h3>;
 };
 

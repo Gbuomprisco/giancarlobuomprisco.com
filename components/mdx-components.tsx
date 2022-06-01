@@ -61,7 +61,7 @@ const NextImage: React.FC<Record<string, string>> = (props) => {
   );
 };
 
-const ExternalLink: React.FC<{ href: string }> = ({ href, children }) => {
+const ExternalLink: React.FC<React.PropsWithChildren<{ href: string }>> = ({ href, children }) => {
   if (href.startsWith(SITE_URL) || href[0] === "/") {
     return <a href={href}>{children}</a>;
   }
