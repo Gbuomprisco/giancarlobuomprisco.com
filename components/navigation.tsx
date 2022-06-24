@@ -55,7 +55,7 @@ const Navigation = () => {
           "text-lg lg:text-sm text-gray-500 border-b-4 pb-1" +
           " border-b-transparent transition:border " +
           (active
-            ? "font-bold  border-b-yellow-200"
+            ? "font-bold border-b-yellow-200"
             : "hover:text-gray-900 font-medium border-b-transparent hover:border-b-yellow-200")
         }
       >
