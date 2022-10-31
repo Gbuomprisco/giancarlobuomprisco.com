@@ -4,7 +4,7 @@
   "description": "Giancarlo Buomprisco's website",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev",
     "build": "next build",
     "postbuild": "npm run rss && npm run sitemap",
     "sitemap": "next-sitemap",

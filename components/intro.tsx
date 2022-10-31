@@ -1,15 +1,22 @@
 import SubHeading from "./subheading";
+import Image from "next/image";
 
 const Intro = () => {
   return (
     <section className="flex-col md:flex-row flex md:mt-8 mb-8 md:mb-12">
       <div className="flex flex-col space-y-4">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter">
-          <span>Ciao! This is Giancarlo 👋</span>
-        </h2>
+
+        <div className={'flex items-center space-x-4'}>
+          <Image className={'rounded-full'} priority src={'/assets/me.webp'} width={"64"} height={"64"} />
+
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter">
+
+            <span>Ciao! This is Giancarlo 👋</span>
+          </h2>
+        </div>
 
         <SubHeading>
-          Coder and Founder. I love building digital products and sharing my learnings.
+          Software Developer and Founder. I love building digital products and sharing my learnings.
         </SubHeading>
 
         <div className="flex-col space-y-2">

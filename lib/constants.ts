@@ -14,8 +14,8 @@ export const SITE_LANGUAGE = `en`;
 export const TWITTER_HANDLE = `gc_psk`;
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
 export const TWITTER_URL = `https://twitter.com/${TWITTER_HANDLE}`;
-export const PROFILE_IMAGE = `/assets/giancarlo-2.png`;
-export const PROFILE_IMAGE_URL = `${SITE_URL}/assets/giancarlo-2.png`;
+export const PROFILE_IMAGE = `/assets/me.webp`;
+export const PROFILE_IMAGE_URL = `${SITE_URL}/assets/me.webp`;
 
 export const LINEKDIN_URL = `https://www.linkedin.com/in/giancarlobuomprisco/`;
 export const GITHUB_URL = `https://github.com/gbuomprisco`;
