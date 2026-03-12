@@ -1,0 +1,33 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { getReadingTime } from '../lib/articles';
+
+interface Props {
+  title: string;
+  date: Date;
+  excerpt: string;
+  content: string;
+  image?: string;
+  canonical?: string;
+}
+
+const { title, date, excerpt, content, image, canonical } = Astro.props;
+const readingTime = getReadingTime(content);
+---
+
+<BaseLayout title={title} description={excerpt} image={image} canonical={canonical}>
+  <article>
+    <header class="mb-10 mt-4">
+      <h1 class="text-2xl sm:text-3xl font-bold leading-tight mb-3" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">{title}</h1>
+      <div class="flex items-center gap-2 text-xs text-muted">
+        <FormattedDate date={date} />
+        <span>&middot;</span>
+        <span>{readingTime} min read</span>
+      </div>
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

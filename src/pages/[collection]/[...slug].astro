@@ -1,0 +1,31 @@
+---
+import { getPublishedArticles } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+
+  return articles.map((article) => {
+    // Extract collection slug from frontmatter (e.g. "next.mdx" → "next")
+    const collection = article.data.collection.replace(/\.mdx$/, '');
+    return {
+      params: { collection, slug: article.id },
+      props: { slug: article.id },
+    };
+  });
+}
+
+const { slug } = Astro.props;
+const destination = `/${slug}`;
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <link rel="canonical" href={destination} />
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <p>Redirecting to <a href={destination}>{destination}</a></p>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+}
+
+const { title, description, image, canonical } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} image={image} canonical={canonical} />
+  </head>
+  <body>
+    <main class="max-w-2xl mx-auto px-4 py-8">
+      <Header />
+      <slot />
+      <Footer />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getArticlesGroupedByYear } from '../lib/articles';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+  articles: CollectionEntry<'articles'>[];
+}
+
+const { articles } = Astro.props;
+const grouped = getArticlesGroupedByYear(articles);
+---
+
+<div class="space-y-2">
+  {grouped.map(({ year, articles }) => (
+    <div>
+      {articles.map((article, i) => (
+        <div class="flex items-baseline gap-4 py-1.5 sm:flex-row flex-col">
+          <div class="flex items-baseline gap-4 flex-1 min-w-0">
+            <span class="text-muted text-sm w-12 shrink-0 hidden sm:inline">
+              {i === 0 ? year : ''}
+            </span>
+            <a href={`/${article.id}`} class="flex-1 truncate text-foreground no-underline hover:underline text-sm sm:text-base">
+              {article.data.title}
+            </a>
+          </div>
+          <div class="flex items-center gap-2 sm:gap-0">
+            <span class="text-muted text-xs sm:hidden">
+              {i === 0 ? year : ''}
+            </span>
+            <FormattedDate date={article.data.date} />
+          </div>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>

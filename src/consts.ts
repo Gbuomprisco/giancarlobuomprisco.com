@@ -1,5 +1,9 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
-
-export const SITE_TITLE = 'Astro Blog';
-export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const SITE_TITLE = 'Giancarlo Buomprisco';
+export const SITE_DESCRIPTION = 'Software Developer and Founder';
+export const SITE_URL = 'https://giancarlobuomprisco.com';
+export const AUTHOR = 'Giancarlo Buomprisco';
+export const EMAIL = 'contact@giancarlobuomprisco.com';
+export const TWITTER_HANDLE = 'gc_psk';
+export const TWITTER_URL = `https://twitter.com/${TWITTER_HANDLE}`;
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/giancarlobuomprisco/';
+export const GITHUB_URL = 'https://github.com/gbuomprisco';

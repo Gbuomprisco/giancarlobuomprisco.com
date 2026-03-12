@@ -1,0 +1,395 @@
+---
+date: '2022-02-20'
+title: "How to build production-grade Next.js projects"
+excerpt: "Learn the practices you should learn to build production-grade
+Next.js projects"
+tags:
+  - next
+  - react
+collection: "next.mdx"
+live: true
+visibleInListings: false
+---
+
+**Scenario**: you built an MVP (or are about to), and it's time to ship it to
+your users. Unfortunately, you have no idea which steps to take before and after
+shipping your application to production.
+
+In this article, I want to describe some of the steps that you should take
+to **ship production-grade Next.js projects** to your users, reduce common
+mistakes, monitor your application, and, ultimately, set you up for success.
+
+### The React Framework for Production
+
+Vercel calls Next.js "The React Framework
+for Production" - and for a good reason: unlike many other web frameworks, **Next.js requires little-to-no further optimization** to
+deploy applications to production.
+
+The Next.js developers have done a commendable job at minimizing the amount of
+work required to ship projects that are fast, efficient, and fully functional,
+and even more so if deployed with Vercel.
+
+With that
+said, **some development practices are universal** and developers cannot overlook them;
+no framework will fully handle them for you.
+
+In this article, I talk about:
+
+1. Architecture
+2. Environment Setup
+3. Error Handling
+4. Logging
+5. Smoke Testing and E2E
+
+## Architecture
+
+Building your application with the right foundations can be crucial for your
+project's success; while it is essential not to stress too much on the
+technical details when venturing into an Agile project, it's undeniable that
+foundational mistakes are particularly nasty to fix later on.
+
+This is one of the differences between _design_ and _architecture_:
+typically, by "design", we mean the **architecture of a smaller unit**; instead, by
+"architecture" we mean the overall architecture of the **main
+components** of your project.
+
+A design issue could be a bad
+implemented React component; an architectural problem, instead, could be
+choosing the wrong data model for your business domain, or a too specific
+abstraction, which will lead to complexity and migrations.
+
+As you can imagine, **architecture is something you would want to get right**
+from the very beginning:
+
+1. Design mistakes are less severe and can be fixed along the way, as your app
+   grows
+
+2. Architectural errors, instead, are broader and will cover large parts of
+   your application
+
+Of course, this isn't a simple task unless you want to spend considerable time building the perfect architecture.
+
+I don't think this is what
+you want, especially if you're trying to **get to market as fast as possible**.
+
+There are no magic rules about getting your architecture right, but
+a suggestion is to make **as few decisions as possible**: that's obviously
+accomplished by **keeping the scope tight and focused as you grow**.
+
+From a purely technical perspective, it's essential to keep coupling to a
+minimum, so that a change to an architectural component doesn't affect the
+others.
+
+Before clicking the deploy button and shipping your app, ask yourself: is
+there anything in the broader architecture that could prevent you from keeping
+shipping at a decent speed? Is the data model scalable? Is security tight?
+
+Please take a good breath, think it over, and press that button.
+
+## Environment Setup
+
+As you may know, we can define Next.js environment variables in a `.env` file.
+
+As a best practice, you will also keep a list of files based on
+each environment, such as:
+
+- `.env.local`
+- `.env.development`
+- `.env.staging`
+- `.env.production`
+
+Next.js is smart enough to figure out which environment variables file to
+serve, so we can be sure that the correct environment variables defined in
+each of these environments will be correct.
+
+### How does Next.js load your environment variables?
+
+Next can automatically infer your environment files based on the names
+listed above.
+
+#### Default environment variables
+
+By default, `.env` is loaded first. That means, here, we can set the default
+environment variables that are shared across environments; unless a scoped file redefines them, they will be added regardless of the current environment.
+
+We can check this file in our VCS, but we should not use it for storing secrets.
+
+#### Local environment variables
+
+We can define local environment variables in a file named `.env.local`. These
+are supposed to be scoped to a specific copy of your project, which means
+they're never shared (therefore, we should not check them in).
+
+We can use this file for storing secrets, as it's only available in
+local copies. Remember to add `.env.local` to your `.gitignore` file.
+
+#### Development environment variables
+
+Whenever we run `next dev`, Next.js will load the file `.env.development`;
+this file will override the environment variables listed in the files above.
+
+#### Production environment variables
+
+Whenever we run `next build`, Next.js will load the file `.env.production`;
+just like the development file, this file will override the environment variables listed
+in the files above.
+
+Here you should add the environment variables that will be used in your
+production environment; for example, the API KEY of your production Firebase
+project, etc.
+
+### Storing Private Environment Variables
+
+Storing private environment variables (API keys, passwords, etc.) requires a lot of attention. The last thing you want is to leak your secret keys.
+
+As you should never expose private data, and therefore cannot check this in
+with your code, we need to inject them from a safe location: commonly,
+it would be best if you defined these variables in your CI (or within your Vercel Console).
+
+Unfortunately, this also presents some other
+risks even as a best practice. Risks that we can prevent, though.
+
+### Preventing undefined variables
+
+One of the most common risks when deploying to production is that developers
+can forget to define these variables in their CI.
+
+I recommended force-checking required variables by throwing errors at build-time.
+
+By throwing errors when a required variable isn't defined, you can be sure
+that your code will fail during the build-phase, rather than at runtime,
+when it's too late.
+
+```tsx
+if (!process.env.MY_ENV_VARIABLE) {
+  throw new Error(`Environment variable MY_ENV_VARIABLE was not defined!`);
+}
+```
+
+Or, better, we can define a reusable function to prevent undefined
+environment variables:
+
+```tsx
+function requireEnvVariable(key: string) {
+  const value = process.env[key];
+
+  if (value) {
+    return value;
+  }
+
+  throw new Error(`Environment variable ${key} was not defined!`);
+}
+
+const key = requireEnvVariable('PRIVATE_KEY');
+```
+
+In this way, you can ensure that deployments fail if a
+required environment variable is unset. Of course, you should
+also check that these are correct.
+
+## Error Handling
+
+Any proper production-grade application should be **resilient to runtime
+exceptions**.
+
+When building a new app, it's easy to overlook
+error-handling, as we're focused on writing as many features as possible in a
+short timeframe: this is justified if you're getting to market fast
+or if you are a small team/solo developer.
+
+Depending on your needs, you can choose to defer error-handling to shortly
+after having shipped your MVP (besides marketing, of course).
+
+Eventually, if your business is going anywhere, it will need to be resilient
+to errors, exceptions, and unexpected behavior.
+
+### Validating Payloads
+
+Validating payloads is crucial to protecting your API routes against invalid data and can also streamline your Typescript code.
+
+How - you say? By using Zod, an exceptional library that you can use to validate data and automatically assign the correct type to your data structures.
+
+Zod can define a schema, which we use against objects to:
+
+1. validate the shape and their data types
+2. infer their interface
+
+Thus, our code becomes safer and more readable - without dirty data and Typescript workarounds.
+
+If you want to know more about Zod, I discussed it in the following article: [Protect your Next.js API with Zod](/next/protect-next-api-zod). Check it out!
+
+### Setting up a 404 and 500 error pages
+
+The first and simplest step is to define the pages for when your users are
+met with 400 or 500 HTTP exceptions.
+
+Next.js makes it easy: just define two new pages in the `pages` folder:
+
+- **Not found exceptions**: create the page `pages/404.tsx`
+- **Server exceptions**: create the page `pages/500.tsx`
+
+While not a strict requirement (as Vercel takes care of it), it's undoubtedly a good practice not to show a super-basic page to your users.
+
+### Handle API Exceptions
+
+Handling API exceptions is fundamental: we need to understand what is going on when the application encounters an error, and we want to avoid leaking any confidential data in stacktraces.
+
+If you want to learn how I handle API errors in my Next.js apps, check out the article [handling API errors in Next.js](/next/handling-api-errors-in-nextjs).
+
+## Logging
+
+Logging deserves a whole blog post by itself.
+
+Logging helps you debug and
+understand what happens when your users use your application, performance issues, unexpected behaviors, etc.
+
+### Use Sentry
+
+[Sentry](https://sentry.io) is a _SaaS_ for logging, tracing, and managing
+exceptions in both your
+client-side application and your API.
+
+It's my go-to solution, although you
+can also use other providers such as Bugsnag.
+
+Sentry offers a generous free plan with 5k events per month, which should be
+more than enough to get started.
+
+Sentry does not sponsor me; I genuinely think using it is a
+no-brainer.
+
+The only downside to using it is that its SDK is heavy; as such,
+can increase the size of your JS bundles: not ideal if you ask me.
+
+There are some ways to work it around; lazy loading the JS SDK, for example, or using a thinner SDK
+that doesn't make use of all its features.
+
+### Use Pino
+
+_Pino_ is a lightweight logging library by the creators of _Fastify_. It's currently my go-to library for logging Node.js applications.
+
+Typically, I abstract Pino behind a `logger.ts` service, such as the below:
+
+```tsx
+// logger.ts
+
+import pino from 'pino';
+
+const logger = pino({
+  browser: {},
+  level: 'debug',
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true,
+    },
+  },
+  base: {
+    env: process.env.NODE_ENV,
+    revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
+  },
+});
+
+export default logger;
+```
+
+The package `pino-pretty` makes the terminal output nicer on the eye but is not required.
+
+Your application code can import and use Pino in the following way:
+
+```tsx
+import logger from `~/lib/logger`;
+
+function getUser(userId: string) {
+  logger.log({ userId }, `Getting user details`);
+}
+```
+
+Logging is like our application talking to us and telling us what it's doing. It's a vital step before going to production because, without it, we'd be wondering for ours what went wrong when users face issues, but, fortunately, we don't need to.
+
+By thoroughly documenting our API requests, we can be confident that we can quickly piece things together in case of errors.
+
+Logging is particularly critical when dealing with external requests:
+
+- third-party APIs
+- database requests
+- external servers
+- etc.
+
+We have to make sure to log what we request (URL, method, etc.) and what is the response (status code, data).
+
+Additionally, it's crucial to do so without leaking confidential data in our logs.
+
+```tsx
+async function createSubscription(params) {
+  logger.log({
+    name: params.subscriptionName
+  }, `Subscribing to plan...`);
+
+  try {
+    const result = await createPlanSubscription(params);
+
+    logger.log({
+      name: params.subscriptionName
+      id: result.id,
+    }, `Subscription successfully created!`);
+  } catch(e) {
+    logger.log({
+      error: e.message,
+    }, `Subscription not created.`);
+  }
+}
+```
+
+Typing long strings in our logic can get verbose; storing log events in a central file can be a good idea.
+
+## Smoke Testing and E2E
+
+Software engineers with a strictly technical mindset will
+rage-close this page and go for a walk to calm down after reading this, but
+hear me out.
+
+Developers who are rushing out their application to market (yes, there can be
+good reasons for this) would make a terrible mistake writing a complete test
+suite before the first release.
+
+Unless you're part of an enterprise project or
+an extremely well-funded startup, chances are that velocity of shipping is of the
+utmost importance to your venture.
+
+If you don't yet have a _real_ business, it doesn't matter how many tests you
+have; without product-market fit, your application will ultimately fail.
+
+So, is it wrong to write E2E tests before release? No, not exactly.
+Let me explain.
+
+E2E testing for startups and solo developers should cover **the most important
+features of
+your business**; the critical parts that, if
+broken, would cancel any value proposition your application offers.
+
+Building a 100% tested codebase is the perfect recipe to spend way long not
+building a real business, but writing smoke tests for your app's critical parts
+is an effective way to **ship a production-grade application that solves your users' problems and lets you sleep better at night**.
+
+What parts of a business are critical?
+
+- **Authentication**: if your users can't sign in or up, there's not much
+  they can do with your application. Yes, test authentication thoroughly.
+
+- **Billing and Payments**: while services like Paddle and Stripe help us
+  with most of the heavy-lifting, wiring these services up is still a decent
+  amount of work that you should take very seriously. In addition, there's little doubt that
+  anything related to financial services needs testing.
+
+- **Your value proposition**: I don't know what this is, but you do.
+
+## Final Words
+
+Shipping applications to production is always an exciting, stressful, yet incredible experience.
+
+This guide is a starter list to help you understand what is essential to get right before you're ready to push that button to get your app into your users' hands; by no means it's complete or exhausting, but hopefully, it will help you achieve your goals.
+
+---
+
+Check out [Makerkit](https://makerkit.dev), the best SaaS Starter Kit in the world.

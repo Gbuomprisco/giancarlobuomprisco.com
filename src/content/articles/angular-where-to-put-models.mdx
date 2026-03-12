@@ -1,0 +1,193 @@
+---
+title: Where to put your Angular models?
+date: '2020-08-03T00:00:00.322Z'
+coverImage: /assets/images/posts/where-put-angular-models.webp
+ogImage:
+  url: /assets/images/posts/where-put-angular-models.png
+excerpt: Organizing entities and models in your Angular app may be hard. This article explains where to put your entities and what mistakes to watch out for
+live: true
+visibleInListings: false
+collection: 'angular.mdx'
+tags:
+  - angular
+  - architecture
+---
+
+Before we go into detail - it's worth understanding what we mean by models:
+
+- entity classes?
+- enums?
+- interfaces?
+
+It could be all of them - depending on who you ask.
+
+I personally like to differentiate between interfaces and models as two distinct things:
+
+- `interfaces` are used to define the shape of my Typescript entities
+- `models` are used as to define the actual value of my interfaces
+
+For example, we can have the following `interface`:
+
+```tsx
+interface User {
+  name: string;
+  id: string;
+  photoURL: string;
+}
+```
+
+and the following `model`:
+
+```tsx
+const USER: User = {
+  name: `Giancarlo`,
+  id: `0`,
+  photoURL: `/assets/photos/giancarlo.webp`,
+};
+```
+
+The question set out in this article seems very simple, but it's not.
+Organizing your code in an organized manner is a much harder task than it seems.
+
+## How to organize your models in your Angular Project Structure
+
+The answer to the question of where to place and how to organize the Angular
+models and interfaces within your application **depends entirely on the structure
+of your project's structure**.
+
+Let's try to answer these questions first:
+
+- Is your team using a Angular CLI project structure or a collection of
+  projects across different repositories?
+- Is your team using a Nx Monorepo, splitting apps in the same repository?
+
+As you can imagine, depending on the answer, you have different choices to make.
+
+### Scenario: A simple Angular CLI app
+
+In the case of a simple Angular app, you're not required to share types with
+different applications and libraries. It's the simplest scenario.
+
+This is not entirely the case, as your
+company may develop other applications or reusable libraries, so you should
+keep this in mind.
+
+So, how can we organize models?
+
+#### Solution: Module-Scoped Entities
+
+Every _Angular Module_ should have a set of domain entities (models, enums,
+etc.) that are either private or public.
+
+Let's assume we have a module called `UsersModule`. We want to define, for every entity, a sensible folder structure:
+
+```
+- src
+  - modules
+    - users
+      - components
+      - services
+      - enums
+          - roles.enum.ts
+      - interfaces
+          - user.interface.ts
+      - models
+```
+
+As you may have noticed: _enums_, _interfaces_ and _models_ all have their own
+folder, and it's important not to mix them to **keep them well-organized**.
+
+#### Solution: Globally Available Entities
+
+This solution is probably the simplest, and possibly the one you should make
+if you're in the early development stages, where your domain is not yet
+well-defined.
+
+You have a couple of ways to achieve this:
+
+- a globally scoped Typescript namespace, in which you would define all your
+  interfaces
+- a root folder (ex. `types`) from which you can export your types
+
+In the first scenario, you can do the following. Declare a file `global.d.
+ts` in your root folder, add it to your Typescript configuration (using the
+`files` property), and then add your global types by declaring a global scope:
+
+```tsx
+declare global {
+  interface User {
+    id: string;
+  }
+}
+```
+
+You could also scope each domain within a `namespace`:
+
+```tsx
+declare global {
+  namespace auth {
+    interface User {
+      id: string;
+    }
+  }
+}
+```
+
+And you can now access your types using `auth.User`, without the need of
+importing them. **Bear in mind, this is not necessarily a good thing**. In
+fact, I'd argue it's not: at the same time, it's not a bad way to start
+coding your application while you figure out the domain model.
+
+In the second scenario, you can keep a root folder `src/types` and export
+your types just as you do with your other Typescript files. This is
+preferable to using globally scoped types, but ultimately you may decide to
+choose the former for increasing your development speed, which is
+understandable.
+
+#### Solution: Sharing type with different repositories
+
+Consider creating a typescript repository to expose your global entities to
+different repositories.
+
+This can have the advantage of letting you use your types with various
+applications and libraries, but will also result in the worst development
+experience due to the fact you have to manage a different repository and
+ultimately link this repository with the others using `npm link`.
+
+## Organize Models using a Monorepo
+
+Imagine we have a monorepo (built with Nx or Turborepo, for example) with other
+applications or libraries written in different technologies (ex. Express,
+Stencil, React, etc.): you may not want to import your types from a different technology.
+
+Monorepositories allow us to share code as libraries with other applications
+or other libraries within the same repository.
+
+This is one of the best set-ups if you need to share code.
+
+#### 💡 Solution: Use a shared library for entities used outside of your modules
+
+Create a separate library (for example, called `@enterprise/interfaces`) that exposes your global entities.
+
+The setup above is particularly recommended if you're using `Nx` to structure
+your project.
+
+Admittedly, this is not great - but if you have a large team of teams using the same interfaces, it could be really important to keep them in sync.
+
+## Rules to keep your interfaces and models organized
+
+### Never export an interface from a Service
+
+This is a pattern that I quite dislike - and I see used very often.
+
+Defining an interface within a Service (or a Component) is generally fine - although not something I normally do. It's all good - as long as it is not exported.
+
+Why is that?
+
+- A component should not import a service simply to get an Interface
+- A component may simply use Typescript inference instead of using that Interface
+- If the interface is reused and is used in a way that inference could not work, then it should defined in its own file
+
+Hopefully this answered your questions - but if not, please do send me an [email](mailto:giancarlo@frontend.consulting) and I'd love to expand on the subject.
+
+_Thank you for reading, I hope you enjoyed this article. If you did, consider follow me on [Twitter](https://twitter.com/gc_psk) or sign up to the Newsletter using the form below!_

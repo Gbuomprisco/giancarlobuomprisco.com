@@ -1,0 +1,99 @@
+---
+date: '2021-10-30T00:00:00.322Z'
+collection: typescript.mdx
+tags:
+  - typescript
+title: Streamline your code with Typescript assertions
+excerpt: In this post we introduce Typescript assertions, which can make our Typescript code easier to read and more concise by not introducing conditions
+live: true
+visibleInListings: false
+---
+
+Typescript assertions allow us to write defensive code without sacrificing legibility or code organization, such as wrapping code blocks into conditions, etc.
+
+Typescript developers often resort to type guards for telling the compiler the correct types, but this has a downside: the right type will be inferred only within the condition.
+
+Let's use a type guard to check if an HTMLElement query is not null:
+
+```typescript
+function assertElementExists(
+  element: HTMLElement | null,
+): element is HTMLElement {
+  if (!element) {
+    throw new Error(`Element was not found`);
+  }
+}
+
+function getElementValue(selector: string): string {
+  const element = document.querySelector<HTMLInputElement>(selector);
+
+  assertElementExists(element);
+
+  return element.value;
+}
+```
+
+As you can see, the compiler is telling us that there's a mistake: of course, this will only work if we wrap the code block within a condition, such as an `if` statement.
+
+![Typescript Assertions](/assets/images/posts/typescript-assertions.png)
+
+If we no longer want to proceed with the execution of a code block, we can use Typescript type assertions to throw an error and produce the side-effect. That means that if the assertion was positive, we can assume that the type is correct.
+
+This is particularly useful when a function is in the wrong state, or when validating input/output, which is something fairly common in server-side code (more than on the client-side).
+
+## How to write a Typescript type assertion?
+
+Assume you have a function that takes in input one or more parameters, we can assert the type of one of these by using the following syntax:
+
+```typescript
+function apiKeyExists(apiKey: string | undefined): asserts apiKey is string {
+  if (!apiKey) {
+    throw new Error(`API key was not found`);
+  }
+}
+```
+
+If you omit the `asserts` keyword, it becomes a type guard.
+
+Let's change the previous code by using an assertion, and handle the error using a `try/catch` statement.
+
+```typescript
+function assertElementExists(
+  element: HTMLElement | null,
+): asserts element is HTMLElement {
+  if (!element) {
+    throw new Error(`Element was not found`);
+  }
+}
+
+function getElementValue(selector: string): string {
+  const element = document.querySelector<HTMLInputElement>(selector);
+
+  assertElementExists(element);
+
+  return element.value;
+}
+
+try {
+  const value = getElementValue('#text');
+  const result = document.querySelector<HTMLElement>('#textResult');
+
+  assertElementExists(result);
+
+  result.innerHTML = value;
+} catch (e) {
+  console.log(e);
+}
+```
+
+And now it works!
+
+Assertions allow us to write code that does not need to be wrapped into conditions for checking a type, or casted in any way.
+
+It doesn't mean we should use this instead of type guards in every situation.
+
+Assertions shine when the execution should not continue: for example, when the input/output is invalid, or some critical requirement was not met within a code block.
+
+It's also important to notice that we're throwing an error: the consumer has the responsibility to catch and handle it.
+
+[Check out the demo on CodeSandbox](https://codesandbox.io/s/ts-type-assertions-vn4t6?file=/src/index.ts 'Demo')

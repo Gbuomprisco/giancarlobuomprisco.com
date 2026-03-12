@@ -1,0 +1,157 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title="404 | Page not found" description="The page you're looking for doesn't exist or has been moved." />
+    <style>
+      body {
+        font-family: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+        background-color: #111;
+        color: #ededed;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrapper {
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 0;
+        margin-bottom: 3rem;
+      }
+      header a {
+        color: #ededed;
+        text-decoration: none;
+      }
+      header .nav {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.875rem;
+      }
+      header .nav a {
+        color: #888;
+        transition: color 0.2s;
+      }
+      header .nav a:hover {
+        color: #ededed;
+      }
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+      }
+      .big-404 {
+        position: absolute;
+        font-size: clamp(8rem, 25vw, 20rem);
+        font-weight: 700;
+        color: rgba(237, 237, 237, 0.04);
+        user-select: none;
+        pointer-events: none;
+        line-height: 1;
+      }
+      .inner {
+        position: relative;
+        z-index: 1;
+      }
+      h1 {
+        font-size: clamp(1.25rem, 3vw, 1.75rem);
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+      }
+      .subtitle {
+        color: #888;
+        margin: 0 0 2rem 0;
+        max-width: 28rem;
+        line-height: 1.6;
+        font-size: 0.875rem;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #ededed;
+        color: #111;
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        font-family: inherit;
+        transition: opacity 0.2s;
+      }
+      .btn:hover {
+        opacity: 0.9;
+      }
+      footer {
+        border-top: 1px solid #333;
+        padding: 2rem 0 3rem;
+        margin-top: 5rem;
+        font-size: 0.875rem;
+        color: #888;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+      }
+      footer a {
+        color: #888;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      footer a:hover {
+        color: #ededed;
+      }
+      footer .links {
+        display: flex;
+        gap: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <a href="/" style="font-weight:700">{SITE_TITLE}</a>
+        <div class="nav">
+          <a href="/about">About</a>
+          <a href="https://twitter.com/gc_psk" target="_blank" rel="noopener noreferrer">X</a>
+        </div>
+      </header>
+      <div class="content">
+        <span class="big-404">404</span>
+        <div class="inner">
+          <h1>Page not found</h1>
+          <p class="subtitle">
+            The page you're looking for doesn't exist or has been moved.
+            Check the URL or head back to the homepage.
+          </p>
+          <a href="/" class="btn">&larr; Back to Home</a>
+        </div>
+      </div>
+      <footer>
+        <span>&copy; {new Date().getFullYear()} Giancarlo Buomprisco</span>
+        <div class="links">
+          <a href="https://github.com/gbuomprisco" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://twitter.com/gc_psk" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.linkedin.com/in/giancarlobuomprisco/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="mailto:contact@giancarlobuomprisco.com">Email</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

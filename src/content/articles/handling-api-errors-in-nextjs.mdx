@@ -1,0 +1,282 @@
+---
+date: '2022-01-07'
+title: Handling API errors in Next.js
+excerpt: 'Learn how to write a Next.js middleware pipe to automatically and elegantly handle exceptions in your API functions'
+tags:
+  - next
+  - react
+collection: 'next.mdx'
+live: true
+visibleInListings: false
+---
+
+API routes in Next.js are fun and easy to write, but this can lead to excessive duplicate code.
+
+If you read my post about [Next.js Middlewares](/next/middleware-pipes-nextjs), you know how I feel about reducing duplicate code and reusing middlewares across your API by piping your API handlers.
+
+In this blog post, I want to describe how I use an API middleware for handling my Next.js API exceptions.
+
+This blog post comes from a particular need, inspired by Nest.js, a different server-side framework: Nest.js has a built-in functionality called `Filters`.
+
+Using a filter, you can hook into an API call and execute some code when they start and end.
+
+This is incredibly handy for automating quite repetitive tasks:
+
+- logging your requests
+- handling errors
+- validating the body
+- etc.
+
+In this case, we use the API handler to catch our API's exceptions, which allows us to log detailed information about the request, send it to your favorite Error Tracker (for example, Sentry), and respond with the most appropriate status code.
+
+## A basic Next.js API request without error handling
+
+Let's take a quick look at a very basic API handler:
+
+```tsx
+export default function myApiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const data = await getData();
+
+  return res.send(data);
+}
+```
+
+As you can see in the code above:
+
+- we do not catch the error
+- we don't log anything
+
+The example above is certainly not ideal: debugging becomes incredibly hard; simultaneously, you may not want to try/catch every single API route.
+
+For practical and aesthetical reasons, I don't think it's a best practice (with that said, there may be instances where you want to).
+
+Let's rewrite the above in a better way:
+
+```tsx
+export default function myApiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  try {
+    const data = await getData();
+
+    return res.send(data);
+  } catch (e) {
+    logger.error(e);
+
+    return res.status(500).send({ success: false });
+  }
+}
+```
+
+Better, but not perfect. We may want to:
+
+- log a specific message and the correct status code
+- send to the client more information (but not too much, as you may leak data)
+
+## A middleware for catching exceptions
+
+First of all, let's see what the result looks like.
+
+Assuming we have an API handler, we decorate it by using the middleware we're going to write:
+
+```tsx
+export default function myApiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const handler = withMiddleware(
+    withMethodsGuard(SUPPORTED_HTTP_METHODS),
+    withAuthedUser,
+  );
+
+  return withExceptionFilter(req, res)(handler);
+}
+```
+
+Whenever `myApiHandler` throws an exception, we log the following object:
+
+```tsx
+{
+  url,
+  userId,
+  referer,
+  userAgent,
+  message,
+}
+```
+
+Furthermore, the API responds with the following object:
+
+```tsx
+{
+  statusCode,
+  timestamp,
+  path: req.url
+}
+```
+
+Why status code? No reason; it's just an example. You could use a more application-specific status code which you can then map to an error message on the client.
+
+What's important here is not to leak any data, so be strict about what you're sending back.
+
+### Building the Middleware
+
+If you haven't read my previous article about Next.js API handlers, let me give you a quick recap.
+
+API middlewares allow us to pipe handlers in this way:
+
+```tsx
+export function withExceptionFilter(req: NextApiRequest, res: NextApiResponse) {
+  return async function (handler: NextApiHandler) {
+    // impl
+    return handler(req, res);
+  };
+}
+```
+
+This allows us to combine multiple handlers:
+
+```tsx
+export default function myApiHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  return withMiddleware(
+    withMethodsGuard(SUPPORTED_HTTP_METHODS),
+    withAuthedUser,
+  );
+}
+```
+
+Now, let's write the exception filter:
+
+```tsx
+try {
+  await handler(req, res);
+} catch (exception) {
+  // now we can do
+  // something with "exception"
+}
+```
+
+The most important thing is to wrap our `handler` function in a try/catch block. Wrapping the block allows us to catch errors from the handler and then do something with it.
+
+Now let's write some useful functions to extract the error code and the message we want to use:
+
+```tsx
+function getExceptionStatus(exception: unknown) {
+  return exception instanceof ApiError
+    ? exception.statusCode
+    : HttpStatusCode.InternalServerError;
+}
+
+function getExceptionMessage(exception: unknown) {
+  return isError(exception) ? exception.message : `Internal Server Error`;
+}
+
+function getExceptionStack(exception: unknown) {
+  return isError(exception) ? exception.stack : undefined;
+}
+
+function isError(exception: unknown): exception is Error {
+  return exception instanceof Error;
+}
+```
+
+If you haven't noticed, we use a sort-of-internal class from Next.js called `ApiError.` We import this class in the following way:
+
+```tsx
+import { ApiError } from 'next/dist/server/api-utils';
+```
+
+It's a class used by Next (for some reason not exposed, but I wish it were) that decorates an `Error` with a status code:
+
+```tsx
+export declare class ApiError extends Error {
+  readonly statusCode: number;
+  constructor(statusCode: number, message: string);
+}
+```
+
+Therefore, whenever you're throwing an error from within an API function, I would suggest to:
+
+- use this or another class created by yourself
+- use this and this alone whenever you want to throw errors for server-side code
+
+By using `ApiError` you can make sure to return the most appropriate status code for your request errors:
+
+```tsx
+export function anApiFunction() {
+  const user = userService.getUser();
+
+  const hasPermissions = await checkPermissions(user);
+
+  if (!hasPermissions) {
+    throw new ApiError(
+      HttpStatusCode.Forbidden,
+      `User does not have the permissions to perform some action`,
+    );
+  }
+}
+```
+
+Because we extract the `statusCode` property from the `ApiError` class, our request responds with the correct status code: `HttpStatusCode.Forbidden`.
+
+And now can finally we put it all together. The below is the `catch` block's branch:
+
+```tsx
+const { url, headers } = req;
+
+const statusCode = getExceptionStatus(exception);
+const message = getExceptionMessage(exception);
+const stack = getExceptionStack(exception);
+
+// NB: tweak this according to how you retrieve your user in your requests
+const user = req.user;
+const userId = user?.uid ?? 'Not Authenticated';
+
+const referer = headers['referer'];
+const userAgent = headers['user-agent'];
+
+// this is the context being logged
+const requestContext = {
+  url,
+  userId,
+  referer,
+  userAgent,
+  message,
+};
+
+// edit the message according to your preferences
+const exceptionMessage = `An unhandled exception occurred.`;
+
+logger.error(requestContext, exceptionMessage);
+
+// if we are able to retrieve the stack, we add it to the debugging logs
+if (stack) {
+  logger.debug(stack);
+}
+
+const timestamp = new Date().toISOString();
+
+// return just enough information without leaking any data
+const responseBody = {
+  statusCode,
+  timestamp,
+  path: req.url,
+};
+
+return res.status(statusCode).send(responseBody);
+```
+
+The exceptions filter is now complete and ready to use!
+
+---
+
+Check out [Makerkit](https://makerkit.dev), the best SaaS Starter Kit in the world.
+
+Do you have any comments about the above? [Feel free to contact me](/contact).
