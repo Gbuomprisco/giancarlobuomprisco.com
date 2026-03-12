@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
 
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { getPublishedArticles } from '../lib/articles';
+import { SITE_TITLE, SITE_DESCRIPTION } from '#consts.ts';
+import { getPublishedArticles } from '#lib/articles.ts';
 
 export async function GET(context) {
   const articles = await getPublishedArticles();

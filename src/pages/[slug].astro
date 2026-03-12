@@ -1,7 +1,7 @@
 ---
-import { render } from 'astro:content';
-import ArticleLayout from '../layouts/ArticleLayout.astro';
-import { getPublishedArticles } from '../lib/articles';
+import { render } from "astro:content";
+import ArticleLayout from "#layouts/ArticleLayout.astro";
+import { getPublishedArticles } from "#lib/articles.ts";
 
 export async function getStaticPaths() {
   const articles = await getPublishedArticles();
@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 const { article } = Astro.props;
 const { Content } = await render(article);
 const ogImage = article.data.ogImage
-  ? typeof article.data.ogImage === 'string'
+  ? typeof article.data.ogImage === "string"
     ? article.data.ogImage
     : article.data.ogImage.url
   : article.data.coverImage;
@@ -24,7 +24,7 @@ const ogImage = article.data.ogImage
   title={article.data.title}
   date={article.data.date}
   excerpt={article.data.excerpt}
-  content={article.body ?? ''}
+  content={article.body ?? ""}
   image={ogImage}
   canonical={article.data.canonical}
 >

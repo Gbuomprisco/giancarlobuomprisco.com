@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ArticleList from '../components/ArticleList.astro';
-import { getListableArticles } from '../lib/articles';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseLayout from '#layouts/BaseLayout.astro';
+import ArticleList from '#components/ArticleList.astro';
+import { getListableArticles } from '#lib/articles.ts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '#consts.ts';
 
 const articles = await getListableArticles();
 ---

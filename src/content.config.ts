@@ -3,7 +3,11 @@ import { z } from 'astro/zod';
 import { defineCollection } from 'astro:content';
 
 const articles = defineCollection({
-  loader: glob({ base: './src/content/articles', pattern: '**/*.{md,mdx}' }),
+  loader: glob({
+    base: './src/content/articles',
+    pattern: '**/*.{md,mdx}',
+    generateId: ({ entry }) => entry.replace(/^.*\//, '').replace(/\.(md|mdx)$/, ''),
+  }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
