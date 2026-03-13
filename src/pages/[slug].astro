@@ -13,11 +13,12 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { Content } = await render(article);
+
 const ogImage = article.data.ogImage
   ? typeof article.data.ogImage === "string"
     ? article.data.ogImage
     : article.data.ogImage.url
-  : article.data.coverImage;
+  : article.data.coverImage ?? `/og/${article.id}.png`;
 ---
 
 <ArticleLayout

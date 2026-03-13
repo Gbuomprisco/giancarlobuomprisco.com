@@ -6,13 +6,14 @@ const articles = defineCollection({
   loader: glob({
     base: './src/content/articles',
     pattern: '**/*.{md,mdx}',
-    generateId: ({ entry }) => entry.replace(/^.*\//, '').replace(/\.(md|mdx)$/, ''),
+    generateId: ({ entry }) =>
+      entry.replace(/^.*\//, '').replace(/\.(md|mdx)$/, ''),
   }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
     excerpt: z.string().default(''),
-    collection: z.string(),
+    collection: z.string().optional(),
     live: z.boolean().default(true),
     visibleInListings: z.boolean().default(true),
     tags: z.array(z.string()).default([]),

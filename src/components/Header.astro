@@ -1,13 +1,25 @@
 ---
-import { SITE_TITLE, TWITTER_URL } from '#consts.ts';
+import { SITE_TITLE, TWITTER_URL } from "#consts.ts";
 ---
 
-<header class="mb-12">
+<header class="mb-4">
   <nav class="flex items-center justify-between py-6">
-    <a href="/" class="font-bold text-foreground no-underline">{SITE_TITLE}</a>
+    <a href="/" class="font-medium text-sm text-foreground no-underline"
+      >{SITE_TITLE}</a
+    >
     <div class="flex gap-6 text-sm text-muted">
-      <a href="/about" class="text-muted hover:text-foreground no-underline transition-colors">About</a>
-      <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" class="text-muted hover:text-foreground no-underline transition-colors">X</a>
+      <a
+        href="/about"
+        class="text-muted hover:text-foreground no-underline transition-colors"
+        >About</a
+      >
+      <a
+        href={TWITTER_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-muted hover:text-foreground no-underline transition-colors"
+        >X</a
+      >
     </div>
   </nav>
 </header>

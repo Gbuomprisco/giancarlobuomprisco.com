@@ -1,11 +1,15 @@
 ---
 interface Props {
   date: Date;
+  showYear?: boolean;
 }
 
-const { date } = Astro.props;
+const { date, showYear = false } = Astro.props;
+const options: Intl.DateTimeFormatOptions = showYear
+  ? { year: 'numeric', month: 'short', day: 'numeric' }
+  : { month: 'short', day: 'numeric' };
 ---
 
 <time datetime={date.toISOString()} class="text-muted text-sm whitespace-nowrap">
-  {date.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}
+  {date.toLocaleDateString('en-us', options)}
 </time>

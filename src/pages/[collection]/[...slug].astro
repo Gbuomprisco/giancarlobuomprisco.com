@@ -4,14 +4,15 @@ import { getPublishedArticles } from "#lib/articles.ts";
 export async function getStaticPaths() {
   const articles = await getPublishedArticles();
 
-  return articles.map((article) => {
-    // Extract collection slug from frontmatter (e.g. "next.mdx" → "next")
-    const collection = article.data.collection.replace(/\.mdx$/, "");
-    return {
-      params: { collection, slug: article.id },
-      props: { slug: article.id },
-    };
-  });
+  return articles
+    .filter((article) => article.data.collection)
+    .map((article) => {
+      const collection = article.data.collection!.replace(/\.mdx$/, "");
+      return {
+        params: { collection, slug: article.id },
+        props: { slug: article.id },
+      };
+    });
 }
 
 const { slug } = Astro.props;
