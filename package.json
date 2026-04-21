@@ -24,7 +24,7 @@
     "@astrojs/rss": "^4.0.17",
     "@astrojs/sitemap": "^3.7.1",
     "@tailwindcss/vite": "^4.2.1",
-    "astro": "^6.0.3",
+    "astro": "^6.1.6",
     "oxfmt": "^0.39.0",
     "oxlint": "^1.54.0",
     "satori": "^0.25.0",
